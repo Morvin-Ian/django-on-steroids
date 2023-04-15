@@ -142,6 +142,7 @@ STATIC_URL = 'static/'
 
 
 CORS_ORIGIN_ALLOW = [
+    
     'http://localhost:3000',
 ]
 
