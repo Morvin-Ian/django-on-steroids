@@ -1,2 +1,1 @@
-# django-on-steroids
-# django-on-steroids
+# Django-on-steroids
