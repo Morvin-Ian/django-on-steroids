@@ -17,7 +17,7 @@
         .sidebar{
             flex: 1;
             background-color: #001c40;
-            overflow: scroll;
+            overflow-y: scroll;
 
 
             .navbar{
@@ -37,9 +37,7 @@
                     font-size: large;
                 }
 
-                .user{
-                    
-                }
+        
 
                 img{
                     object-fit: cover;
@@ -135,7 +133,7 @@
                 background-color: rgba(255, 255, 255, 0.58);
                 padding: 10px;
                 height: calc(100% - 130px);
-                overflow: scroll;
+                overflow-y: scroll;
 
                 .message{
                     display: flex;
