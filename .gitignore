@@ -2,8 +2,7 @@
 *.env
 
 # Exclude Django migrations
-**/migrations/
-
+**/**/migrations
 # Exclude Python pycache files
 **/__pycache__/
 *.pyc
