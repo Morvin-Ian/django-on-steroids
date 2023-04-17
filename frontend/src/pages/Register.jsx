@@ -9,11 +9,25 @@ const Register = () => {
   const [profile, setProfile] = useState('');
 
 
+  const url = "http://127.0.0.1:8000/api/register/";
+
+  const registerUser = (credentials) =>{
+    fetch(url, {
+        method:"POST",
+        headers:{
+          'Content-Type': 'application/json',
+
+        },
+       body: JSON.stringify(credentials), // body data type must match "Content-Type" header
+
+    });
+
+  }
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    const registrationData = {username:username, email:email, password:password};
-    console.log(registrationData);
+    const credentials = {username, email, password};
+    registerUser(credentials);
 
     setUsername("");
     setEmail("");
@@ -31,17 +45,20 @@ const Register = () => {
                    placeholder='Perfect Username'
                    value={username}
                    onChange={(e)=>setUsername(e.target.value)}
-                   
+                   required
                   />
             <input type="email"
                     placeholder='Email' 
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
+                    required
+
                     />
             <input type="password"
                   placeholder='Password'
                   value={password}
                   onChange={(e)=>setPassword(e.target.value)}
+                  required
                   
                   />
             <input type="file" id='file' accept='image/*'/>
