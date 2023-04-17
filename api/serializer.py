@@ -1,6 +1,33 @@
+from django.contrib.auth.models import User
+
 from messaging.models import Message
+
 from rest_framework import serializers
 
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    """
+    Serializes data for User Registration
+    """
+    class Meta:
+        model = User
+        fields = ( 'username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+        return user
+
+# class LoginSerializer(serializers.ModelSerializer):
+#     """
+#     Serializes data for Login Purposes
+#     """
+
+#     class Meta:
+#         model = User
+#         fields = ('username', 'password')
+#         extra_kwargs = {'password': {'write_only': True}}
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -9,10 +36,11 @@ class MessageSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Message
-        fields = [
+        fields = (
             'message_sender', 
             'message_receiver', 
             'text_message', 
             'image_message', 
             'video_message'
-            ]
+        )
+        

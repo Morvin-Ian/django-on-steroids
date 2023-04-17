@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 
+
 class Message(models.Model):
     """
     Fields for the Message table.
