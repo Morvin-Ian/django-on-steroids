@@ -1,2 +1,26 @@
 /venv
 *.env
+
+# Exclude Django migrations
+**/migrations/
+
+# Exclude Python pycache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyzw
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyzw
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyzw
