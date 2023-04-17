@@ -1,6 +1,5 @@
 .home{
 
-    background-color: #22b8cfea;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -130,7 +129,7 @@
             }
 
             .messages{
-                background-color: rgba(255, 255, 255, 0.58);
+                background-color: rgba(168, 168, 168, 0.747);
                 padding: 10px;
                 height: calc(100% - 130px);
                 overflow-y: scroll;
@@ -161,7 +160,7 @@
 
                         p{
                             padding: 10px;
-                            background-color: white;
+                            background-color: #22b8cfea;
                             border-radius:0px 10px 10px 10px;
                             max-width: max-content;
                         }

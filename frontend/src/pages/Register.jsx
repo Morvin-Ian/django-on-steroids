@@ -9,7 +9,7 @@ const Register = () => {
   const [profile, setProfile] = useState('');
 
 
-  const url = "http://127.0.0.1:8000/api/register/";
+  const url = "http://127.0.0.1:8000/auth/api/register/";
 
   const registerUser = (credentials) =>{
     fetch(url, {

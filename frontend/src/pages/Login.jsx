@@ -9,7 +9,7 @@ const Login = () => {
 
   const redirect = useNavigate()
 
-  const url = "http://127.0.0.1:8000/api/token/";
+  const url = "http://127.0.0.1:8000/auth/api/token/";
 
   const loginUser = async (credentials) =>{
     const response = await fetch(url, {
