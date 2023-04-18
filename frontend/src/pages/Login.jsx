@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
 
   const redirect = useNavigate()
 
-  const url = "http://127.0.0.1:8000/auth/api/token/";
+  const url = "http://127.0.0.1:8000/api/auth/login/";
 
   const loginUser = async (credentials) =>{
     const response = await fetch(url, {
@@ -21,17 +23,20 @@ const Login = () => {
        body: JSON.stringify(credentials), // body data type must match "Content-Type" header
     });
 
-
-    if (!response.ok) {
-      throw new Error('Failed to login');
-    }
-
     const data = await response.json();
 
+
+    if (!response.ok) {
+      setError(data)
+      throw new Error(data);
+
+    }
+
+
+    console.log(data)
     // Initialize the access & refresh token in localstorage.
     localStorage.clear();
-    localStorage.setItem('access_token', data.access);
-    localStorage.setItem('refresh_token', data.refresh);
+    localStorage.setItem('access_token', data.token);
 
     redirect('/');
   }
@@ -39,23 +44,32 @@ const Login = () => {
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    const credentials = {username, password};
+    const credentials = {email, password};
     loginUser(credentials);
 
-    setUsername("");
+    setEmail("");
     setPassword("");
 
   };
+
+  const errorMsg = {
+      textAlign:"center",
+      fontSize:"small",
+      color:"red",
+      MarginTop:"10px"
+
+  }
 
   return (
         <div className='container'>
         <div className='wrapper'>
         <span className='title'>Sign In your Account</span>
+        <p style={errorMsg}>{error}</p>
         <form onSubmit={(e)=>handleSubmit(e)}>
-        <input type="text"
-                   placeholder='Username'
-                   value={username}
-                   onChange={(e)=>setUsername(e.target.value)}
+        <input type="email"
+                   placeholder='Email'
+                   value={email}
+                   onChange={(e)=>setEmail(e.target.value)}
                    required
                   />
  

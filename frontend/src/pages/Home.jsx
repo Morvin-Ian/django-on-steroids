@@ -6,13 +6,24 @@ import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const redirect = useNavigate();
-  // localStorage.clear()
   useEffect(() => {
     if(localStorage.getItem('access_token') === null){    
       redirect('/sign-in');
     }
 
+    const url = "http://127.0.0.1:8000/api/messages/list-create";
+
+    fetch(url, {
+      headers: {Authentication: `Bearer ${localStorage.getItem('access_token')}`}
+    })
+       .then(response => response.json())
+       
+       .then(data => console.log(data))
+
   }, [])
+
+ 
+
 
   return (
     <div className="home">
