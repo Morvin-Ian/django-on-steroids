@@ -1,5 +1,5 @@
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import GenericAPIView, UpdateAPIView, DestroyAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView,  ListAPIView, CreateAPIView
 from .serializers import MessageSerializer
 from rest_framework.views import Response
 from rest_framework import status
@@ -9,18 +9,21 @@ from messaging.models import Message
 
 
 
-class ListCreateMessagesView(ListCreateAPIView):
+class MessagesCreate(CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MessageSerializer
 
     def perform_create(self, serializer):
         return serializer.save(message_sender=self.request.user)
     
+
+
+class MessageList(ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         return Message.objects.filter(message_sender=self.request.user)
-
-
-
 
 
 

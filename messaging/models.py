@@ -25,7 +25,7 @@ class Message(models.Model):
     
     def __str__(self) -> str:
         """
-        Unicode representation of LNMPESAONLINERESPONSEData.
+        Unicode representation of Message Data.
         """
-        return self.text_message.split(' ')[0]
+        return self.text_message
     

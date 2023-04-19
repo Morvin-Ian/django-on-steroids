@@ -87,6 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    profile = models.ImageField(upload_to="profiles", null=True, blank=True)
     email_verified = models.BooleanField(
         _("email_verified"),
         default=False,
@@ -102,11 +103,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def token(self):
-        token = jwt.encode(
-            {'username':self.username, 'email':self.email, 'exp':datetime.utcnow() + timedelta(hours=24)}, 
-            settings.SECRET_KEY, algorithm='HS256'
-            )
-        return token    
+        payload = {
+            'username': self.username,
+            'email': self.email,
+            'exp': datetime.utcnow() + timedelta(hours=24),
+        }
+        
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        return token
+
     
     def __str__(self):
         return self.email

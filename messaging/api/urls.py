@@ -2,10 +2,10 @@ from django.urls import path
 
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from .views import ListCreateMessagesView
+from .views import MessageListView
 
 urlpatterns = [
-    path("list-create/", ListCreateMessagesView.as_view()),
+    path("list-create/", MessageListView.as_view()),
 
 ]
 

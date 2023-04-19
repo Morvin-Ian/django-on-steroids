@@ -1,26 +1,9 @@
 /venv
 *.env
+/htmlcov
 
-# Exclude Django migrations
-**/**/migrations
+# Exclude Django migrations and pychache folders
+*/migrations/*
+*/__pycache__/*
 
-# Exclude Python pycache files
-**/__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.pyw
-*.pyz
-*.pyzw
-*.pyc
-*.pyo
-*.pyd
-*.pyw
-*.pyz
-*.pyzw
-*.pyc
-*.pyo
-*.pyd
-*.pyw
-*.pyz
-*.pyzw
+
