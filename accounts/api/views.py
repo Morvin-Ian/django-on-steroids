@@ -2,7 +2,6 @@ from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
 
-from messaging.models import Message
 from .serializer import  RegisterSerializer, LoginSerializer
 
 from rest_framework import status
@@ -59,5 +58,4 @@ class AuthenticationView(GenericAPIView):
     def get(self, request):
         user = request.user
         serializer = self.serializer_class(user)
-
         return Response({"user":serializer.data})

@@ -13,7 +13,8 @@ const Login = () => {
 
   const url = "http://127.0.0.1:8000/api/auth/login/";
 
-  const loginUser = async (credentials) =>{
+  const loginUser = async (credentials) =>
+  {
     const response = await fetch(url, {
         method:"POST",
         headers:{
@@ -25,34 +26,37 @@ const Login = () => {
 
     const data = await response.json();
 
-
-    if (!response.ok) {
+    if (!response.ok) 
+    {
       setError(data)
-      throw new Error(data);
+      setPassword('');
 
     }
 
-
-    console.log(data)
-    // Initialize the access & refresh token in localstorage.
-    localStorage.clear();
-    localStorage.setItem('access_token', data.token);
-
-    redirect('/');
+    else
+    {
+      // Initialize the access & refresh token in localstorage.
+      if (!localStorage.getItem('access_token')) 
+      {
+        localStorage.setItem('access_token', data.token);
+        localStorage.setItem('uuid', data.uuid);
+        redirect('/');
+      }
+    }
   }
 
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) =>
+  {
     e.preventDefault();
     const credentials = {email, password};
     loginUser(credentials);
 
-    setEmail("");
-    setPassword("");
-
+    setError('');
   };
 
-  const errorMsg = {
+  const errorMsg = 
+  {
       textAlign:"center",
       fontSize:"small",
       color:"red",
@@ -82,7 +86,7 @@ const Login = () => {
                   />    
             <button>Sign In</button>
         </form>
-        <p><small>Don't Have an account <span><a href="#log">Sign Up</a></span></small></p>
+        <p><small>Don't Have an account <span><Link to='/sign-up'>Sign Up</Link></span></small></p>
         </div>
     </div>
   )

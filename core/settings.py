@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    'daphne',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,7 +86,24 @@ TEMPLATES = [
     },
 ]
 
+
+# Web Server Gateway Interface 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+
+# Asynchronous Server Gateway Interface 
+ASGI_APPLICATION = "core.asgi.application"
+
+
+#  Allow One to talk between different instances of an application
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 
 REST_FRAMEWORK = {

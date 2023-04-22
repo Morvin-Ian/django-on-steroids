@@ -21,4 +21,6 @@ class MessageRegistration(admin.ModelAdmin):
     date_hierarchy = 'created_at'  # Date-based drilldown navigation by year/month/date
 
 
+related_classes = [Relationship, RelationshipProfile]
 
+admin.site.register(related_classes)

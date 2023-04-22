@@ -1,7 +1,6 @@
 [run]
-source=accounts/,messaging/,
+source=accounts/, messaging/
 omit=
     venv
     */migrations/*
     */tests/*
-    */__init__.py

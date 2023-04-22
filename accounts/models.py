@@ -1,11 +1,13 @@
 from django.apps import apps
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
+
+import uuid
 
 import jwt
 from datetime import datetime, timedelta
@@ -86,8 +88,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
 
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
-    profile = models.ImageField(upload_to="profiles", null=True, blank=True)
     email_verified = models.BooleanField(
         _("email_verified"),
         default=False,

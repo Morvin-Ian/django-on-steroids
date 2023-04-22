@@ -27,7 +27,6 @@ class MessageList(ListAPIView):
 
 
 
-
 class MessageListView(GenericAPIView):
 
     """

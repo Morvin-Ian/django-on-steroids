@@ -9,6 +9,8 @@ const Home = () => {
   const redirect = useNavigate();
 
   const url = "http://127.0.0.1:8000/api/messages/list-create/";
+  
+  
 
   const fetchData = async() => {
     try {
@@ -20,23 +22,23 @@ const Home = () => {
   
       // Get the response data
       const responseData = await fetchResponse.json();
-      console.log(responseData);
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error(error);
     }
   }
 
 
-  useEffect(() => {
-    if(localStorage.getItem('access_token') === null){    
+  useEffect(() => 
+  {
+    if(localStorage.getItem('access_token') === null)
+    {    
       redirect('/sign-in');
     }
 
     fetchData()
-  }, [])
-
-
- 
+  }, []);
 
 
   return (
