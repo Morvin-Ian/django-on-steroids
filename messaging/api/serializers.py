@@ -15,3 +15,5 @@ class MessageSerializer(serializers.ModelSerializer):
             'video_message'
         )
         
+
+

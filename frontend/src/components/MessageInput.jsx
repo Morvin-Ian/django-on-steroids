@@ -1,5 +1,4 @@
 import React from 'react'
-import image from "../assets/images/hope.jpg"
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 
@@ -13,7 +12,7 @@ const MessageInput = () => {
             <label htmlFor="media"><ImageIcon/></label>
             
             <input style={{display:"none"}} type="file" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-text/plain, application/pdf" id='doc'/>
+            text/plain, application/pdf" id='doc'/>
             <label htmlFor="doc"><AttachFileIcon/></label>
 
             <button>Send</button>

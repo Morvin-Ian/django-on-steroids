@@ -35,7 +35,7 @@ class Relationship(models.Model):
         verbose_name_plural = "Relationship Links"
     
     def __str__(self):
-        return f"{self.profile.name} Relationship Link"
+        return f"{self.profile} Relationship Link"
 
 
 

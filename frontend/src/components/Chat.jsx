@@ -1,12 +1,14 @@
 import React from 'react'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-const Chat = () => {
+
+const Chat = ({messages}) => {
 
   const redirect = useNavigate();
-
+  
   const logoutUser = () =>{
     if(localStorage.getItem('access_token'))
     {
@@ -16,6 +18,8 @@ const Chat = () => {
 
   }
 
+
+  
   return (
     <div className='chat'>
         <div className="chat-info">
@@ -25,7 +29,7 @@ const Chat = () => {
 
             </div>
         </div>
-        <Messages/>
+        <Messages messages = {messages}/>
         <MessageInput/>
     </div>
   )

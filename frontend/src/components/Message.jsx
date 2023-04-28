@@ -3,7 +3,7 @@ import image from "../assets/images/James.jpeg"
 import kid from "../assets/images/kid.jpg"
 
 
-const Message = () => {
+const Message = ({message}) => {
   return (
     <div className='message owner'>
         <div className="messageInfo">

@@ -29,6 +29,8 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/sign-in' element={<Login/>}/>
         <Route path='/sign-up' element={<Register/>}/>
+        <Route path='/chat/:uuid' element={<Home/>}/>
+
 
       </Routes>
     </BrowserRouter>
