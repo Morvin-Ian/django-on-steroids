@@ -8,9 +8,13 @@ import { useState } from 'react'
 const Home = () => {
 
   const redirect = useNavigate();
+  const [action, setAction ] = useState('')
+
+
   const access_token = localStorage.getItem('access_token');
   const [messages, setMessages] = useState('');
   const messagesUrl = "http://127.0.0.1:8000/api/messages/list-create/";
+
 
   const fetchMessages = async() => {
     try {
@@ -31,7 +35,9 @@ const Home = () => {
     }
   }
 
- 
+        
+     
+
   useEffect(() => 
   {
     if(localStorage.getItem('access_token') === null)
@@ -47,7 +53,7 @@ const Home = () => {
   return (
     <div className="home">
         <div className="cont">
-            <SideBar/>
+            <SideBar action={action} setAction={setAction}/>
             <Chat messages={messages}/>
         </div>
 

@@ -3,11 +3,12 @@ import {Link} from "react-router-dom"
 import React, { useEffect, useState } from 'react'
 
 
-const Chats = () => {
+const Chats = ({action}) => {
 
   const relationshipsUrl = "http://127.0.0.1:8000/api/messages/chats/";
   const access_token = localStorage.getItem('access_token');
   const [chats, setChats] = useState('')
+
 
 
   const fetchRelationships = async() => {
@@ -41,7 +42,7 @@ const Chats = () => {
                 <img src={mid} alt="" />
                 <div className="chat-info">
                     <span>{chat.chat}</span>
-                    <p>Good Morning Bro</p>
+                    <p id="span2">{action ?  `${action}` : 'Good Morning Bro'}</p>
                 </div>
               </Link>
           ))

@@ -6,10 +6,9 @@ const Messages = ({messages}) => {
     <div className='messages'>
 
         {Array.from(messages).map((message)=>
-          <Message key={message.message_sender_uiud} message={message}/>
+          <Message message={message}/>
         )}
         
-
 
     </div>
   )

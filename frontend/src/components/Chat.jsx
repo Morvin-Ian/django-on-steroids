@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ const Chat = ({messages}) => {
 
   const redirect = useNavigate();
   const params = useParams();
+  const [action, setAction] = useState('')
   
   
   const logoutUser = () =>{
@@ -18,7 +19,6 @@ const Chat = ({messages}) => {
     }
 
   }
-
   
   return (
     <div className='chat'>
@@ -26,14 +26,14 @@ const Chat = ({messages}) => {
         {params.uuid ? 
         <>
         <div className="chat-info">
-            <span>Oluoch</span>
+            <span id='span'>Oluoch Ian</span>
             <div className="icons">
                 <button onClick={logoutUser}>Logout</button>
 
             </div>
         </div>
         <Messages messages = {messages}/>
-        <MessageInput/>
+        <MessageInput />
         </>:
     
     <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">
