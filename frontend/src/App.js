@@ -3,6 +3,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
 function App() {
 
@@ -30,6 +31,8 @@ function App() {
         <Route path='/sign-in' element={<Login/>}/>
         <Route path='/sign-up' element={<Register/>}/>
         <Route path='/chat/:uuid' element={<Home/>}/>
+        <Route path="*" element={<NotFound />} />
+
 
 
       </Routes>

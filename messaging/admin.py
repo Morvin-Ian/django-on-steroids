@@ -8,8 +8,6 @@ class MessageRegistration(admin.ModelAdmin):
         'message_sender',
         'message_receiver',
         'text_message', 
-        'image_message', 
-        'video_message'
         )  # Fields to be displayed in the list view
     
     list_filter = (
@@ -21,6 +19,6 @@ class MessageRegistration(admin.ModelAdmin):
     date_hierarchy = 'created_at'  # Date-based drilldown navigation by year/month/date
 
 
-related_classes = [Relationship, RelationshipProfile]
+related_classes = [Relationship, RelationshipProfile, MessageMedia]
 
 admin.site.register(related_classes)

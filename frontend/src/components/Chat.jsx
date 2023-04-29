@@ -2,12 +2,13 @@ import React from 'react'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 
 
 const Chat = ({messages}) => {
 
   const redirect = useNavigate();
+  const params = useParams();
+  
   
   const logoutUser = () =>{
     if(localStorage.getItem('access_token'))
@@ -18,10 +19,12 @@ const Chat = ({messages}) => {
 
   }
 
-
   
   return (
     <div className='chat'>
+   
+        {params.uuid ? 
+        <>
         <div className="chat-info">
             <span>Oluoch</span>
             <div className="icons">
@@ -31,6 +34,14 @@ const Chat = ({messages}) => {
         </div>
         <Messages messages = {messages}/>
         <MessageInput/>
+        </>:
+    
+    <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">
+
+      <h1>Converse with Friends & Families</h1>
+     
+    </div>
+      }
     </div>
   )
 }

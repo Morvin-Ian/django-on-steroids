@@ -46,8 +46,7 @@ class Message(models.Model):
     message_sender      = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_sender")
     message_receiver    = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_receiver")
     text_message        = models.CharField(max_length=255)
-    image_message       = models.ImageField(upload_to='image_messages', null=True, blank=True)
-    video_message       = models.ImageField(upload_to='video_messages', null=True, blank=True)
+    read                = models.BooleanField(default=False) 
     created_at          = models.DateTimeField(auto_now_add=True)
     updated_at          = models.DateTimeField(auto_now=True)
 
@@ -63,4 +62,25 @@ class Message(models.Model):
         Unicode representation of Message Data.
         """
         return self.text_message
+
+class MessageMedia(models.Model):
+    message_sender      = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
+    message_receiver    = models.ForeignKey(User, on_delete=models.CASCADE, related_name="receiver")
+    image_message       = models.ImageField(upload_to='image_messages', null=True, blank=True)
+    video_message       = models.ImageField(upload_to='video_messages', null=True, blank=True)   
+    read                = models.BooleanField(default=False) 
+    created_at          = models.DateTimeField(auto_now_add=True)
+    updated_at          = models.DateTimeField(auto_now=True) 
+
+    class Meta:
+        """Meta Definition for Message model.
+        """
+        verbose_name = "Message Media"
+        verbose_name_plural = "Message Media"
+        ordering = ['created_at']
     
+    def __str__(self) -> str:
+        """
+        Unicode representation of Media Data.
+        """
+        return self.message_sender
