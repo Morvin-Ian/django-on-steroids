@@ -11,7 +11,6 @@ const MessageInput = () => {
   const textRef = useRef(null)
   const formRef = useRef(null)
   
-  const typing  = document.getElementById('span2')
 
   const socketConnection = (e)=>
   {
@@ -62,9 +61,9 @@ const MessageInput = () => {
          const data = JSON.parse(e.data);
          const action = data["typing"];
          const message = data["message"];
-          if (action != null)
-            typing.innerHTML = action
 
+     
+        console.log("message", e)
 
      }
 

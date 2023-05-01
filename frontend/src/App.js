@@ -7,22 +7,6 @@ import NotFound from './pages/NotFound';
 
 function App() {
 
-  // const responseFunc = async () =>{
-  //   const response = await fetch("http://127.0.0.1:8000/api/messages", {
-  //     method: "POST", // *GET, POST, PUT, DELETE, etc.
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       // 'Content-Type': 'application/x-www-form-urlencoded',
-  //     },
-  //     body: JSON.stringify(data), // body data type must match "Content-Type" header
-  //   });
-
-  //   const products = await response.json();
-
-  //   products.map((product)=>{
-  //     console.log(product.text_message)
-  //   })
-  // }
 
   return (
     <BrowserRouter>
