@@ -16,10 +16,7 @@ Django Channels is built on top of the popular asyncio library, which is part of
 
 Some of the key features of Django Channels include:
 
-    0. Asynchronous handling of requests: Channels uses the asyncio library to handle requests asynchronously, allowing for better performance and scalability.
-
-    1. WebSockets support: Channels supports WebSockets, which allow for real-time, bi-directional communication between the client and server.
-
-    2. Custom protocol support: Channels can support custom protocols in addition to WebSockets, allowing for more flexibility in how data is exchanged between the client and server.
-
-    3. Django integration: Channels integrates seamlessly with Django, allowing you to use Django's ORM, authentication system, and other features in your real-time applications.
+    0. Asynchronous handling of requests
+    1. WebSockets support
+    2. Custom protocol support
+    3. Django integration
