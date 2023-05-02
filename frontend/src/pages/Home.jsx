@@ -2,21 +2,18 @@ import React, { useEffect } from 'react'
 import "../assets/sass/home.scss"
 import SideBar from '../components/SideBar'
 import Chat from '../components/Chat'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 
 const Home = () => {
 
   const redirect = useNavigate();
-  const [action, setAction ] = useState('')
-
 
   const access_token = localStorage.getItem('access_token');
   const [messages, setMessages] = useState('');
   const messagesUrl = "http://127.0.0.1:8000/api/messages/list-create/";
 
-
-  const fetchMessages = async() => {
+    const fetchMessages = async() => {
     try {
      
       // Send a fetch request with the bearer token
@@ -45,16 +42,20 @@ const Home = () => {
       redirect('/sign-in');
     }
 
-    fetchMessages()
+    fetchMessages()   
+
 
   }, []);
+  
+
+
 
 
   return (
     <div className="home">
         <div className="cont">
-            <SideBar action={action} setAction={setAction}/>
-            <Chat messages={messages}/>
+            <SideBar/>
+            <Chat messages={messages} />
         </div>
 
     </div>

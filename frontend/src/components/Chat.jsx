@@ -8,7 +8,6 @@ const Chat = ({messages}) => {
 
   const redirect = useNavigate();
   const params = useParams();
-  const [action, setAction] = useState('')
   
   
   const logoutUser = () =>{
@@ -33,7 +32,7 @@ const Chat = ({messages}) => {
             </div>
         </div>
         <Messages messages = {messages}/>
-        <MessageInput />
+        <MessageInput  />
         </>:
     
     <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">

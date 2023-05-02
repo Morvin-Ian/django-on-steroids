@@ -1,68 +1,63 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 import { useParams } from 'react-router-dom';
 
 const MessageInput = () => {
+ 
   const {uuid} = useParams();
   const senderId = localStorage.getItem('uuid')
-  const socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/chat/' + uuid +'/');
-
   const textRef = useRef(null)
   const formRef = useRef(null)
+
   
+  const socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/chat/' + uuid +'/');
+
 
   const socketConnection = (e)=>
   {
+  
    if(uuid)
    {
-  
+
      socket.onopen = async function(e)
      {
-        formRef.current.addEventListener('submit', (e)=>{
-          const data = 
-          {
-            "typing":null,
-            "sender":senderId,
-            "receiver":uuid,
-            'message':textRef.current.value
-          }
 
-          textRef.current.value = "";
-          if (data.message != "")
-          {
-            socket.send(JSON.stringify(data))
-          }
+      formRef.current.addEventListener('submit', (e)=>{
+        const data = 
+        {
+          "typing":null,
+          "sender":senderId,
+          "receiver":uuid,
+          'message':textRef.current.value
+        }
+  
+        socket.send(JSON.stringify(data))
 
-          else
-          {
-            alert("Can't send an Empty Message")
+        textRef.current.value = "";
+       
+  
+      })
+  
+      textRef.current.addEventListener('keydown', ()=>{
+        const data = 
+        {
+          "typing":"typing ...",
+          "sender":senderId,
+          "receiver":uuid,
+          'message':null
+        }
 
-          }
+        socket.send(JSON.stringify(data))  
+        
+      })  
+        console.log("Open", e)
 
-        })
-
-        textRef.current.addEventListener('keydown', ()=>{
-          const data = 
-          {
-            "typing":"typing ...",
-            "sender":senderId,
-            "receiver":uuid,
-            'message':null
-          }
-
-          socket.send(JSON.stringify(data))
-          
-        })
      }
 
      socket.onmessage = async function(e)
      {            
-         const data = JSON.parse(e.data);
-         const action = data["typing"];
-         const message = data["message"];
-
-     
+         
         console.log("message", e)
 
      }
@@ -79,11 +74,13 @@ const MessageInput = () => {
  }
 }
 
- useEffect(() => {
- socketConnection();  
- 
- }, []);
- 
+  
+
+  useEffect(() => {
+    socketConnection()
+
+  }, []);
+  
 
   return (
     <form ref={formRef} className='input' onSubmit={(e)=>e.preventDefault()}>

@@ -1,13 +1,11 @@
 import json
-
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
-    async def connect(self):
+    async def websocket_connect(self, event):
         self.room_id = self.scope["url_route"]["kwargs"]["uuid"]
         self.group_name = f"Room_{self.room_id}"
-
         
         await self.accept()
        
@@ -16,17 +14,16 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             self.channel_name
             )
         
-        print("connect")
+        print("connect", event)
 
-    async def receive(self, text_data):
+    async def websocket_receive(self, event):
         group_name = self.group_name 
-        received_data = json.loads(text_data)
+        received_data = json.loads(event["text"])
         action = received_data.get("typing")
         message = received_data.get("message")
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
 
-        # status = received_data.get("status")
 
 
         response = {
@@ -34,8 +31,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
                 "typing":action,
                 "room_id":self.room_id,
                 "sender_id":sender_uuid,   
+                "receiver_id":receiver_uuid,   
                 "message":message,
-                # "status":status
                 
         }  
 
@@ -47,29 +44,29 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
             })
         
-        print("receive")
+        print("receive", event)
 
     async def chat_message(self, event):
         received_data = json.loads(event["text"])
         action = received_data.get("typing")
         message = received_data.get("message")
         sender_uuid = received_data.get("sender_id")
-        receiver_uuid = received_data.get("receiver")
-
+        receiver_uuid = received_data.get("receiver_id")
 
         response = {
             'message': message,
             'typing':action,
             "room_id":self.room_id,
             "sender_id":sender_uuid,
-            # "status":status
+            "receiver_id":receiver_uuid
             
-        } 
+            } 
         
-        # Send message to WebSocket
         await self.send(json.dumps(response))   
 
 
-    async def disconnect(self, close_code):
-        print("Disconect")
+    async def websocket_disconnect(self, close_code):
+            await self.channel_layer.group_discard(
+                self.group_name,
+                self.channel_name)
 
