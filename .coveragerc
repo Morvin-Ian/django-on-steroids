@@ -3,4 +3,3 @@ source=accounts/, messaging/
 omit=
     venv
     */migrations/*
-    */tests/*
