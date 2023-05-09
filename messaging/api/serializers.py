@@ -8,11 +8,11 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = (
-            'message_sender', 
-            'message_receiver', 
-            'text_message', 
-            'image_message', 
-            'video_message'
+            'sender', 
+            'recepient', 
+            'text', 
+            'file', 
+            'read'
         )
         
 

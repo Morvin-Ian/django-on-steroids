@@ -3,7 +3,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 import { useParams } from 'react-router-dom';
 
-const MessageInput = () => {
+const MessageInput = ({setAction}) => {
  
   const {uuid} = useParams();
   const senderId = localStorage.getItem('uuid')
@@ -56,9 +56,15 @@ const MessageInput = () => {
      }
 
      socket.onmessage = async function(e)
-     {            
-         
-        console.log("message", e)
+     {           
+        const response = JSON.parse(e.data);
+        if (response.typing != null){
+          setAction(response.typing)
+
+        } 
+
+          console.log(response)
+        // console.log("message", e)
 
      }
 

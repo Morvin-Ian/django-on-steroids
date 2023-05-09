@@ -1,5 +1,5 @@
 import mid from "../assets/images/hope.jpg"
-import {Link} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import React, { useEffect, useState } from 'react'
 
 
@@ -8,7 +8,7 @@ const Chats = ({action}) => {
   const relationshipsUrl = "http://127.0.0.1:8000/api/messages/chats/";
   const access_token = localStorage.getItem('access_token');
   const [chats, setChats] = useState('')
-
+  const {uuid} = useParams()
 
 
   const fetchRelationships = async() => {
@@ -36,13 +36,20 @@ const Chats = ({action}) => {
   
   return (
     <div className='chats'>
+      
         { chats.length > 0 ?
-          chats.map((chat=>
+          Array.from(chats).map((chat=>
               <Link style={{textDecoration:"none"}} key={chat.uuid} to={`/chat/${chat.uuid}`} className="user-chat">
                 <img src={mid} alt="" />
                 <div className="chat-info">
                     <span>{chat.chat}</span>
-                    <p id="span2">{action ?  `${action}` : 'Good Morning Bro'}</p>
+                    {action != '' && uuid == chat.uuid ?
+                    
+                    <p id="span2">{action}</p>:
+                    <p id="span2">Good Morning Bro</p>
+                    
+                    }
+                    
                 </div>
               </Link>
           ))

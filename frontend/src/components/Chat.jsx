@@ -4,16 +4,17 @@ import MessageInput from './MessageInput'
 import { useNavigate, useParams } from 'react-router-dom'
 
 
-const Chat = ({messages}) => {
+const Chat = ({messages, setAction}) => {
 
   const redirect = useNavigate();
-  const params = useParams();
+  const {uuid} = useParams();
   
   
   const logoutUser = () =>{
+
     if(localStorage.getItem('access_token'))
     {
-      localStorage.removeItem("access_token");
+      localStorage.clear();
       redirect('/sign-in');
     }
 
@@ -22,7 +23,7 @@ const Chat = ({messages}) => {
   return (
     <div className='chat'>
    
-        {params.uuid ? 
+        {uuid ? 
         <>
         <div className="chat-info">
             <span id='span'>Oluoch Ian</span>
@@ -32,12 +33,12 @@ const Chat = ({messages}) => {
             </div>
         </div>
         <Messages messages = {messages}/>
-        <MessageInput  />
+        <MessageInput setAction={setAction} />
         </>:
     
-    <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">
+        <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">
 
-      <h1>Converse with Friends & Families</h1>
+        <h1>Converse with Friends & Families</h1>
      
     </div>
       }

@@ -4,34 +4,34 @@ from .serializers import MessageSerializer
 from rest_framework.views import Response
 from rest_framework import status
 
-from messaging.models import Message, RelationshipProfile, Relationship
+from messaging.models import Message, Dialog
 
 from django.db.models import Q
 
 
-class RelationshipListView(GenericAPIView):
+class DialogView(GenericAPIView):
     """
-    Gets the friends of a user 
+    Gets the dialogues of a user 
     """
 
     permission_classes = [IsAuthenticated]
 
-    # Creates Relationship when a user is logged In/ Authenticated
+    # Gets Relationships of a logged In/ Authenticated user
     def get(self, request):
-        if RelationshipProfile.objects.filter(user=request.user).exists()==False:
-            user = RelationshipProfile.objects.create(user=request.user, name=f"{request.user.username} Profile")
-            Relationship.objects.create(profile=request.user.relationshipprofile)
-        else:
-            user = request.user.relationshipprofile
+        relationships = Dialog.objects.filter(Q(first_user=request.user) | Q(second_user=request.user))
 
-        relationships = user.relationships.all()
         response = []
 
         for relationship  in relationships:
+            if relationship.first_user == request.user:
+                chat = relationship.second_user
+            else:
+                chat = relationship.first_user
 
             data = {
-                "chat":relationship.profile.user.username,
-                "uuid":relationship.profile.user.uuid
+                "chat":chat.username,
+                "chat_uuid":chat.uuid,
+                "uuid":relationship.id,
             }
 
             response.append(data)
@@ -48,13 +48,22 @@ class MessageListView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        messages = Message.objects.filter(Q(message_sender = request.user) | Q(message_receiver = request.user))
+        messages = Message.objects.filter(Q(sender = request.user) | Q(recepient = request.user))
+        
         response = []
         for message in messages:
+            if message.sender == request.user:
+                recepient = message.recepient
+                sender = request.user
+            else:
+                recepient = message.sender
+                sender = message.recepient
+            print(message.get_last_message_for_dialog(sender, recepient))
             data = {
-                "message_sender_uuid":message.message_sender.uuid,
-                "message_receiver_uuid":message.message_receiver.uuid,
-                "text_message": message.text_message
+                "message_sender_uuid":message.sender.uuid,
+                "message_receiver_uuid":message.recepient.uuid,
+                "text_message": message.text,
+                "dialog":message.dialog.id
 
             }
             response.append(data)

@@ -2,15 +2,18 @@ import React, { useEffect } from 'react'
 import "../assets/sass/home.scss"
 import SideBar from '../components/SideBar'
 import Chat from '../components/Chat'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 const Home = () => {
-
+  
   const redirect = useNavigate();
 
   const access_token = localStorage.getItem('access_token');
   const [messages, setMessages] = useState('');
+  const [action, setAction] = useState('');
+
+
   const messagesUrl = "http://127.0.0.1:8000/api/messages/list-create/";
 
     const fetchMessages = async() => {
@@ -37,7 +40,7 @@ const Home = () => {
 
   useEffect(() => 
   {
-    if(localStorage.getItem('access_token') === null)
+    if(!localStorage.getItem('access_token'))
     {    
       redirect('/sign-in');
     }
@@ -54,8 +57,8 @@ const Home = () => {
   return (
     <div className="home">
         <div className="cont">
-            <SideBar/>
-            <Chat messages={messages} />
+            <SideBar action={action}  />
+            <Chat messages={messages} setAction={setAction}  />
         </div>
 
     </div>

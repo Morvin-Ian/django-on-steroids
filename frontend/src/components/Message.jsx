@@ -7,11 +7,11 @@ import { useParams } from 'react-router-dom';
 const Message = ({message}) => {
   const {uuid} = useParams();
   const user = localStorage.getItem('uuid');
-  const isUser = message.message_receiver_uuid === user
-  const isPatner = message.message_receiver_uuid === uuid || message.message_sender_uuid === uuid
+  const isReceiver = message.message_receiver_uuid === user
+  const isPatner = message.dialog === uuid
 
   return (
-    <div className={`${isUser ? 'message' : 'message owner'}`}>
+    <div className={`${isReceiver ? 'message' : 'message owner'}`}>
       {isPatner &&
        <>
         <div className="messageInfo">
