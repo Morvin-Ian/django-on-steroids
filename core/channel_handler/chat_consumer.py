@@ -1,12 +1,35 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+class ConnectionConsumer(AsyncJsonWebsocketConsumer):
+    async def websocket_connect(self, event):
+        self.group_name = "Brace_Room"
+        
+        await self.accept()
+       
+        await self.channel_layer.group_add(
+            self.group_name, 
+            self.channel_name
+            )
+        
+        print("connect", event)
 
+    async def websocket_receive(self, event):
+   
+        print("receive", event)
+
+
+    async def websocket_disconnect(self, close_code):
+            await self.channel_layer.group_discard(
+                self.group_name,
+                self.channel_name)
+                
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
         self.room_id = self.scope["url_route"]["kwargs"]["uuid"]
         self.group_name = f"Room_{self.room_id}"
         
+        print(self.group_name)
         await self.accept()
        
         await self.channel_layer.group_add(
@@ -23,8 +46,6 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         message = received_data.get("message")
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
-
-
 
         response = {
                 "type":"chat.message",
@@ -69,4 +90,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             await self.channel_layer.group_discard(
                 self.group_name,
                 self.channel_name)
+            
+
+
 

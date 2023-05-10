@@ -52,20 +52,15 @@ class MessageListView(GenericAPIView):
         
         response = []
         for message in messages:
-            if message.sender == request.user:
-                recepient = message.recepient
-                sender = request.user
-            else:
-                recepient = message.sender
-                sender = message.recepient
-            print(message.get_last_message_for_dialog(sender, recepient))
+           
             data = {
                 "message_sender_uuid":message.sender.uuid,
                 "message_receiver_uuid":message.recepient.uuid,
                 "text_message": message.text,
-                "dialog":message.dialog.id
+                "dialog":message.dialog.id,
 
             }
+            
             response.append(data)
         return Response(response, status=status.HTTP_200_OK)
     

@@ -4,7 +4,7 @@ import MessageInput from './MessageInput'
 import { useNavigate, useParams } from 'react-router-dom'
 
 
-const Chat = ({messages, setAction}) => {
+const Chat = ({messages, socket}) => {
 
   const redirect = useNavigate();
   const {uuid} = useParams();
@@ -33,7 +33,7 @@ const Chat = ({messages, setAction}) => {
             </div>
         </div>
         <Messages messages = {messages}/>
-        <MessageInput setAction={setAction} />
+        <MessageInput socket={socket} />
         </>:
     
         <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">

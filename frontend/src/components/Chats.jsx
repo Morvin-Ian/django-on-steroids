@@ -36,7 +36,6 @@ const Chats = ({action}) => {
   
   return (
     <div className='chats'>
-      
         { chats.length > 0 ?
           Array.from(chats).map((chat=>
               <Link style={{textDecoration:"none"}} key={chat.uuid} to={`/chat/${chat.uuid}`} className="user-chat">
@@ -46,7 +45,7 @@ const Chats = ({action}) => {
                     {action != '' && uuid == chat.uuid ?
                     
                     <p id="span2">{action}</p>:
-                    <p id="span2">Good Morning Bro</p>
+                    <p id="span2">last_message</p>
                     
                     }
                     

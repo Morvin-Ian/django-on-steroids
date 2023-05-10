@@ -1,5 +1,11 @@
 [run]
-source=accounts/, messaging/
+[run]
+branch = true
+
+[report]
+
 omit=
     venv
     */migrations/*
+    *tests*
+

@@ -27,17 +27,17 @@ class Dialog(models.Model):
         """
         return f"{self.first_user.username} - {self.second_user.username} dialog"
     
-    @property
+    @staticmethod
     def dialog_exists(first_user: User, second_user: User):
         return Dialog.objects.filter(Q(first_user=first_user, second_user=second_user) | Q(first_user=second_user, second_user=first_user)).first()
 
-    @property
+    @staticmethod
     def create_if_not_exists(first_user: User, second_user: User):
         res = Dialog.dialog_exists(first_user, second_user)
         if not res:
             Dialog.objects.create(first_user=first_user, second_user=second_user)
 
-    @property
+    @staticmethod
     def get_dialogs_for_user(user: User):
         return Dialog.objects.filter(Q(first_user=user) | Q(second_user=user)).values_list('first_user__pk', 'second_user__pk')
 
@@ -67,12 +67,12 @@ class Message(models.Model):
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at  = models.DateTimeField(auto_now=True)
 
-    @property
+    @staticmethod
     def get_unread_count_for_dialog_with_user(sender, recepient):
         return Message.objects.filter(sender_id=sender, recepient_id=recepient, read=False).count()
 
 
-    @property
+    @staticmethod
     def get_last_message_for_dialog(sender, recepient):
         return Message.objects.filter(
             Q(sender_id=sender, recepient_id=recepient) | Q(sender_id=recepient, recepient_id=sender)) \

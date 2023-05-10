@@ -1,91 +1,47 @@
 import React, { useEffect, useRef } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
-import { useParams } from 'react-router-dom';
 
-const MessageInput = ({setAction}) => {
+const MessageInput = ({socket}) => {
  
-  const {uuid} = useParams();
   const senderId = localStorage.getItem('uuid')
   const textRef = useRef(null)
   const formRef = useRef(null)
 
-  
-  const socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/chat/' + uuid +'/');
+  const EventCaptute = () => {
+    formRef.current.addEventListener('submit', (e)=>{
+      const data = 
+      {
+        "typing":null,
+        "sender":senderId,
+        "receiver":"uuid",
+        'message':textRef.current.value
+      }
 
+      textRef.current.value = "";
+      socket.send(JSON.stringify(data))     
 
-  const socketConnection = (e)=>
-  {
-  
-   if(uuid)
-   {
+    })
 
-     socket.onopen = async function(e)
-     {
+    textRef.current.addEventListener('keydown', ()=>{
+      const data = 
+      {
+        "typing":"typing ...",
+        "sender":senderId,
+        "receiver":"uuid",
+        'message':null
+      }
 
-      formRef.current.addEventListener('submit', (e)=>{
-        const data = 
-        {
-          "typing":null,
-          "sender":senderId,
-          "receiver":uuid,
-          'message':textRef.current.value
-        }
-  
-        socket.send(JSON.stringify(data))
+      socket.send(JSON.stringify(data))
 
-        textRef.current.value = "";
-       
-  
-      })
-  
-      textRef.current.addEventListener('keydown', ()=>{
-        const data = 
-        {
-          "typing":"typing ...",
-          "sender":senderId,
-          "receiver":uuid,
-          'message':null
-        }
-
-        socket.send(JSON.stringify(data))  
-        
-      })  
-        console.log("Open", e)
-
-     }
-
-     socket.onmessage = async function(e)
-     {           
-        const response = JSON.parse(e.data);
-        if (response.typing != null){
-          setAction(response.typing)
-
-        } 
-
-          console.log(response)
-        // console.log("message", e)
-
-     }
-
-     socket.onerror = async function(e)
-     {
-         console.log("Error" ,e)
-     }
-
-     socket.onclose = async function(e)
-     {
-         console.log("Close",e)
-     }
- }
-}
-
-  
+      
+    })  
+  }
+ 
 
   useEffect(() => {
-    socketConnection()
-
-  }, []);
+      EventCaptute()
+  }, [])
   
 
   return (
