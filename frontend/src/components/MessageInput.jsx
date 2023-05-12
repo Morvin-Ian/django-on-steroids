@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 
-const MessageInput = ({socket}) => {
+const MessageInput = ({socket, receiver}) => {
  
   const senderId = localStorage.getItem('uuid')
   const textRef = useRef(null)
@@ -14,7 +14,7 @@ const MessageInput = ({socket}) => {
       {
         "typing":null,
         "sender":senderId,
-        "receiver":"uuid",
+        "receiver":receiver,
         'message':textRef.current.value
       }
 
@@ -28,7 +28,7 @@ const MessageInput = ({socket}) => {
       {
         "typing":"typing ...",
         "sender":senderId,
-        "receiver":"uuid",
+        "receiver":receiver,
         'message':null
       }
 

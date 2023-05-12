@@ -3,12 +3,12 @@ import Navbar from './Navbar'
 import Search from './Search'
 import Chats from './Chats'
 
-const SideBar = ({action}) => {
+const SideBar = ({chats, setReceiver}) => {
   return (
     <div className='sidebar'>
          <Navbar/>
          <Search/>
-         <Chats action={action}/>
+         <Chats chats = {chats} setReceiver ={setReceiver}/>
     </div>
   )
 }

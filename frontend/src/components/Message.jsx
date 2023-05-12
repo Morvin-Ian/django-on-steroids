@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import image from "../assets/images/James.jpeg"
 import kid from "../assets/images/kid.jpg"
 import { useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ const Message = ({message}) => {
   const isPatner = message.dialog === uuid
 
   return (
-    <div className={`${isReceiver ? 'message' : 'message owner'}`}>
+    <div id='chat-body'  className={`${isReceiver ? 'message' : 'message owner'}`}>
       {isPatner &&
        <>
         <div className="messageInfo">

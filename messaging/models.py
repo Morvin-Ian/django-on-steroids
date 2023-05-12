@@ -82,7 +82,7 @@ class Message(models.Model):
         return str(self.dialog)
 
     class Meta:
-        ordering = ('-created_at',)
+        # ordering = ('-created_at',)
         verbose_name = _("Message")
         verbose_name_plural = _("Messages")
 

@@ -1,28 +1,9 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-class ConnectionConsumer(AsyncJsonWebsocketConsumer):
-    async def websocket_connect(self, event):
-        self.group_name = "Brace_Room"
-        
-        await self.accept()
-       
-        await self.channel_layer.group_add(
-            self.group_name, 
-            self.channel_name
-            )
-        
-        print("connect", event)
-
-    async def websocket_receive(self, event):
-   
-        print("receive", event)
-
-
-    async def websocket_disconnect(self, close_code):
-            await self.channel_layer.group_discard(
-                self.group_name,
-                self.channel_name)
-                
+from channels.db import database_sync_to_async
+from messaging.models import Dialog, Message  
+from accounts.models import User
+from django.db.models import Q              
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
@@ -47,6 +28,18 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
 
+        #Getting the User instance of message sender
+        sender = await self.get_user(sender_uuid)
+
+        #Getting the User instance of message Receiver
+        if receiver_uuid != "":
+            receiver = await self.get_user(receiver_uuid)
+           
+            # retrieve the Dialog Model
+            dialog = await self.get_user_name(sender)
+            print(dialog)
+        
+        
         response = {
                 "type":"chat.message",
                 "typing":action,
@@ -86,11 +79,20 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.send(json.dumps(response))   
 
 
-    async def websocket_disconnect(self, close_code):
+    async def websocket_disconnect(self):
             await self.channel_layer.group_discard(
                 self.group_name,
                 self.channel_name)
             
+    @database_sync_to_async
+    def get_user_name(self, uuid):
+        username = Dialog.objects.get(first_user = uuid)
+        return username
+    
+    @database_sync_to_async
+    def get_user(self, uuid):
+        user = User.objects.filter(uuid=uuid).first()
+        return user
 
 
 

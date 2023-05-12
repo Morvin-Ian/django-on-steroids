@@ -4,6 +4,7 @@ import SideBar from '../components/SideBar'
 import Chat from '../components/Chat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
+import { fetchMessages, fetchRelationships } from '../assets/apiFetch'
 
 const Home = () => {
   
@@ -12,92 +13,67 @@ const Home = () => {
   const {uuid} = useParams();
   const access_token = localStorage.getItem('access_token');
   const [messages, setMessages] = useState('');
-  const [action, setAction] = useState('');
-  let socket = null
+  const [receiver, setReceiver] = useState('');
+  const [chats, setChats] = useState('')
+  const socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/chat/' + uuid +'/');
 
-  const socketSetter = () => {
-    if(uuid){
-        socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/chat/' + uuid +'/');
-  
-    }
-  
-    else{
-        socket = new WebSocket('ws://127.0.0.1:8000' + '/ws/');
-  
-    }
-    
-    return socket
-
+  const apiCall = async (apiFunc, setState) =>{
+    const data = await apiFunc(access_token)
+    setState(data)
   }
-  
- 
-
 
   const socketConnection = (e)=>
   
   {
-
-     socket = socketSetter()
-  
-   if(access_token)
-   {
-
-     socket.onmessage = async function(e)
-     {           
-        
-        console.log(JSON.parse(e.data))
-
-     }
-    
- }
-}
-
-
-  const messagesUrl = "http://127.0.0.1:8000/api/messages/list-create/";
-
-    const fetchMessages = async() => {
-    try {
-     
-      // Send a fetch request with the bearer token
-      const response = await fetch(messagesUrl, {
-        headers: { 'Authorization': `Bearer ${access_token}` },
-      });
-  
-      // Get the response data
-      const data = await response.json();
-      setMessages(data)
-
-      } 
-    catch (error) 
+    if(uuid)
     {
-      console.error(error);
+      if(access_token)
+      {
+        socket.onmessage = async function(e)
+        {
+                 
+           const data = JSON.parse(e.data);
+           
+           if(data["message"] !== null){
+             apiCall(fetchMessages, setMessages)
+           }
+        }
+       
     }
+    }
+  
   }
 
         
-     
-
   useEffect(() => 
   {
     if(!localStorage.getItem('access_token'))
     {    
       redirect('/sign-in');
     }
-    socketConnection()
-    fetchMessages()   
 
+    socketConnection()
+    apiCall(fetchRelationships, setChats)
+    apiCall(fetchMessages, setMessages)
+  
 
   }, []);
   
 
 
-
-
   return (
     <div className="home">
         <div className="cont">
-            <SideBar action={action}  />
-            <Chat messages={messages} socket={socketSetter()} />
+            <SideBar 
+              setReceiver={setReceiver} 
+              setChats={setChats} 
+              chats={chats} 
+            />
+            <Chat 
+              messages={messages}
+              socket={socket} 
+              receiver={receiver}
+            />
         </div>
 
     </div>

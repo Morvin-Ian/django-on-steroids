@@ -32,6 +32,7 @@ class DialogView(GenericAPIView):
                 "chat":chat.username,
                 "chat_uuid":chat.uuid,
                 "uuid":relationship.id,
+                "user":request.user.uuid
             }
 
             response.append(data)
@@ -64,9 +65,3 @@ class MessageListView(GenericAPIView):
             response.append(data)
         return Response(response, status=status.HTTP_200_OK)
     
-    def post(self, request, format=None):
-        serializer = MessageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
