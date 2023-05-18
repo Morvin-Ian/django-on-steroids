@@ -33,11 +33,13 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
         #Getting the User instance of message Receiver
         if receiver_uuid != "":
-            receiver = await self.get_user(receiver_uuid)
+            recepient = await self.get_user(receiver_uuid)
            
             # retrieve the Dialog Model
-            dialog = await self.get_user_name(sender)
-            print(dialog)
+            if message != None:
+                print(message)
+                await self.save_message(message, sender, recepient)
+            
         
         
         response = {
@@ -79,20 +81,22 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.send(json.dumps(response))   
 
 
-    async def websocket_disconnect(self):
+    async def websocket_disconnect(self, close_code):
             await self.channel_layer.group_discard(
                 self.group_name,
                 self.channel_name)
             
-    @database_sync_to_async
-    def get_user_name(self, uuid):
-        username = Dialog.objects.get(first_user = uuid)
-        return username
-    
+    #Database Operations
     @database_sync_to_async
     def get_user(self, uuid):
         user = User.objects.filter(uuid=uuid).first()
         return user
+
+       
+    @database_sync_to_async
+    def save_message(self, message, sender, recepient):
+        if message != '':
+            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
 
 
 

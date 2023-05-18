@@ -17,9 +17,17 @@ const MessageInput = ({socket, receiver}) => {
         "receiver":receiver,
         'message':textRef.current.value
       }
+      if(textRef.current.value == ''){
+        alert("Can't Send an Empty Message")
+      }
+      else{
+        socket.send(JSON.stringify(data))
+        textRef.current.value = "";
 
-      textRef.current.value = "";
-      socket.send(JSON.stringify(data))     
+
+      }
+
+    
 
     })
 

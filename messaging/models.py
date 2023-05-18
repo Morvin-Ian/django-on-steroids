@@ -1,3 +1,17 @@
+    # @staticmethod
+    # def dialog_exists(first_user: User, second_user: User):
+    #     return Dialog.objects.filter(Q(first_user=first_user, second_user=second_user) | Q(first_user=second_user, second_user=first_user)).first()
+
+    # @staticmethod
+    # def create_if_not_exists(first_user: User, second_user: User):
+    #     res = Dialog.dialog_exists(first_user, second_user)
+    #     if not res:
+    #         Dialog.objects.create(first_user=first_user, second_user=second_user)
+
+    # @staticmethod
+    # def get_dialogs_for_user(user: User):
+    #     return Dialog.objects.filter(Q(first_user=user) | Q(second_user=user)).values_list('first_user__pk', 'second_user__pk')
+
 from django.db import models
 from accounts.models import User
 import uuid
@@ -11,13 +25,13 @@ class Dialog(models.Model):
     """
     Class includes various relationships of a user and another user
     """
-    id              = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    first_user      = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="first_user")
-    second_user     = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="second_user")
+    id          = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    sender      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="sender")
+    recepient  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="recepient")
     
     
     class Meta:
-        unique_together = (('first_user', 'second_user'), ('second_user', 'first_user'))
+        unique_together = (('sender', 'recepient'), ('recepient', 'sender'))
         verbose_name = _("Dialog")
         verbose_name_plural = _("Dialogs")
         
@@ -25,23 +39,8 @@ class Dialog(models.Model):
         """
         Unicode representation of Dialog MOdel.
         """
-        return f"{self.first_user.username} - {self.second_user.username} dialog"
+        return f"{self.sender.username} - {self.recepient.username} dialog"
     
-    @staticmethod
-    def dialog_exists(first_user: User, second_user: User):
-        return Dialog.objects.filter(Q(first_user=first_user, second_user=second_user) | Q(first_user=second_user, second_user=first_user)).first()
-
-    @staticmethod
-    def create_if_not_exists(first_user: User, second_user: User):
-        res = Dialog.dialog_exists(first_user, second_user)
-        if not res:
-            Dialog.objects.create(first_user=first_user, second_user=second_user)
-
-    @staticmethod
-    def get_dialogs_for_user(user: User):
-        return Dialog.objects.filter(Q(first_user=user) | Q(second_user=user)).values_list('first_user__pk', 'second_user__pk')
-
-
 
 class UploadedFile(models.Model):
     id              = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

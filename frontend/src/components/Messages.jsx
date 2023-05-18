@@ -6,7 +6,7 @@ const Messages = ({messages}) => {
     <div className='messages'>
 
         {Array.from(messages).map((message)=>
-          <Message key={Math.random()} message={message}/>
+          <Message key={message.id} message={message}/>
         )}
         
 

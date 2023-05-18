@@ -18,15 +18,16 @@ class DialogView(GenericAPIView):
 
     # Gets Relationships of a logged In/ Authenticated user
     def get(self, request):
-        relationships = Dialog.objects.filter(Q(first_user=request.user) | Q(second_user=request.user))
+        relationships = Dialog.objects.filter(Q(sender=request.user) | Q(recepient=request.user))
 
         response = []
 
         for relationship  in relationships:
-            if relationship.first_user == request.user:
-                chat = relationship.second_user
+            if relationship.sender == request.user:
+                chat = relationship.recepient
             else:
-                chat = relationship.first_user
+                chat = relationship.sender
+            
 
             data = {
                 "chat":chat.username,
@@ -49,12 +50,12 @@ class MessageListView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        messages = Message.objects.filter(Q(sender = request.user) | Q(recepient = request.user))
-        
+        messages = Message.objects.filter(Q(sender = request.user) | Q(recepient = request.user)).order_by('created_at')        
         response = []
         for message in messages:
            
             data = {
+                "id":message.id,
                 "message_sender_uuid":message.sender.uuid,
                 "message_receiver_uuid":message.recepient.uuid,
                 "text_message": message.text,

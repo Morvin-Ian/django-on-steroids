@@ -34,9 +34,7 @@ const Home = () => {
                  
            const data = JSON.parse(e.data);
            
-           if(data["message"] !== null){
-             apiCall(fetchMessages, setMessages)
-           }
+           apiCall(fetchMessages, setMessages)
         }
        
     }
