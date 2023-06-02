@@ -1,11 +1,11 @@
 [run]
-[run]
 branch = true
 
 [report]
 
 omit=
-    venv
+    */venv/*
+    */usr/*
     */migrations/*
-    *tests*
+    */tests/*
 

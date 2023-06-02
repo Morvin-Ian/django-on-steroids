@@ -8,6 +8,9 @@ const MessageInput = ({socket, receiver}) => {
   const textRef = useRef(null)
   const formRef = useRef(null)
 
+  console.log(receiver)
+
+
   const EventCaptute = () => {
     formRef.current.addEventListener('submit', (e)=>{
       const data = 
@@ -32,6 +35,8 @@ const MessageInput = ({socket, receiver}) => {
     })
 
     textRef.current.addEventListener('keydown', ()=>{
+      console.log(receiver)
+
       const data = 
       {
         "typing":"typing ...",

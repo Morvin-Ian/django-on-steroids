@@ -18,8 +18,6 @@ function App() {
         <Route path='/chat/:uuid' element={<Home/>}/>
         <Route path="*" element={<NotFound />} />
 
-
-
       </Routes>
     </BrowserRouter>
   );

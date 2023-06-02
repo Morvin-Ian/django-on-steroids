@@ -50,7 +50,6 @@ const Home = () => {
       redirect('/sign-in');
     }
 
-    socketConnection()
     apiCall(fetchRelationships, setChats)
     apiCall(fetchMessages, setMessages)
   

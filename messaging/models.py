@@ -1,17 +1,3 @@
-    # @staticmethod
-    # def dialog_exists(first_user: User, second_user: User):
-    #     return Dialog.objects.filter(Q(first_user=first_user, second_user=second_user) | Q(first_user=second_user, second_user=first_user)).first()
-
-    # @staticmethod
-    # def create_if_not_exists(first_user: User, second_user: User):
-    #     res = Dialog.dialog_exists(first_user, second_user)
-    #     if not res:
-    #         Dialog.objects.create(first_user=first_user, second_user=second_user)
-
-    # @staticmethod
-    # def get_dialogs_for_user(user: User):
-    #     return Dialog.objects.filter(Q(first_user=user) | Q(second_user=user)).values_list('first_user__pk', 'second_user__pk')
-
 from django.db import models
 from accounts.models import User
 import uuid
@@ -27,8 +13,22 @@ class Dialog(models.Model):
     """
     id          = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sender      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="sender")
-    recepient  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="recepient")
-    
+    recepient  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="recepient")    
+
+    @staticmethod
+    def dialog_exists(first_user: User, second_user: User):
+        return Dialog.objects.filter(Q(first_user=first_user, second_user=second_user) | Q(first_user=second_user, second_user=first_user)).first()
+
+    @staticmethod
+    def create_if_not_exists(first_user: User, second_user: User):
+        res = Dialog.dialog_exists(first_user, second_user)
+        if not res:
+            Dialog.objects.create(first_user=first_user, second_user=second_user)
+
+    @staticmethod
+    def get_dialogs_for_user(user: User):
+        return Dialog.objects.filter(Q(first_user=user) | Q(second_user=user)).values_list('first_user__pk', 'second_user__pk')
+
     
     class Meta:
         unique_together = (('sender', 'recepient'), ('recepient', 'sender'))
@@ -70,6 +70,7 @@ class Message(models.Model):
     def get_unread_count_for_dialog_with_user(sender, recepient):
         return Message.objects.filter(sender_id=sender, recepient_id=recepient, read=False).count()
 
+    
 
     @staticmethod
     def get_last_message_for_dialog(sender, recepient):

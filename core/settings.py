@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'daphne',
+    
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -88,7 +89,7 @@ TEMPLATES = [
 
 
 # Web Server Gateway Interface 
-WSGI_APPLICATION = 'core.wsgi.application'
+# WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Asynchronous Server Gateway Interface 
