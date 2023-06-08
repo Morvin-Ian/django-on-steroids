@@ -19,7 +19,7 @@ const Chats = ({chats, setReceiver}) => {
                 <img src={mid} alt="" />
                 <div className="chat-info">
                     <span>{chat.chat}</span>
-                    <input ref={ref} type="text" name="receiver" value={chat.chat_uuid} />
+                    <input ref={ref} type="hidden" name="receiver" value={chat.chat_uuid} />
                     {/* {action !== '' ?
                     
                     <p id="span2">{action}</p>:
