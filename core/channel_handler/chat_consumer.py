@@ -16,7 +16,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.channel_layer.group_add(
             self.group_name, 
             self.channel_name
-            )
+        )
         
         # print("connect", event)
 
@@ -28,30 +28,24 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
 
-
         #Getting the User instance of message sender
         sender = await self.get_user(sender_uuid)
 
-        print(receiver_uuid)
         #Getting the User instance of message Receiver
-        if receiver_uuid != "":
+        if receiver_uuid != None:
             recepient = await self.get_user(receiver_uuid)
-           
+
             # retrieve the Dialog Model
-            if message != None:
-                print(message)
+            if message:                
                 await self.save_message(message, sender, recepient)
-            
-        
-        
+         
         response = {
-                "type":"chat.message",
-                "typing":action,
-                "room_id":self.room_id,
-                "sender_id":sender_uuid,   
-                "receiver_id":receiver_uuid,   
-                "message":message,
-                
+            "type":"chat.message",
+            "typing":action,
+            "room_id":self.room_id,
+            "sender_id":sender_uuid,   
+            "receiver_id":receiver_uuid,   
+            "message":message         
         }  
 
         await self.channel_layer.group_send(
@@ -91,16 +85,13 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     #Database Operations
     @database_sync_to_async
     def get_user(self, uuid):
-        user = User.objects.filter(uuid=uuid).first()
+        user = User.objects.get(uuid=uuid)
         return user
 
        
     @database_sync_to_async
     def save_message(self, message, sender, recepient):
-        if message != '':
-            print(message)
             message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
-            print(message)
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -36,11 +36,12 @@ const Chat = ({messages, socket, receiver}) => {
         <MessageInput socket={socket} receiver={receiver}/>
         </>:
     
-        <div style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} className="chat-info">
-
-        <h1>Converse with Friends & Families</h1>
-     
-    </div>
+        <div 
+            style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} 
+            className="chat-info">
+          <h1>Converse with Friends & Families</h1>
+          <button onClick={logoutUser}>+</button>
+        </div>
       }
     </div>
   )

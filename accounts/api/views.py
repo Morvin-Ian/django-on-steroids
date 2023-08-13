@@ -59,3 +59,5 @@ class AuthenticationView(GenericAPIView):
         user = request.user
         serializer = self.serializer_class(user)
         return Response({"user":serializer.data})
+
+# class GetUsers

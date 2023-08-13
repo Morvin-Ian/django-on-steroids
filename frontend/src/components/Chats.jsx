@@ -5,11 +5,11 @@ import {Link} from "react-router-dom"
 
 const Chats = ({chats, setReceiver}) => {
   const ref = useRef(null)
-  console.log()
 
   const setReceiverId = () =>{
     setReceiver(ref.current.value)
   }
+
 
   return (
     <div className='chats'>

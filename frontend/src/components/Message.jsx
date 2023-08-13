@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import image from "../assets/images/James.jpeg"
 import kid from "../assets/images/kid.jpg"
 import { useParams } from 'react-router-dom';

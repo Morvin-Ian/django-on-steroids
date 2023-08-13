@@ -1,14 +1,22 @@
 import React, { useEffect, useRef } from 'react'
+import { redirect, useNavigate, useParams } from 'react-router-dom'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
+
 
 const MessageInput = ({socket, receiver}) => {
  
   const senderId = localStorage.getItem('uuid')
   const textRef = useRef(null)
   const formRef = useRef(null)
+  const {uuid}  = useParams()
+  const redirect = useNavigate()
 
-  console.log(receiver)
+  const relationships = JSON.parse(localStorage.getItem("relationships"))
+  
+  relationships.forEach(element => {
+    element.uuid === uuid ? receiver = element.chat_uuid: redirect('/')
+  });
 
 
   const EventCaptute = () => {
@@ -20,22 +28,16 @@ const MessageInput = ({socket, receiver}) => {
         "receiver":receiver,
         'message':textRef.current.value
       }
-      if(textRef.current.value == ''){
-        alert("Can't Send an Empty Message")
+      if(textRef.current.value === ''){
+         alert("Can't Send an Empty Message")
       }
       else{
         socket.send(JSON.stringify(data))
         textRef.current.value = "";
-
-
       }
-
-    
-
     })
 
     textRef.current.addEventListener('keydown', ()=>{
-      console.log(receiver)
 
       const data = 
       {
@@ -47,6 +49,10 @@ const MessageInput = ({socket, receiver}) => {
 
       socket.send(JSON.stringify(data))
 
+       socket.onmessage = async(e)=>{
+        const response = JSON.parse(e.data)
+        console.log(response)
+      }
       
     })  
   }
@@ -62,14 +68,27 @@ const MessageInput = ({socket, receiver}) => {
       <input type="text" placeholder='Type Something ...' id='text' ref={textRef} />
        
        <div className="send">
-           <input style={{display:"none"}}  type="file" id='media' accept='image/*, video/*' />
-           <label htmlFor="media"><ImageIcon/></label>
+          <input 
+                style={{display:"none"}}  
+                type="file" 
+                id='media' 
+                accept='image/*, video/*'
+          />
+          <label htmlFor="media"><ImageIcon/></label>
            
-           <input style={{display:"none"}} type="file" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-           text/plain, application/pdf" id='doc'/>
-           <label htmlFor="doc"><AttachFileIcon/></label>
+          <input 
+                style={{display:"none"}} 
+                type="file" 
+                accept="application/msword,
+                application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                text/plain, application/pdf"
+                id='doc'
+          />
+          <label htmlFor="doc"><AttachFileIcon/></label>
 
-           <button>Send</button>
+          <button>
+            Send
+          </button>
 
        </div>
        
