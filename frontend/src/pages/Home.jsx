@@ -5,6 +5,7 @@ import Chat from '../components/Chat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { fetchMessages, fetchRelationships } from '../api/apiFetch'
+import FlashMessage from '../components/FlashMessage'
 
 const Home = () => {
   
@@ -14,6 +15,8 @@ const Home = () => {
   const [messages, setMessages] = useState('');
   const [receiver, setReceiver] = useState('');
   const [chats, setChats] = useState('')
+  const [onlineStatus, setOnlineStatus] = useState(false)
+
 
   const access_token = localStorage.getItem('access_token');
   const senderId = localStorage.getItem('uuid');
@@ -26,6 +29,8 @@ const Home = () => {
     const data = await apiFunc(access_token)
     setState(data)
   }
+
+  
   
         
   useEffect(() => 
@@ -53,6 +58,10 @@ const Home = () => {
       socket.onmessage = async(e)=>{
         const response = JSON.parse(e.data)
         console.log(response)
+        
+        if(response.status === "online"){
+           setOnlineStatus(true)
+          };
       }
     }, 1000)
   
@@ -64,7 +73,18 @@ const Home = () => {
   return (
     <div className="home">
         <div className="cont">
-            <SideBar 
+          { onlineStatus ?
+            <FlashMessage 
+                message="Successfully Connected" 
+                alertType = "success"
+            />:
+
+            <FlashMessage 
+                message="Websocket Connection Error" 
+                alertType = "error"
+            />
+           }
+           <SideBar 
               setReceiver={setReceiver} 
               setChats={setChats} 
               chats={chats} 

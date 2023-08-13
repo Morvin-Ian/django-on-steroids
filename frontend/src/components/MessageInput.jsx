@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { redirect, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 
@@ -28,7 +28,7 @@ const MessageInput = ({socket, receiver}) => {
         "receiver":receiver,
         'message':textRef.current.value
       }
-      if(textRef.current.value === ''){
+      if(textRef.current.value == ''){
          alert("Can't Send an Empty Message")
       }
       else{
