@@ -4,7 +4,7 @@ import SideBar from '../components/SideBar'
 import Chat from '../components/Chat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { fetchMessages, fetchRelationships } from '../api/apiFetch'
+import { fetchMessages, fetchRelationships } from '../api/apiFetch.ts'
 import FlashMessage from '../components/FlashMessage'
 
 const Home = () => {
@@ -57,13 +57,12 @@ const Home = () => {
 
       socket.onmessage = async(e)=>{
         const response = JSON.parse(e.data)
-        console.log(response)
         
         if(response.status === "online"){
            setOnlineStatus(true)
           };
       }
-    }, 1000)
+    }, 500)
   
 
   }, []);
@@ -84,11 +83,13 @@ const Home = () => {
                 alertType = "error"
             />
            }
+
            <SideBar 
               setReceiver={setReceiver} 
               setChats={setChats} 
               chats={chats} 
             />
+
             <Chat 
               messages={messages}
               socket={socket} 
