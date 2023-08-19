@@ -36,9 +36,11 @@ const Login = () => {
     else
     {
         localStorage.clear()
-         // Initialize the access & refresh token in localstorage.
         localStorage.setItem('access_token', data.token);
         localStorage.setItem('uuid', data.uuid);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('username', data.username);
+
         redirect('/');
       
     }

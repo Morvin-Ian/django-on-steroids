@@ -4,9 +4,10 @@ import SideBar from '../components/home/SideBar'
 import Chat from '../components/home/Chat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
-import { fetchMessages, fetchRelationships } from '../api/apiFetch.ts'
+import { fetchMessages } from '../api/messages'
+import {  fetchRelationships } from '../api/relationships'
+
 import FlashMessage from '../components/common/FlashMessage'
-import ModalPopup from '../components/common/ModalPopup'
 
 const Home = () => {
   

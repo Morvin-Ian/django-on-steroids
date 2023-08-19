@@ -14,7 +14,7 @@
 
 
         .sidebar{
-            flex: 1;
+            flex: 1.5;
             background-color: #001c40;
             overflow-y: scroll;
 
@@ -68,12 +68,12 @@
 
                 .user-chat{
                     cursor: pointer;
-                    background-color: #010e1f;
+                    background-color: #092546;
                     padding: 10px;
                     display: flex;
 
                     &:hover{
-                        background-color: #001c40;
+                        background-color: #010e1f;
                     }
                 
                     img{

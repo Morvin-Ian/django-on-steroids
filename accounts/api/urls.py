@@ -11,8 +11,6 @@ urlpatterns = [
     path('login/', LoginView.as_view()),
     path('user/', AuthenticationView.as_view()),    
 
-
-
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

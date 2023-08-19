@@ -32,6 +32,7 @@ class DialogView(GenericAPIView):
             data = {
                 "chat":chat.username,
                 "chat_uuid":chat.uuid,
+                # "last_login":chat.last_login,
                 "uuid":relationship.id,
                 "user":request.user.uuid
             }

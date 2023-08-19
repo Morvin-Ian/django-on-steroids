@@ -1,7 +1,8 @@
 import { useState } from "react";
-import avatar from "../assets/images/octo.jpg"
+import avatar from "../../assets/images/octo.jpg"
 import Modal from '@mui/material/Modal';
-import '../assets/sass/modal.scss'
+import '../../assets/sass/modal.scss'
+import { Link } from "react-router-dom";
 
 
 const modalStyle = {
@@ -19,9 +20,8 @@ const modalStyle = {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(localStorage.getItem('username'));
+  const [email, setEmail] = useState(localStorage.getItem('email'));
 
 	const handleClose = () => {
 		setOpen(false);
@@ -36,14 +36,23 @@ const Navbar = () => {
   }
 
   return (
-    <div className='navbar'>
-        <span className="logo">Brace Converse</span>
+    <div className='navbar' style={{padding:"10px 0px"}}>
+      <Link 
+        style={{
+          textDecoration:"none", 
+          fontSize:"large", 
+          color:"white"}}
+          to="/">
+          <span className="logo" style={{marginLeft:"3px"}}>Brace Converse</span>
+      </Link>
+
         <div className="user">
-            <img 		
-            		onClick={handleOpen}
-                style={{ cursor:"pointer"}}
-                src={avatar} alt=""/>
+          <img 		
+              onClick={handleOpen}
+              style={{ cursor:"pointer"}}
+              src={avatar} alt=""/>
         </div>
+        
         <Modal
           onClose={handleClose}
           open={open}
@@ -81,13 +90,7 @@ const Navbar = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+             
               <button className="sign-up-button">Edit</button>
             </form>
           </div>

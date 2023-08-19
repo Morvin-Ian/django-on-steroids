@@ -14,8 +14,10 @@ const MessageInput = ({socket, receiver}) => {
 
   const relationships = JSON.parse(localStorage.getItem("relationships"))
   
-  relationships.forEach(element => {
-    element.uuid === uuid ? receiver = element.chat_uuid: redirect('/')
+  relationships?.forEach(element => {
+    if (element.uuid === uuid){
+      receiver = element.chat_uuid
+    } 
   });
 
 
