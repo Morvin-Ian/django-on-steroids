@@ -1,8 +1,22 @@
-import React from 'react'
-import Messages from './Messages'
-import MessageInput from './MessageInput'
-import { useNavigate, useParams } from 'react-router-dom'
+import Messages from '../messages/Messages'
+import MessageInput from '../messages/MessageInput'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
+const addBtnStyle ={
+  backgroundColor:"aqua",
+  position: "absolute",
+  left: "10%",
+  top: "90%",
+  transform: "translate(-50%, -50%)",
+}
+
+const homeDivStyle = {
+  height:"100%",
+  justifyContent:"center", 
+  borderLeft:"1px solid black"
+}
 
 const Chat = ({messages, socket, receiver}) => {
 
@@ -37,10 +51,14 @@ const Chat = ({messages, socket, receiver}) => {
         </>:
     
         <div 
-            style={{height:"100%", justifyContent:"center", borderLeft:"1px solid black"}} 
+            style={homeDivStyle} 
             className="chat-info">
           <h1>Converse with Friends & Families</h1>
-          <button onClick={logoutUser}>+</button>
+          <Link to="/new-conversations">
+            <Fab style={addBtnStyle} aria-label="add">
+              <AddIcon />
+            </Fab>
+          </Link>
         </div>
       }
     </div>

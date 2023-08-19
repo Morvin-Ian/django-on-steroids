@@ -60,7 +60,10 @@ const Register = () => {
         <div className='container'>
         <div className='wrapper'>
         <span className='title'>Sign Up your Account</span>
-        <p style={errorMsg}>{error}</p>
+        <p style={errorMsg}>
+          {error}
+        </p>
+
         <form onSubmit={(e)=>handleSubmit(e)}>
             <input type="text"
                    placeholder='Perfect Username'

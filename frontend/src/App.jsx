@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
-import { useEffect, useState } from 'react';
+import Users from './pages/Users';
 
 function App() {
 
@@ -16,6 +16,8 @@ function App() {
         <Route path='/sign-in' element={<Login/>}/>
         <Route path='/sign-up' element={<Register/>}/>
         <Route path='/chat/:uuid' element={<Home/>}/>
+        <Route path='/new-conversations' element={<Users/>}/>
+
         <Route path="*" element={<NotFound />} />
 
       </Routes>

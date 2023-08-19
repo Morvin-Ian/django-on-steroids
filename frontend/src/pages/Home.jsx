@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import "../assets/sass/home.scss"
-import SideBar from '../components/SideBar'
-import Chat from '../components/Chat'
+import SideBar from '../components/home/SideBar'
+import Chat from '../components/home/Chat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { fetchMessages, fetchRelationships } from '../api/apiFetch.ts'
-import FlashMessage from '../components/FlashMessage'
+import FlashMessage from '../components/common/FlashMessage'
+import ModalPopup from '../components/common/ModalPopup'
 
 const Home = () => {
   
@@ -29,8 +30,6 @@ const Home = () => {
     const data = await apiFunc(access_token)
     setState(data)
   }
-
-  
   
         
   useEffect(() => 
