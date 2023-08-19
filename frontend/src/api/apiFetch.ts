@@ -19,8 +19,8 @@ type messageArrayObject = messageResponse[]
 
 
 interface MethodsType{
-    fetchRelationships(access_token:string):relationshipArrayObject,
-    fetchMessages(access_token:string):messageArrayObject
+    fetchRelationships(access_token:string):Promise<relationshipArrayObject>,
+    fetchMessages(access_token:string):Promise<messageArrayObject>
 }
 
 const baseUrl = "http://127.0.0.1:8000/"
@@ -30,10 +30,10 @@ const messagesUrl = `${baseUrl}api/messages/list/`;
 
 
 
-export const fetchRelationships = async(access_token):Promise<MethodsType['fetchRelationships'] > => {
+export const fetchRelationships: MethodsType['fetchRelationships'] = async (access_token) => {
   try {
         // Send a fetch request with the bearer token
-        const response = await fetch(relationshipsUrl, {
+        const response =  await fetch(relationshipsUrl, {
             headers: { 'Authorization': `Bearer ${access_token}` },
         });
 
@@ -43,14 +43,13 @@ export const fetchRelationships = async(access_token):Promise<MethodsType['fetch
 
     }catch (error) 
     {
-        console.error(error);
         return error
     }
 }
 
 
 
-export const fetchMessages = async(access_token):Promise<MethodsType['fetchMessages']> => {
+export const fetchMessages: MethodsType['fetchMessages'] = async(access_token) => {
   try 
     {
         const response = await fetch(messagesUrl, {
