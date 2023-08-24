@@ -14,7 +14,7 @@ const FlashMessage = (props) => {
 
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}     anchorOrigin={{ vertical: 'top', horizontal: 'center' }} >
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}     anchorOrigin={{ vertical: 'top', horizontal: 'center' }} >
         <Alert onClose={handleClose} severity={props.alertType} sx={{ width: '100%' }}>
           {props.message}
         </Alert>

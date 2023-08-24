@@ -1,26 +1,19 @@
 import { useRef } from "react"
-import mid from "../../assets/images/hope.jpg"
+import defaultProfile from "../../assets/images/default.webp"
 import {Link} from "react-router-dom"
 
 
-const Chats = ({chats, setReceiver}) => {
-  const ref = useRef(null)
-
-  const setReceiverId = () =>{
-    setReceiver(ref.current.value)
-  }
-
+const Chats = ({chats}) => {
 
   return (
     <div className='chat'>
         { chats.length  ?
           chats.map((chat=>
               <Link style={{textDecoration:"none"}} key={chat.uuid} to={`/chat/${chat.uuid}`} className="user-chat">
-                <img src={mid} alt="" />
+                <img src={chat.profile ? `http://127.0.0.1:8000${chat.profile}`: defaultProfile} alt="" />
                 <div className="chat_info">
                     <span>{chat.chat}</span> <br />
                     <small>last seen: 1300 hrs</small>
-                    <input ref={ref} type="hidden" name="receiver" value={chat.chat_uuid} />
                     {/* {action !== '' ?
                     
                     <p id="span2">{action}</p>:

@@ -5,11 +5,9 @@ from .models import User
 class UserRegistration(admin.ModelAdmin):
     list_display = (
         'email',
-        'username',
-        'is_staff',
+        'profile',
         'is_active',
         'uuid',
-        'email_verified'
     )
 
     list_filter =['email']

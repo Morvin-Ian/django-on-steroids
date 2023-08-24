@@ -1,6 +1,17 @@
 import React from 'react'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {authenticate} from '../api/auth'
+
+
+const errorMsg = {
+    textAlign:"center",
+    fontSize:"small",
+    color:"red",
+    MarginTop:"10px"
+
+}
+
 
 const Login = () => {
 
@@ -11,39 +22,17 @@ const Login = () => {
 
   const redirect = useNavigate()
 
-  const url = "http://127.0.0.1:8000/api/auth/login/";
 
   const loginUser = async (credentials) =>
   {
-    const response = await fetch(url, {
-        method:"POST",
-        headers:{
-          'Content-Type': 'application/json',
-        },
-
-       body: JSON.stringify(credentials), // body data type must match "Content-Type" header
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) 
-    {
+    const data = await authenticate(credentials)   
+    if (data) {
       setError(data)
       setPassword('');
-
+    }else{
+      redirect('/')
     }
 
-    else
-    {
-        localStorage.clear()
-        localStorage.setItem('access_token', data.token);
-        localStorage.setItem('uuid', data.uuid);
-        localStorage.setItem('email', data.email);
-        localStorage.setItem('username', data.username);
-
-        redirect('/');
-      
-    }
   }
 
 
@@ -54,16 +43,8 @@ const Login = () => {
     loginUser(credentials);
 
     setError('');
+
   };
-
-  const errorMsg = 
-  {
-      textAlign:"center",
-      fontSize:"small",
-      color:"red",
-      MarginTop:"10px"
-
-  }
 
   return (
         <div className='container'>

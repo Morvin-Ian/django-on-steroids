@@ -28,11 +28,15 @@ class DialogView(GenericAPIView):
             else:
                 chat = relationship.sender
             
+            if chat.profile:
+                profile = chat.profile.url
+            else:
+                profile = None
 
             data = {
                 "chat":chat.username,
                 "chat_uuid":chat.uuid,
-                # "last_login":chat.last_login,
+                "profile":profile,
                 "uuid":relationship.id,
                 "user":request.user.uuid
             }

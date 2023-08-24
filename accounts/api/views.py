@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
 
 from .serializer import  RegisterSerializer, LoginSerializer
+from accounts.models import User
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -61,3 +62,27 @@ class AuthenticationView(GenericAPIView):
         return Response({"user":serializer.data})
 
 # class GetUsers
+class FetchUsers(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        response = []
+        users = User.objects.all()
+
+        for user in users:
+            if user.profile:
+                profile = user.profile.url
+            else:
+                profile = None
+
+            data = {
+                "uuid":user.uuid,
+                "username":user.username,
+                "email":user.email,
+                "profile":profile
+            }
+
+            response.append(data)
+        return Response(response, status=status.HTTP_200_OK)
+
+

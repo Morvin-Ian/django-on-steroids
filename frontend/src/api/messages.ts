@@ -1,3 +1,5 @@
+import { baseUrl } from "./auth";
+
 type messageResponse = {
     id:number;
     message_sender_uuid:string;
@@ -10,10 +12,9 @@ type messageArrayObject = messageResponse[]
 
 
 interface MethodsType{
-    fetchMessages(access_token:string):Promise<messageArrayObject>
+    fetchMessages(access_token:string):Promise<messageArrayObject|string>
 }
 
-const baseUrl = "http://127.0.0.1:8000/"
 const messagesUrl = `${baseUrl}api/messages/list/`;
 
 

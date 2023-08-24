@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import '../assets/sass/logins.scss';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { registration } from '../api/auth';
+
+
+const errorMsg = {
+    textAlign:"center",
+    fontSize:"small",
+    color:"red",
+    MarginTop:"30px"
+
+}
+
 
 const Register = () => {
 
@@ -12,39 +23,15 @@ const Register = () => {
 
   const redirect = useNavigate();
 
-  const url = "http://127.0.0.1:8000/api/auth/register/";
 
   const registerUser = async (credentials) =>{
-    const response = await fetch(url, {
-          method:"POST",
-          headers:{
-            'Content-Type': 'application/json',
-
-          },
-          body: JSON.stringify(credentials), // body data type must match "Content-Type" header
-
-       });
-
-
-      if (!response.ok) 
-      {
-        setError("Username or Email Already Exists")
-        
-      }
-
-      else{
+    const data = await registration(credentials)
+      if (data) {
+        setError(data)
+      }else{
         redirect('/sign-in')
       }
   }
-  const errorMsg = 
-  {
-      textAlign:"center",
-      fontSize:"small",
-      color:"red",
-      MarginTop:"10px"
-
-  }
-
 
   const handleSubmit = (e) =>{
     e.preventDefault();

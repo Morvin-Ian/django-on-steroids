@@ -2,20 +2,16 @@ import { Link } from "react-router-dom"
 import image from "../assets/images/James.jpeg"
 import '../assets/sass/users.scss'
 import AddIcon from '@mui/icons-material/Add';
+import {fetchUsers} from '../api/users'
 
 
-const chats= [
-    {
-        uuid:"sjsjsjjs",
-        chat:"Morvin",
+const access_token = localStorage.getItem('access_token')
+const chats = async () =>{
+    const users = await fetchUsers(access_token)
+    return users
+}
 
-    },
-    {
-        uuid:"sjsjsjjs",
-        chat:"Ian",
 
-    }
-]
 
 const Users = () => {
   return (
@@ -23,8 +19,8 @@ const Users = () => {
   <div className="users">
       <div className='chats'>
         <h2 className="chats-heading">Add New Conversations</h2>
-        {chats.length &&
-          Array.from(chats).map((chat) => (
+        {chats().length &&
+          chats().map((chat) => (
             <Link
               style={{ textDecoration: 'none' }}
               key={chat.uuid}

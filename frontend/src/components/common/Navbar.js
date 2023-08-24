@@ -1,5 +1,5 @@
 import { useState } from "react";
-import avatar from "../../assets/images/octo.jpg"
+import avatar from "../../assets/images/default.webp"
 import Modal from '@mui/material/Modal';
 import '../../assets/sass/modal.scss'
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('username'));
   const [email, setEmail] = useState(localStorage.getItem('email'));
+  let profile = localStorage.getItem('profile')
 
 	const handleClose = () => {
 		setOpen(false);
@@ -43,14 +44,14 @@ const Navbar = () => {
           fontSize:"large", 
           color:"white"}}
           to="/">
-          <span className="logo" style={{marginLeft:"3px"}}>Brace Converse</span>
+          <span className="logo" style={{marginLeft:"3px"}}>Brace</span>
       </Link>
 
         <div className="user">
           <img 		
               onClick={handleOpen}
               style={{ cursor:"pointer"}}
-              src={avatar} alt=""/>
+              src={profile ?  `http://127.0.0.1:8000${profile}`: avatar } alt=""/>
         </div>
         
         <Modal
@@ -69,7 +70,7 @@ const Navbar = () => {
             <label htmlFor="media">
             <div className="user">
                     <img 		
-                      src={avatar}
+                      src={profile ?  `http://127.0.0.1:8000${profile}`: avatar}
                       width="100px"
                       height="100px"
                       style={{borderRadius:"50%", cursor:"pointer"}}
