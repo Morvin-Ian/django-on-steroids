@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import  { useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
@@ -13,6 +13,7 @@ const MessageInput = ({socket, receiver}) => {
   const redirect = useNavigate()
 
   const relationships = JSON.parse(localStorage.getItem("relationships"))
+  
   
   relationships?.forEach(element => {
     if (element.uuid === uuid){

@@ -1,35 +1,45 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
-import image from "../assets/images/James.jpeg"
+import avatar from "../assets/images/default.webp"
 import '../assets/sass/users.scss'
 import AddIcon from '@mui/icons-material/Add';
 import {fetchUsers} from '../api/users'
 
 
-const access_token = localStorage.getItem('access_token')
-const chats = async () =>{
-    const users = await fetchUsers(access_token)
-    return users
-}
-
-
 
 const Users = () => {
+  const [users, setUsers] = useState('');
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token');
+    
+    const fetchUsersData = async () => {
+      const fetchedUsers = await fetchUsers(access_token);
+      setUsers(fetchedUsers);
+    };
+
+    if (access_token) {
+      fetchUsersData();
+    }
+  }, []); 
+
   return (
     <>
   <div className="users">
       <div className='chats'>
         <h2 className="chats-heading">Add New Conversations</h2>
-        {chats().length &&
-          chats().map((chat) => (
+        {users.length &&
+          users.map((chat) => (
             <Link
               style={{ textDecoration: 'none' }}
               key={chat.uuid}
               to={`/chat/${chat.uuid}`}
               className="user-chat"
             >
-              <img src={image} alt={`Profile of ${chat.user}`} className="profile-image" />
+              
+              <img src={chat.profile ? `http://127.0.0.1:8000${chat.profile}`: avatar} alt={`Profile of ${chat.username}`} className="profile-image" />
               <div className="chat-info">
-                <span>{chat.chat}</span>
+                <span>{chat.username}</span>
                 <small>last seen: 2205 hrs </small>
                 <small className="add"><AddIcon/></small>
               </div>

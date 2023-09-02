@@ -15,7 +15,7 @@ interface MethodsType{
     fetchRelationships(access_token:string):Promise<relationshipArrayObject|string>,
 }
 
-const relationshipsUrl = `${baseUrl}api/messages/chats/`;
+const relationshipsUrl = `${baseUrl}/api/messages/chats/`;
 
 
 export const fetchRelationships: MethodsType['fetchRelationships'] = async (access_token) => {

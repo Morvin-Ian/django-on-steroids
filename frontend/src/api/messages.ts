@@ -15,7 +15,7 @@ interface MethodsType{
     fetchMessages(access_token:string):Promise<messageArrayObject|string>
 }
 
-const messagesUrl = `${baseUrl}api/messages/list/`;
+const messagesUrl = `${baseUrl}/api/messages/list/`;
 
 
 

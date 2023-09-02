@@ -1,9 +1,11 @@
 from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
+from django.db.models import Q
 
 from .serializer import  RegisterSerializer, LoginSerializer
 from accounts.models import User
+from messaging.models import Dialog
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -63,6 +65,9 @@ class AuthenticationView(GenericAPIView):
 
 # class GetUsers
 class FetchUsers(GenericAPIView):
+    """
+    Fetch Users with no relationship with the logged in User.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -74,15 +79,24 @@ class FetchUsers(GenericAPIView):
                 profile = user.profile.url
             else:
                 profile = None
+            
 
-            data = {
-                "uuid":user.uuid,
-                "username":user.username,
-                "email":user.email,
-                "profile":profile
-            }
+            if user != request.user:
+                #Eliminate friends
+                dialogs = Dialog.objects.filter(
+                            Q(sender=user) & Q(recepient=request.user) | 
+                            Q(sender=request.user) & Q(recepient=user)
+                        )
+                
+                if not dialogs:
+                    data = {
+                        "uuid":user.uuid,
+                        "username":user.username,
+                        "email":user.email,
+                        "profile":profile
+                    }
 
-            response.append(data)
+                    response.append(data)
         return Response(response, status=status.HTTP_200_OK)
 
 
