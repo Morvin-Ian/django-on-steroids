@@ -27,7 +27,7 @@ const Users = () => {
     <>
   <div className="users">
       <div className='chats'>
-        <h2 className="chats-heading">Add New Conversations</h2>
+        <h2 className="chats-heading">Create New Conversations</h2>
         {users.length &&
           users.map((chat) => (
             <Link

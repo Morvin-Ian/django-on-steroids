@@ -27,6 +27,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         message = received_data.get("message")
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
+        status = received_data.get("status")
+
 
         #Getting the User instance of message sender
         sender = await self.get_user(sender_uuid)
@@ -45,6 +47,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             "room_id":self.room_id,
             "sender_id":sender_uuid,   
             "receiver_id":receiver_uuid,   
+            "status":status,
             "message":message         
         }  
 
@@ -56,7 +59,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
             })
         
-        # print("receive", event)
+        print("receive", event)
 
     async def chat_message(self, event):
         received_data = json.loads(event["text"])
@@ -64,12 +67,14 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         message = received_data.get("message")
         sender_uuid = received_data.get("sender_id")
         receiver_uuid = received_data.get("receiver_id")
+        status = received_data.get("status")
 
         response = {
             'message': message,
             'typing':action,
             "room_id":self.room_id,
             "sender_id":sender_uuid,
+            "status":status,
             "receiver_id":receiver_uuid
             
             } 
@@ -91,7 +96,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
        
     @database_sync_to_async
     def save_message(self, message, sender, recepient):
-            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
-
+            # message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
+            pass
 
 

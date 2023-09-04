@@ -24,7 +24,7 @@ export const fetchRelationships: MethodsType['fetchRelationships'] = async (acce
               headers: { 'Authorization': `Bearer ${access_token}` },
           });
   
-          const data = await response.json();    
+          const data = await response.json();   
           localStorage.setItem('relationships', JSON.stringify(data));
           return data
   

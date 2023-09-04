@@ -23,6 +23,7 @@ const Navbar = () => {
   const [username, setUsername] = useState(localStorage.getItem('username'));
   const [email, setEmail] = useState(localStorage.getItem('email'));
   let profile = localStorage.getItem('profile')
+  
 
 	const handleClose = () => {
 		setOpen(false);
@@ -51,7 +52,7 @@ const Navbar = () => {
           <img 		
               onClick={handleOpen}
               style={{ cursor:"pointer"}}
-              src={profile ?  `http://127.0.0.1:8000${profile}`: avatar } alt=""/>
+              src={profile != null ?  `http://127.0.0.1:8000${profile}`: avatar } alt=""/>
         </div>
         
         <Modal

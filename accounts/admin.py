@@ -5,7 +5,7 @@ from .models import User
 class UserRegistration(admin.ModelAdmin):
     list_display = (
         'email',
-        'profile',
+        'is_staff',
         'is_active',
         'uuid',
     )

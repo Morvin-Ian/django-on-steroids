@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
-import "../assets/sass/home.scss"
-import SideBar from '../components/home/SideBar'
-import Chat from '../components/home/Chat'
+import  { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useState } from 'react'
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
 import { fetchMessages } from '../api/messages'
 import {  fetchRelationships } from '../api/relationships'
 
+import "../assets/sass/home.scss"
+import SideBar from '../components/home/SideBar'
+import Chat from '../components/home/Chat'
 import FlashMessage from '../components/common/FlashMessage'
 
 const Home = () => {
@@ -14,11 +15,16 @@ const Home = () => {
   const redirect = useNavigate();
   const {uuid} = useParams();
 
-  const [messages, setMessages] = useState('');
-  const [receiver, setReceiver] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [receiver, setReceiver] = useState([]);
   const [chats, setChats] = useState('')
   const [onlineStatus, setOnlineStatus] = useState(false)
 
+
+  const [socketUrl, setSocketUrl] = useState(`ws://127.0.0.1:8000/ws/homepage`);
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
   const access_token = localStorage.getItem('access_token');
   const senderId = localStorage.getItem('uuid');
@@ -72,15 +78,10 @@ const Home = () => {
   return (
     <div className="home">
         <div className="cont">
-          { onlineStatus ?
+          { onlineStatus &&
             <FlashMessage 
                 message="Successfully Connected" 
                 alertType = "success"
-            />:
-
-            <FlashMessage 
-                message="Websocket Connection Error" 
-                alertType = "error"
             />
            }
 
@@ -91,6 +92,7 @@ const Home = () => {
             />
 
             <Chat 
+              setMessages={setMessages}
               messages={messages}
               socket={socket} 
               receiver={receiver}

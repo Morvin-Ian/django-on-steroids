@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import defaultProfile from "../../assets/images/default.webp"
 import {Link} from "react-router-dom"
 
@@ -26,8 +25,8 @@ const Chats = ({chats}) => {
           ))
           :
            <div className="user-chat">
-                <div className="chat-info">
-                    <p> No available chats</p>
+                <div className="chats-info">
+                    <p style={{color:"white"}}> Make Some Friends </p>
                 </div>
           </div>
         }
