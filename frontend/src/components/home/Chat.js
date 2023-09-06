@@ -30,6 +30,7 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
 
   if (
     relationships?.detail == "Invalid token" ||
+    relationships?.detail == "Invalid User" ||
     relationships?.detail == "Expired token"
   ) {
     redirect("/sign-in");

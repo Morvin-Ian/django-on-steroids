@@ -2,6 +2,7 @@ from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 
 from .serializer import  RegisterSerializer, LoginSerializer
 from accounts.models import User
@@ -11,7 +12,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
+from rest_framework.parsers import  MultiPartParser,FormParser
 
 csrf_protect_method = method_decorator(csrf_protect)
 
@@ -100,3 +101,31 @@ class FetchUsers(GenericAPIView):
         return Response(response, status=status.HTTP_200_OK)
 
 
+class EditProfile(GenericAPIView):
+
+    permission_classes = [ IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def put(self, request, **kwargs):
+        email = request.data.get('email')
+        # username = request.data.get('username')
+        profile = request.data.get('profile')
+        user = request.user
+
+    
+        if email:
+            user.email = email
+        # if username:
+        #     user.username = username
+        if profile:
+            user.profile = profile
+
+        user.save()
+
+        data = {
+            "email":user.email,
+            "username":user.username,
+            "profile":user.profile.url
+        }
+
+        return Response(data, status=status.HTTP_200_OK)

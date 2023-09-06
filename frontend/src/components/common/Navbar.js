@@ -3,6 +3,7 @@ import avatar from "../../assets/images/default.webp"
 import Modal from '@mui/material/Modal';
 import '../../assets/sass/modal.scss'
 import { Link } from "react-router-dom";
+import { updateProfile } from "../../api/edit_profile";
 
 
 const modalStyle = {
@@ -17,14 +18,15 @@ const modalStyle = {
 }
 
 
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('username'));
   const [email, setEmail] = useState(localStorage.getItem('email'));
+  const [newProfile, setNewProfile] = useState('');
+  const access_token = localStorage.getItem('access_token')
+
   let profile = localStorage.getItem('profile')
   
-
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -33,9 +35,19 @@ const Navbar = () => {
 		setOpen(true);
 	};
 
-  const handleSubmit = () => {
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const profileData = {
+      username:email,
+      email:email,
+      profile:newProfile
+    }
 
+    await updateProfile(access_token, profileData)
+    handleClose()
+    
   }
+  
 
   return (
     <div className='navbar' style={{padding:"10px 0px"}}>
@@ -66,6 +78,7 @@ const Navbar = () => {
                   style={{display:"none"}}  
                   type="file" 
                   id='media' 
+                  onChange={(e) => setNewProfile(e.target.files[0])}
                   accept='image/*'
             />
             <label htmlFor="media">
@@ -74,7 +87,7 @@ const Navbar = () => {
                       src={profile ?  `http://127.0.0.1:8000${profile}`: avatar}
                       width="100px"
                       height="100px"
-                      style={{borderRadius:"50%", cursor:"pointer"}}
+                      style={{borderRadius:"50%", cursor:"pointer", objectFit:"cover"}}
                       alt=""/>
                 </div>
             </label>

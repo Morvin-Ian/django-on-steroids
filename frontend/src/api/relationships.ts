@@ -11,8 +11,8 @@ type relationshipResponse = {
 type relationshipArrayObject = relationshipResponse[]
 
 
-interface MethodsType{
-    fetchRelationships(access_token:string):Promise<relationshipArrayObject|string>,
+interface MethodsType {
+    fetchRelationships(access_token: string): Promise<relationshipArrayObject | string>,
 }
 
 const relationshipsUrl = `${baseUrl}/api/messages/chats/`;
@@ -20,16 +20,15 @@ const relationshipsUrl = `${baseUrl}/api/messages/chats/`;
 
 export const fetchRelationships: MethodsType['fetchRelationships'] = async (access_token) => {
     try {
-          const response =  await fetch(relationshipsUrl, {
-              headers: { 'Authorization': `Bearer ${access_token}` },
-          });
-  
-          const data = await response.json();   
-          localStorage.setItem('relationships', JSON.stringify(data));
-          return data
-  
-      }catch (error) 
-      {
-          return error
-      }
-  }
+        const response = await fetch(relationshipsUrl, {
+            headers: { 'Authorization': `Bearer ${access_token}` },
+        });
+
+        const data = await response.json();
+        localStorage.setItem('relationships', JSON.stringify(data));
+        return data
+
+    } catch (error) {
+        return error
+    }
+}

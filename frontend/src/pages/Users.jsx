@@ -4,11 +4,35 @@ import avatar from "../assets/images/default.webp"
 import '../assets/sass/users.scss'
 import AddIcon from '@mui/icons-material/Add';
 import {fetchUsers} from '../api/users'
+import Modal from '@mui/material/Modal';
 
+
+const modalStyle = {
+  position: 'absolute',
+  backgroundColor: 'transparent',
+  height: 80,
+  width: 300,
+  top:"10%",
+  left:"40%"
+}
 
 
 const Users = () => {
   const [users, setUsers] = useState('');
+  const [open, setOpen] = useState(false);
+  
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+  const handleSubmit = () => {
+
+  }
+
 
   useEffect(() => {
     const access_token = localStorage.getItem('access_token');
@@ -31,9 +55,9 @@ const Users = () => {
         {users.length &&
           users.map((chat) => (
             <Link
+              onClick={handleOpen}
               style={{ textDecoration: 'none' }}
               key={chat.uuid}
-              to={`/chat/${chat.uuid}`}
               className="user-chat"
             >
               
@@ -45,6 +69,19 @@ const Users = () => {
               </div>
             </Link>
           ))}
+
+               
+        <Modal
+          onClose={handleClose}
+          open={open}
+          style={modalStyle}
+        >
+          <div className="modal-content">
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <button className="sign-up-button">START CONVERSATION</button>
+            </form>
+          </div>
+        </Modal>
       </div>
 
       <div className="left-sidebar">
@@ -68,6 +105,7 @@ const Users = () => {
           </ul>
         </div>
       </div>
+      
     </div>
 
     </>

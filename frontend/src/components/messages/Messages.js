@@ -6,42 +6,53 @@ const Messages = ({setMessages, socket,  messages }) => {
 
   const sender_uuid = localStorage.getItem('uuid');
   const { uuid } = useParams();
+  const [roomId, setRoomId] = useState(uuid);
   const redirect = useNavigate()
 
   const relationships = JSON.parse(localStorage.getItem("relationships"));
   let receiver_uuid;
 
-  if (relationships?.detail === "Invalid token" || relationships?.detail === "Expired token") {
-    redirect("/sign-in");
-  } else {
-    relationships?.forEach((element) => {
-      if (element.uuid === uuid) {
-        receiver_uuid = element.chat_uuid;
-      }
-    });
-  }
-
-
 
   useEffect(() => {
 
-    socket.onmessage = async (e) => {
-      const response = JSON.parse(e.data);
+    if (relationships?.detail === "Invalid token" || relationships?.detail === "Expired token") {
+      redirect("/sign-in");
+    } else {
+      relationships?.forEach((element) => {
+        setRoomId(uuid)
+        if (element.uuid === roomId) {
+          receiver_uuid = element.chat_uuid; 
+        }
+      });
+    }
+  }, [uuid])
+  
 
-      if (response.message !== null) {
-        const newMessage = {
-          id:Math.floor(Math.random() * 1000),
-          message_sender_uuid: sender_uuid,
-          message_receiver_uuid: receiver_uuid,
-          text_message: response.message
-        };
 
-        setMessages([...messages, newMessage])
-        console.log([messages])
-     
-      }
-    };
-  }, [messages]);
+  // const handleOnMessage = async () => {
+  //   socket.onmessage = async (e) => {
+  //     const response = JSON.parse(e.data);
+
+  //     if (response.message !== null) {
+  //       const newMessage = {
+  //         id:Math.floor(Math.random() * 1000),
+  //         message_sender_uuid: sender_uuid,
+  //         message_receiver_uuid: receiver_uuid,
+  //         text_message: response.message
+  //       };
+
+  //       setMessages([...messages, newMessage])
+  //       console.log(newMessage)     
+  //     }
+  //   };
+  // }
+
+
+
+  // useEffect(() => {
+  //   handleOnMessage()
+   
+  // }, [messages]);
 
 
   return (
@@ -50,7 +61,6 @@ const Messages = ({setMessages, socket,  messages }) => {
         <Message 
           key={message.id} 
           message={message} 
-          onmessage={onmessage} 
         />
       ))}
     </div>

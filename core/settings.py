@@ -172,13 +172,13 @@ AUTH_USER_MODEL = "accounts.User"
 STATIC_URL = 'static/'
 
 
-CORS_ALLOWED_ORIGINS = [
+# CORS_ALLOWED_ORIGINS = [
     
-    'http://localhost:3000',
-    'https://brace-converse.vercel.app'
-]
+#     'http://localhost:3000',
+#     'https://brace-converse.vercel.app'
+# ]
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

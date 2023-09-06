@@ -1,6 +1,6 @@
-import  { useEffect, useState, useCallback } from 'react'
+import  { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+
 
 import { fetchMessages } from '../api/messages'
 import {  fetchRelationships } from '../api/relationships'
@@ -20,11 +20,6 @@ const Home = () => {
   const [chats, setChats] = useState('')
   const [onlineStatus, setOnlineStatus] = useState(false)
 
-
-  const [socketUrl, setSocketUrl] = useState(`ws://127.0.0.1:8000/ws/homepage`);
-  const [messageHistory, setMessageHistory] = useState([]);
-
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
   const access_token = localStorage.getItem('access_token');
   const senderId = localStorage.getItem('uuid');
@@ -78,10 +73,14 @@ const Home = () => {
   return (
     <div className="home">
         <div className="cont">
-          { onlineStatus &&
+          { onlineStatus ?
             <FlashMessage 
                 message="Successfully Connected" 
                 alertType = "success"
+            />:
+            <FlashMessage 
+                message="Connecting ..." 
+                alertType = "primary"
             />
            }
 

@@ -11,19 +11,19 @@ type userResponse = {
 export type userArrayObject = userResponse[]
 
 
-interface MethodsType{
-    fetchUsers(access_token:string):Promise<userArrayObject>,
+interface MethodsType {
+    fetchUsers(access_token: string): Promise<userArrayObject>,
 }
 
 const usersApiUrl = `${baseUrl}/api/auth/users/`;
 
 
 export const fetchUsers: MethodsType['fetchUsers'] = async (access_token) => {
-    const response = await fetch(usersApiUrl,{
+    const response = await fetch(usersApiUrl, {
         headers: { 'Authorization': `Bearer ${access_token}` },
     })
 
-    const data = await response.json(); 
-    return data   
+    const data = await response.json();
+    return data
 
 }

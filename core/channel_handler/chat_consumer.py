@@ -96,7 +96,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
        
     @database_sync_to_async
     def save_message(self, message, sender, recepient):
-            # message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
-            pass
+            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
+            # pass
 
 
