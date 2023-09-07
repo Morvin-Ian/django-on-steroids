@@ -24,6 +24,7 @@ export const fetchUsers: MethodsType['fetchUsers'] = async (access_token) => {
     })
 
     const data = await response.json();
+    localStorage.setItem('non-relationships', JSON.stringify(data));
     return data
 
 }

@@ -18,7 +18,9 @@ export const addChat: MethodsType['addChatMethod'] = async (access_token, uuids)
     const response = await fetch(addChatUrl, {
         method: "POST",
         headers: {
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+
         },
         body: JSON.stringify(uuids)
     })

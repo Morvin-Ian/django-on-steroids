@@ -5,6 +5,7 @@ from rest_framework.views import Response
 from rest_framework import status
 
 from messaging.models import Message, Dialog
+from accounts.models import User
 
 from django.db.models import Q
 
@@ -18,32 +19,32 @@ class DialogView(GenericAPIView):
 
     # Gets Relationships of a logged In/ Authenticated user
     def get(self, request):
-        relationships = Dialog.objects.filter(Q(sender=request.user) | Q(recepient=request.user))
+        relationships = Dialog.objects.filter(
+            Q(sender=request.user) | Q(recepient=request.user))
 
         response = []
 
-        for relationship  in relationships:
+        for relationship in relationships:
             if relationship.sender == request.user:
                 chat = relationship.recepient
             else:
                 chat = relationship.sender
-            
+
             if chat.profile:
                 profile = chat.profile.url
             else:
                 profile = None
 
             data = {
-                "chat":chat.username,
-                "chat_uuid":chat.uuid,
-                "profile":profile,
-                "uuid":relationship.id,
-                "user":request.user.uuid
+                "chat": chat.username,
+                "chat_uuid": chat.uuid,
+                "profile": profile,
+                "uuid": relationship.id,
+                "user": request.user.uuid
             }
 
             response.append(data)
         return Response(response, status=status.HTTP_200_OK)
-
 
 
 class MessageListView(GenericAPIView):
@@ -55,19 +56,48 @@ class MessageListView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        messages = Message.objects.filter(Q(sender = request.user) | Q(recepient = request.user)).order_by('created_at')        
+        messages = Message.objects.filter(Q(sender=request.user) | Q(
+            recepient=request.user)).order_by('created_at')
         response = []
         for message in messages:
-           
+
             data = {
-                "id":message.id,
-                "message_sender_uuid":message.sender.uuid,
-                "message_receiver_uuid":message.recepient.uuid,
+                "id": message.id,
+                "message_sender_uuid": message.sender.uuid,
+                "message_receiver_uuid": message.recepient.uuid,
                 "text_message": message.text,
-                "dialog":message.dialog.id,
+                "dialog": message.dialog.id,
 
             }
-            
+
             response.append(data)
         return Response(response, status=status.HTTP_200_OK)
-    
+
+
+class CreateDialogView(GenericAPIView):
+    """
+    Creates a dialog between users
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        sender = request.data.get('sender')
+        receiver = request.data.get('receiver')
+
+        sender_instance = User.objects.get(uuid=sender)
+        receiver_instance = User.objects.get(uuid=receiver)
+
+        if sender_instance and receiver_instance:
+
+            dialog = Dialog.objects.create(
+                sender=sender_instance, recepient=receiver_instance)
+
+            response = {
+                "uuid": dialog.id
+            }
+            print(request.data)
+
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            return Response("Invalid uuids provided", status=status.HTTP_200_OK)

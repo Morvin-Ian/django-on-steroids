@@ -2,12 +2,12 @@ from django.urls import path
 
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from .views import MessageListView, DialogView
+from .views import MessageListView, DialogView, CreateDialogView
 
 urlpatterns = [
     path("list/", MessageListView.as_view()),
     path("chats/", DialogView.as_view()),
-
+    path("add_dialog/", CreateDialogView.as_view()),
 
 ]
 
