@@ -45,7 +45,7 @@ const Home = () => {
     apiCall(fetchMessages, setMessages)
 
     setTimeout(async ()=>{
-      if( socket.url === `ws://${port}/ws/homepage`)
+      if(socket)
       {
         const data = {
           "typing":null,
@@ -63,7 +63,7 @@ const Home = () => {
            setOnlineStatus(true)
           };
       }
-    }, 500)
+    }, 1000)
   
 
   }, []);
@@ -80,13 +80,14 @@ const Home = () => {
             />:
             <FlashMessage 
                 message="Connecting ..." 
-                alertType = "primary"
+                alertType = "info"
             />
            }
 
            <SideBar 
               setReceiver={setReceiver} 
               setChats={setChats} 
+              receiver={receiver}
               chats={chats} 
             />
 

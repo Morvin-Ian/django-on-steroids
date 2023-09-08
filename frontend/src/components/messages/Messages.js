@@ -10,7 +10,8 @@ const Messages = ({setMessages, socket,  messages }) => {
   const redirect = useNavigate()
 
   const relationships = JSON.parse(localStorage.getItem("relationships"));
-  let receiver_uuid;
+  let receiver;
+
 
 
   useEffect(() => {
@@ -19,9 +20,27 @@ const Messages = ({setMessages, socket,  messages }) => {
       redirect("/sign-in");
     } else {
       relationships?.forEach((element) => {
-        setRoomId(uuid)
-        if (element.uuid === roomId) {
-          receiver_uuid = element.chat_uuid; 
+        if (element.uuid === uuid) {
+          receiver = element.chat_uuid; 
+
+        
+          socket.onmessage = async (e) => {
+            const response = JSON.parse(e.data);
+            console.log(receiver, element.chat)
+
+      
+            if (response.message !== null) {
+              const newMessage = {
+                id:Math.floor(Math.random() * 1000),
+                message_sender_uuid: sender_uuid,
+                message_receiver_uuid: receiver,
+                text_message: response.message
+              };
+      
+              setMessages([...messages, newMessage])
+              console.log(messages)     
+            }
+          };
         }
       });
     }
@@ -29,7 +48,14 @@ const Messages = ({setMessages, socket,  messages }) => {
   
 
 
+
   // const handleOnMessage = async () => {
+
+  // }
+
+
+
+  // useEffect(() => {
   //   socket.onmessage = async (e) => {
   //     const response = JSON.parse(e.data);
 
@@ -37,7 +63,7 @@ const Messages = ({setMessages, socket,  messages }) => {
   //       const newMessage = {
   //         id:Math.floor(Math.random() * 1000),
   //         message_sender_uuid: sender_uuid,
-  //         message_receiver_uuid: receiver_uuid,
+  //         message_receiver_uuid: receiver,
   //         text_message: response.message
   //       };
 
@@ -45,14 +71,8 @@ const Messages = ({setMessages, socket,  messages }) => {
   //       console.log(newMessage)     
   //     }
   //   };
-  // }
 
-
-
-  // useEffect(() => {
-  //   handleOnMessage()
-   
-  // }, [messages]);
+  // }, []);
 
 
   return (

@@ -32,6 +32,11 @@ const Users = () => {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const handleReceiver = (e, uuid) => {
+    e.preventDefault();
+    setReceiver(uuid)
+  }
   
 
   const handleSubmit = async (e) => {
@@ -42,9 +47,11 @@ const Users = () => {
       receiver,
     };
 
+    handleClose()
+
     const data = await addChat(access_token, uuids);
     if(data.uuid){
-      redirect(`/chat/${data.uuid}`)
+      redirect(`/`)
     }
   };
 
@@ -58,14 +65,14 @@ const Users = () => {
     if (access_token) {
       fetchUsersData();
     }
-  }, []);
+  }, [access_token]);
 
   return (
     <>
       <div className="users">
         <div className="chats">
           <h2 className="chats-heading">Create New Conversations</h2>
-          {users.length &&
+          {users.length ?
             users.map((chat) => (
               <Link
                 onClick={handleOpen}
@@ -83,7 +90,7 @@ const Users = () => {
                   className="profile-image"
                   style={{objectFit:"cover"}}
                 />
-                <div onClick={()=>setReceiver(chat.uuid)} className="chat-info">
+                <div onClick={(e)=>handleReceiver(e, chat.uuid)} className="chat-info">
                   <span>{chat.username}</span>
                   <small>last seen: 2205 hrs </small>
                   <small className="add">
@@ -91,7 +98,11 @@ const Users = () => {
                   </small>
                 </div>
               </Link>
-            ))}
+            )):
+            <div>
+              <p style={{color:"white"}}>No Available Chats</p>
+            </div>
+          }
 
           <Modal onClose={handleClose} open={open} style={modalStyle}>
             <div className="modal-content">

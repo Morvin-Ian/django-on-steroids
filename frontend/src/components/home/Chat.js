@@ -24,7 +24,6 @@ const homeDivStyle = {
 const Chat = ({ setMessages, messages, socket, receiver }) => {
   const redirect = useNavigate();
   const { uuid } = useParams();
-  const [onmessage, setOnmessage] = useState(null);
   const relationships = JSON.parse(localStorage.getItem("relationships"));
   let relationship;
 
@@ -42,7 +41,8 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
     });
   }
 
-  const logoutUser = () => {
+  const logoutUser = (e) => {
+    e.preventDefault();
     if (localStorage.getItem("access_token")) {
       localStorage.clear();
       redirect("/sign-in");
@@ -62,10 +62,7 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
                   color: "#010e1f",
                   marginLeft: "850px",
                 }}
-                variant="contained"
-                size="small"
-                logout
-                onClick={logoutUser}
+                onClick={(e)=>logoutUser(e)}
               >
                 <LogoutIcon /> Logout
               </Button>
@@ -81,13 +78,11 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
           <Messages
             setMessages={setMessages}
             messages={messages}
-            onmessage={onmessage}
             socket={socket}
 
           />
           <MessageInput
             socket={socket}
-            setOnmessage={setOnmessage}
             receiver={receiver}
           />
         </>
