@@ -7,8 +7,11 @@ from django.db.models import Q
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
-        self.room_id = self.scope["url_route"]["kwargs"]["uuid"]
-        self.group_name = f"Room_{self.room_id}"
+        # self.room_id = self.scope["url_route"]["kwargs"]["uuid"]
+        # self.group_name = f"Room_{self.room_id}"
+        self.group_name = "Chat_Room"
+
+        
         
         print(self.group_name)
         await self.accept()
@@ -44,7 +47,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         response = {
             "type":"chat.message",
             "typing":action,
-            "room_id":self.room_id,
+            # "room_id":self.room_id,
             "sender_id":sender_uuid,   
             "receiver_id":receiver_uuid,   
             "status":status,
@@ -72,7 +75,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         response = {
             'message': message,
             'typing':action,
-            "room_id":self.room_id,
+            # "room_id":self.room_id,
             "sender_id":sender_uuid,
             "status":status,
             "receiver_id":receiver_uuid
@@ -96,7 +99,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
        
     @database_sync_to_async
     def save_message(self, message, sender, recepient):
-            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
-            # pass
+            # message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
+            pass
 
 

@@ -87,14 +87,14 @@ const Home = () => {
            <SideBar 
               setReceiver={setReceiver} 
               setChats={setChats} 
-              receiver={receiver}
-              chats={chats} 
+              chats={chats}
             />
 
             <Chat 
               setMessages={setMessages}
               messages={messages}
               socket={socket} 
+              setReceiver={setReceiver} 
               receiver={receiver}
             />
         </div>

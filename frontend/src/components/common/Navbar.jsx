@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import avatar from "../../assets/images/default.webp"
 import Modal from '@mui/material/Modal';
 import '../../assets/sass/modal.scss'
 import { Link } from "react-router-dom";
 import { updateProfile } from "../../api/edit_profile";
+import { chatContext } from "../../context/ChatContext";
 
 
 const modalStyle = {
@@ -24,6 +25,7 @@ const Navbar = () => {
   const [email, setEmail] = useState(localStorage.getItem('email'));
   const [newProfile, setNewProfile] = useState('');
   const access_token = localStorage.getItem('access_token')
+  const {dispatch} = useContext(chatContext)
 
   let profile = localStorage.getItem('profile')
   
@@ -34,6 +36,9 @@ const Navbar = () => {
 	const handleOpen = () => {
 		setOpen(true);
 	};
+  const resetState = () => {
+    dispatch({type:"CHANGE_USER", payload:{}})
+  }
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -51,14 +56,14 @@ const Navbar = () => {
 
   return (
     <div className='navbar' style={{padding:"10px 0px"}}>
-      <Link 
+      <div 
         style={{
           textDecoration:"none", 
           fontSize:"large", 
-          color:"white"}}
-          to="/">
-          <span className="logo" style={{marginLeft:"3px"}}>Brace</span>
-      </Link>
+          color:"white",
+          cursor:"pointer"}}>
+          <span className="logo" onClick={resetState} style={{marginLeft:"3px"}}>Brace</span>
+      </div>
 
         <div className="user">
           <img 		

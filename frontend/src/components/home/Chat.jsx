@@ -5,7 +5,8 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { chatContext } from "../../context/ChatContext";
 
 const addBtnStyle = {
   backgroundColor: "aqua",
@@ -21,25 +22,10 @@ const homeDivStyle = {
   borderLeft: "1px solid black",
 };
 
-const Chat = ({ setMessages, messages, socket, receiver }) => {
+const Chat = ({ setMessages, messages, socket, setReceiver, receiver }) => {
   const redirect = useNavigate();
-  const { uuid } = useParams();
-  const relationships = JSON.parse(localStorage.getItem("relationships"));
-  let relationship;
 
-  if (
-    relationships?.detail == "Invalid token" ||
-    relationships?.detail == "Invalid User" ||
-    relationships?.detail == "Expired token"
-  ) {
-    redirect("/sign-in");
-  } else {
-    relationships?.forEach((element) => {
-      if (element.uuid === uuid) {
-        relationship = element.chat;
-      }
-    });
-  }
+  const {state} = useContext(chatContext)
 
   const logoutUser = (e) => {
     e.preventDefault();
@@ -51,10 +37,10 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
 
   return (
     <div className="chat">
-      {uuid ? (
+      {state.roomId ? (
         <>
           <div className="chat-info">
-            <span id="span">{relationship}</span>
+            <span id="span">{state.user.chat}</span>
             <div className="icons">
               <Button
                 style={{
@@ -78,12 +64,11 @@ const Chat = ({ setMessages, messages, socket, receiver }) => {
           <Messages
             setMessages={setMessages}
             messages={messages}
-            socket={socket}
+            socket={socket}       
 
           />
           <MessageInput
             socket={socket}
-            receiver={receiver}
           />
         </>
       ) : (
