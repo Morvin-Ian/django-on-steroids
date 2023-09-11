@@ -7,11 +7,8 @@ from django.db.models import Q
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
-        # self.room_id = self.scope["url_route"]["kwargs"]["uuid"]
-        # self.group_name = f"Room_{self.room_id}"
-        self.group_name = "Chat_Room"
+        self.group_name = f"Chat_Room"
 
-        
         
         print(self.group_name)
         await self.accept()
@@ -31,8 +28,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         sender_uuid = received_data.get("sender")
         receiver_uuid = received_data.get("receiver")
         status = received_data.get("status")
-
-
+        room_id = received_data.get("room")
+    
         #Getting the User instance of message sender
         sender = await self.get_user(sender_uuid)
 
@@ -42,12 +39,12 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
             # retrieve the Dialog Model
             if message:                
-                await self.save_message(message, sender, recepient)
+                await self.save_message(message, sender, recepient, room_id)
          
         response = {
             "type":"chat.message",
             "typing":action,
-            # "room_id":self.room_id,
+            "room_id":room_id,
             "sender_id":sender_uuid,   
             "receiver_id":receiver_uuid,   
             "status":status,
@@ -71,11 +68,12 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         sender_uuid = received_data.get("sender_id")
         receiver_uuid = received_data.get("receiver_id")
         status = received_data.get("status")
+        room_id = received_data.get("room_id")
 
         response = {
             'message': message,
             'typing':action,
-            # "room_id":self.room_id,
+            "room_id":room_id,
             "sender_id":sender_uuid,
             "status":status,
             "receiver_id":receiver_uuid
@@ -98,8 +96,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
        
     @database_sync_to_async
-    def save_message(self, message, sender, recepient):
-            # message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=self.room_id))
-            pass
+    def save_message(self, message, sender, recepient, room_id):
+            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=room_id))
 
 

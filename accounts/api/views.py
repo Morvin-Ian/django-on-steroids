@@ -112,6 +112,8 @@ class EditProfile(GenericAPIView):
         profile = request.data.get('profile')
         user = request.user
 
+        print(request.data)
+
     
         if email:
             user.email = email

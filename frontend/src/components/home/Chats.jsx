@@ -1,6 +1,5 @@
 import { useContext } from "react"
 import defaultProfile from "../../assets/images/default.webp"
-import {Link} from "react-router-dom"
 import { chatContext } from "../../context/ChatContext"
 
 
@@ -15,12 +14,12 @@ const Chats = ({chats}) => {
   return (
     <div className='chat'>
         { chats.length  ?
-          chats.map((chat=>
+          chats?.sort((a,b)=>new Date(b.date)-new Date(a.date)).map((chat=>
               <div style={{textDecoration:"none"}} key={chat.uuid} onClick={()=>handleSelectedChat(chat)} className="user-chat">
                 <img src={chat.profile ? `http://127.0.0.1:8000${chat.profile}`: defaultProfile} alt="" />
                 <div className="chat_info">
                     <span>{chat.chat}</span> <br />
-                    <small>last seen: 1300 hrs</small>
+                    <small style={{color:"gray"}}>{chat.last_message}</small>
                     {/* {action !== '' ?
                     
                     <p id="span2">{action}</p>:

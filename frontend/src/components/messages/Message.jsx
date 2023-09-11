@@ -1,46 +1,33 @@
-import React, { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import avatar from "../../assets/images/default.webp";
-import { useParams } from "react-router-dom";
+import { chatContext } from "../../context/ChatContext";
+import { DoneAll } from "@mui/icons-material";
 
 const Message = ({ message }) => {
-  const { uuid } = useParams();
   const user = localStorage.getItem("uuid");
-  const isReceiver = message.message_receiver_uuid === user;
-  const isPatner = message.dialog === uuid;
+  const { state } = useContext(chatContext);
+  const isOwner = message.message_sender_uuid === user;
+  const isPatner = message.dialog === state.user.uuid;
   let profile = localStorage.getItem("profile");
-  let patnerProfile = null;
-  const relationships = JSON.parse(localStorage.getItem("relationships"));
+  const ref = useRef();
 
-  relationships?.forEach((element) => {
-    if (element.uuid === uuid) {
-      patnerProfile = element.profile;
-      if (patnerProfile == null) {
-        patnerProfile = avatar;
-      }
-    }
-  });
-
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
 
   return (
     <div
       id="chat-body"
-      className={`${isReceiver ? "message" : "message owner"}`}
+      ref={ref}
+      className={`${isOwner ? "message owner" : "message"}`}
     >
       {isPatner && (
-        <>
-          <div className="messageInfo">
-            {/* {patnerProfile === avatar ?
-                <img src={isReceiver ?  patnerProfile: profile } alt="profile"  />:
-                <img src={isReceiver ?  `http://127.0.0.1:8000${patnerProfile}`: profile } alt="profile"  />
-            } */}
-            <span>just now</span>
-          </div>
-
           <div className="messageDetail">
-            <p>{message.text_message}</p>
-            {/* <img src={kid}  /> */}
+            <p>{message.text_message} {isOwner  && <DoneAll/>} </p>
+            {message.file &&
+              <img src={`http://127.0.0.1:8000${message.file}`}  />
+            }
           </div>
-        </>
       )}
     </div>
   );

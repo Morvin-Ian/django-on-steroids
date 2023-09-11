@@ -74,9 +74,10 @@ class Message(models.Model):
 
     @staticmethod
     def get_last_message_for_dialog(sender, recepient):
-        return Message.objects.filter(
+        last_message =  Message.objects.filter(
             Q(sender_id=sender, recepient_id=recepient) | Q(sender_id=recepient, recepient_id=sender)) \
             .select_related('sender', 'recepient').first()
+        return last_message.text
 
     def __str__(self):
         return str(self.dialog)

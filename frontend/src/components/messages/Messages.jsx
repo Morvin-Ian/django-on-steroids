@@ -1,23 +1,23 @@
-import { useNavigate, useParams } from "react-router-dom";
 import Message from "./Message";
-import { useContext, useEffect, useState } from "react";
-import { chatContext } from "../../context/ChatContext";
+import { useEffect } from "react";
+import { fetchMessages } from "../../api/messages";
+import { fetchRelationships } from "../../api/relationships";
 
-const Messages = ({ setMessages, socket, messages }) => {
-  const sender_uuid = localStorage.getItem("uuid");
-  const {state} = useContext(chatContext)
-  
+const Messages = ({ setMessages, socket, messages, setChats }) => {
+  const access_token = localStorage.getItem("access_token");
 
   useEffect(() => {
-   socket.onmessage = async(e)=>{
-      const response = JSON.parse(e.data)
-      if(response.message){
-        console.log(response)
+    socket.onmessage = async (e) => {
+      const response = JSON.parse(e.data);
+      if (response.message) {
+        const data = await fetchMessages(access_token);
+        setMessages(data);
+
+        const relationships = await fetchRelationships(access_token);
+        setChats(relationships);
       }
-  }
-
-  }, [state]);
-
+    };
+  }, []);
 
   return (
     <div className="messages">

@@ -22,7 +22,7 @@ const homeDivStyle = {
   borderLeft: "1px solid black",
 };
 
-const Chat = ({ setMessages, messages, socket, setReceiver, receiver }) => {
+const Chat = ({ setMessages, messages, socket, setChats }) => {
   const redirect = useNavigate();
 
   const {state} = useContext(chatContext)
@@ -63,6 +63,7 @@ const Chat = ({ setMessages, messages, socket, setReceiver, receiver }) => {
 
           <Messages
             setMessages={setMessages}
+            setChats={setChats}
             messages={messages}
             socket={socket}       
 

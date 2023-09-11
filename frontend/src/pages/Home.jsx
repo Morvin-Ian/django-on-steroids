@@ -1,5 +1,5 @@
-import  { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import  {  useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 import { fetchMessages } from '../api/messages'
@@ -13,19 +13,13 @@ import FlashMessage from '../components/common/FlashMessage'
 const Home = () => {
   
   const redirect = useNavigate();
-  const {uuid} = useParams();
 
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState([]);
   const [chats, setChats] = useState('')
   const [onlineStatus, setOnlineStatus] = useState(false)
-
-
   const access_token = localStorage.getItem('access_token');
-  const senderId = localStorage.getItem('uuid');
-
-  const port = "127.0.0.1:8000"
-  const socket = uuid ? new WebSocket(`ws://${port}/ws/chat/${uuid}/`) : new WebSocket(`ws://${port}/ws/homepage`);
+  const socket = new WebSocket(`ws://127.0.0.1:8000/ws/home`);
 
 
   const apiCall = async (apiFunc, setState) =>{
@@ -44,27 +38,10 @@ const Home = () => {
     apiCall(fetchRelationships, setChats)
     apiCall(fetchMessages, setMessages)
 
-    setTimeout(async ()=>{
-      if(socket)
-      {
-        const data = {
-          "typing":null,
-          "user":senderId,
-          "status":"online",
-        }
-      
-        socket.send(JSON.stringify(data))
-      }
+    socket.onopen = async function(e){
+      setOnlineStatus(true)
+    }
 
-      socket.onmessage = async(e)=>{
-        const response = JSON.parse(e.data)
-        
-        if(response.status === "online"){
-           setOnlineStatus(true)
-          };
-      }
-    }, 1000)
-  
 
   }, []);
   
@@ -92,6 +69,7 @@ const Home = () => {
 
             <Chat 
               setMessages={setMessages}
+              setChats={setChats}
               messages={messages}
               socket={socket} 
               setReceiver={setReceiver} 

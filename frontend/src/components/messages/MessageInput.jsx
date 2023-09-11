@@ -17,6 +17,7 @@ const MessageInput = ({ socket }) => {
       typing: true,
       sender: senderId,
       receiver: state.user.chat_uuid,
+      room: state.user.uuid,
       status: "online",
       message: null,
     };
@@ -32,6 +33,7 @@ const MessageInput = ({ socket }) => {
       typing: null,
       sender: senderId,
       receiver: state.user.chat_uuid,
+      room: state.user.uuid,
       message: textRef.current.value,
     };
 

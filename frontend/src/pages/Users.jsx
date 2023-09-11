@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import avatar from "../assets/images/default.webp";
 import "../assets/sass/users.scss";
@@ -6,48 +6,26 @@ import AddIcon from "@mui/icons-material/Add";
 import { fetchUsers } from "../api/users";
 import { addChat } from "../api/add_chat";
 import Modal from "@mui/material/Modal";
-
-const modalStyle = {
-  position: "absolute",
-  backgroundColor: "transparent",
-  height: 80,
-  width: 300,
-  top: "10%",
-  left: "40%",
-};
+import { chatContext } from "../context/ChatContext";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
-  const redirect = useNavigate()
+  const redirect = useNavigate();
   const access_token = localStorage.getItem("access_token");
   const sender = localStorage.getItem("uuid");
 
-  const [receiver, setReceiver] = useState(null);
+  const { state, dispatch } = useContext(chatContext);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleReceiver = (e, uuid) => {
+  const handleSelectedChat = async (e, user) => {
     e.preventDefault();
-    setReceiver(uuid)
-  }
-  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    dispatch({type:"CHANGE_USER", payload:user})
 
     const uuids = {
-      sender,
-      receiver,
+      sender:sender,
+      receiver:state.user.uuid,
     };
-
-    handleClose()
 
     const data = await addChat(access_token, uuids);
     if(data.uuid){
@@ -56,7 +34,6 @@ const Users = () => {
   };
 
   useEffect(() => {
-
     const fetchUsersData = async () => {
       const fetchedUsers = await fetchUsers(access_token);
       setUsers(fetchedUsers);
@@ -65,17 +42,16 @@ const Users = () => {
     if (access_token) {
       fetchUsersData();
     }
-  }, [access_token]);
+  }, []);
 
   return (
     <>
       <div className="users">
         <div className="chats">
           <h2 className="chats-heading">Create New Conversations</h2>
-          {users.length ?
+          {users.length ? (
             users.map((chat) => (
-              <Link
-                onClick={handleOpen}
+              <div
                 style={{ textDecoration: "none" }}
                 key={chat.uuid}
                 className="user-chat"
@@ -88,29 +64,25 @@ const Users = () => {
                   }
                   alt={`Profile of ${chat.username}`}
                   className="profile-image"
-                  style={{objectFit:"cover"}}
+                  style={{ objectFit: "cover" }}
                 />
-                <div onClick={(e)=>handleReceiver(e, chat.uuid)} className="chat-info">
+                <div
+                  onClick={(e) => handleSelectedChat(e, chat)}
+                  className="chat-info"
+                >
                   <span>{chat.username}</span>
                   <small>last seen: 2205 hrs </small>
                   <small className="add">
                     <AddIcon />
                   </small>
                 </div>
-              </Link>
-            )):
+              </div>
+            ))
+          ) : (
             <div>
-              <p style={{color:"white"}}>No Available Chats</p>
+              <p style={{ color: "white" }}>No Available Chats</p>
             </div>
-          }
-
-          <Modal onClose={handleClose} open={open} style={modalStyle}>
-            <div className="modal-content">
-              <form onSubmit={(e) => handleSubmit(e)}>
-                <button className="sign-up-button">START CONVERSATION</button>
-              </form>
-            </div>
-          </Modal>
+          )}
         </div>
 
         <div className="left-sidebar">

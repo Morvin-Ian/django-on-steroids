@@ -1,14 +1,13 @@
-import React from "react";
 import Navbar from "../common/Navbar";
 import Search from "./Search";
 import Chats from "./Chats";
 
-const SideBar = ({ chats}) => {
+const SideBar = ({ chats, setChats = { setChats } }) => {
   return (
     <div className="sidebar">
       <Navbar />
       <Search />
-      <Chats chats={chats}/>
+      <Chats chats={chats}  />
     </div>
   );
 };

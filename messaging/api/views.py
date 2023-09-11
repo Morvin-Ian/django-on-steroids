@@ -1,13 +1,13 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import GenericAPIView,  ListAPIView, CreateAPIView
-from .serializers import MessageSerializer
 from rest_framework.views import Response
 from rest_framework import status
 
-from messaging.models import Message, Dialog
+from messaging.models import Message, Dialog, UploadedFile
 from accounts.models import User
 
 from django.db.models import Q
+
 
 
 class DialogView(GenericAPIView):
@@ -21,7 +21,6 @@ class DialogView(GenericAPIView):
     def get(self, request):
         relationships = Dialog.objects.filter(
             Q(sender=request.user) | Q(recepient=request.user))
-
         response = []
 
         for relationship in relationships:
@@ -35,12 +34,26 @@ class DialogView(GenericAPIView):
             else:
                 profile = None
 
+            messages = Message.objects.filter(
+                Q(sender=request.user, recepient=chat) |
+                Q(sender=chat, recepient=request.user)
+            ).order_by('-created_at')
+        
+            if messages:
+                last_message =  messages.first().text
+                date = messages.first().created_at  
+            else:
+                last_message = None
+                date = None
+
             data = {
                 "chat": chat.username,
                 "chat_uuid": chat.uuid,
                 "profile": profile,
                 "uuid": relationship.id,
-                "user": request.user.uuid
+                "user": request.user.uuid,
+                "last_message":last_message,
+                "date":date
             }
 
             response.append(data)
@@ -61,12 +74,19 @@ class MessageListView(GenericAPIView):
         response = []
         for message in messages:
 
+            if message.file:
+                file = UploadedFile.objects.get(file=message.file).file.url
+            else:
+                file = None
+
             data = {
                 "id": message.id,
                 "message_sender_uuid": message.sender.uuid,
                 "message_receiver_uuid": message.recepient.uuid,
                 "text_message": message.text,
+                "file":file,
                 "dialog": message.dialog.id,
+                "date":message.created_at
 
             }
 
