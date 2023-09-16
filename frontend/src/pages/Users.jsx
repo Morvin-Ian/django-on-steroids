@@ -29,6 +29,7 @@ const Users = () => {
 
     const data = await addChat(access_token, uuids);
     if(data.uuid){
+      dispatch({type:"CHANGE_USER", payload:{}})
       redirect(`/`)
     }
   };
@@ -69,6 +70,7 @@ const Users = () => {
                 <div
                   onClick={(e) => handleSelectedChat(e, chat)}
                   className="chat-info"
+                  style={{cursor: "pointer"}}
                 >
                   <span>{chat.username}</span>
                   <small>last seen: 2205 hrs </small>

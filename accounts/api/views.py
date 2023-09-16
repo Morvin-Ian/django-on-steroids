@@ -2,7 +2,6 @@ from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
 from django.db.models import Q
-from django.contrib.auth import get_user_model
 
 from .serializer import  RegisterSerializer, LoginSerializer
 from accounts.models import User
