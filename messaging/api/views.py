@@ -7,6 +7,9 @@ from messaging.models import Message, Dialog, UploadedFile
 from accounts.models import User
 
 from django.db.models import Q
+from django.utils import timezone
+import pytz
+from django.core.cache import cache
 
 
 
@@ -23,6 +26,7 @@ class DialogView(GenericAPIView):
             Q(sender=request.user) | Q(recepient=request.user))
         response = []
 
+
         for relationship in relationships:
             if relationship.sender == request.user:
                 chat = relationship.recepient
@@ -34,12 +38,16 @@ class DialogView(GenericAPIView):
             else:
                 profile = None
 
+            unread_messages = 0
             messages = Message.objects.filter(
                 Q(sender=request.user, recepient=chat) |
                 Q(sender=chat, recepient=request.user)
             ).order_by('-created_at')
         
             if messages:
+                for message in messages:
+                    if message.read == False:
+                        unread_messages += 1
                 last_message =  messages.first().text
                 date = messages.first().created_at  
             else:
@@ -53,6 +61,7 @@ class DialogView(GenericAPIView):
                 "uuid": relationship.id,
                 "user": request.user.uuid,
                 "last_message":last_message,
+                "unread_count":unread_messages,
                 "date":date
             }
 
@@ -78,6 +87,12 @@ class MessageListView(GenericAPIView):
                 file = UploadedFile.objects.get(file=message.file).file.url
             else:
                 file = None
+            
+                date = timezone.datetime.strptime(str(message.created_at),  "%Y-%m-%d %H:%M:%S.%f%z")
+                target_timezone = pytz.timezone('Africa/Nairobi')
+                converted_timestamp = date.astimezone(target_timezone)
+                
+                formatted_timestamp = converted_timestamp.strftime("%M-%d-%Y %I:%M %p")
 
             data = {
                 "id": message.id,
@@ -85,8 +100,9 @@ class MessageListView(GenericAPIView):
                 "message_receiver_uuid": message.recepient.uuid,
                 "text_message": message.text,
                 "file":file,
+                "read":message.read,
                 "dialog": message.dialog.id,
-                "date":message.created_at
+                "date":formatted_timestamp
 
             }
 
@@ -98,6 +114,7 @@ class CreateDialogView(GenericAPIView):
     """
     Creates a dialog between users
     """
+
 
     permission_classes = [IsAuthenticated]
 
@@ -121,3 +138,28 @@ class CreateDialogView(GenericAPIView):
             return Response(response, status=status.HTTP_200_OK)
         else:
             return Response("Invalid uuids provided", status=status.HTTP_200_OK)
+
+
+class UpdateReadMessages(GenericAPIView):
+    """
+    Update messages to read in a dialog between users
+    """
+
+    def put(self, request):
+        dialog_id = request.data.get("dialog")
+
+        # cache_key = f"messages_{dialog_id}"
+        # message_list = cache.get(cache_key)
+        message_list = Message.objects.filter(dialog=dialog_id)
+
+
+        if message_list:
+            for message in message_list:
+                if message.read == False:
+                    if message.recepient == request.user:
+                        message.read = True
+                        message.save()
+                        print("Read")
+            # cache.set(cache_key, message_list, timeout=60)
+
+        return Response("Message Read", status=status.HTTP_200_OK)

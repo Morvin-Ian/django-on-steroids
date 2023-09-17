@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import avatar from "../../assets/images/default.webp";
 import { chatContext } from "../../context/ChatContext";
 import { DoneAll } from "@mui/icons-material";
+import { Check } from "@mui/icons-material";
 
 const Message = ({ message }) => {
   const user = localStorage.getItem("uuid");
@@ -15,6 +16,10 @@ const Message = ({ message }) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
+  const formatDate = (date) => {
+    return date
+  }
+
   return (
     <div
       id="chat-body"
@@ -23,7 +28,12 @@ const Message = ({ message }) => {
     >
       {isPatner && (
           <div className="messageDetail">
-            <p>{message.text_message} {isOwner  && <DoneAll/>} </p>
+            <p>
+              {message.text_message} 
+              {isOwner && message.read ? <DoneAll/> : (isOwner ? <Check/> : null)}
+              </p>
+            <small>{formatDate(message.date)}</small>
+
             {message.file &&
               <img src={`http://127.0.0.1:8000${message.file}`}  />
             }
