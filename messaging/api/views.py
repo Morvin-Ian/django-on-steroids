@@ -152,17 +152,17 @@ class UpdateReadMessages(GenericAPIView):
     def put(self, request):
         dialog_id = request.data.get("dialog")
 
-        cache_key = f"messages_{dialog_id}"
-        message_list = cache.get(cache_key)
+        # cache_key = f"messages_{dialog_id}"
+        # message_list = cache.get(cache_key)
+        message_list = Message.objects.filter(dialog=dialog_id)
 
 
-        if not message_list:
-            message_list = Message.objects.filter(dialog=dialog_id)
+        if message_list:
             for message in message_list:
                 if message.read == False:
                     if message.recepient == request.user:
                         message.read = True
                         message.save()
-            cache.set(cache_key, message_list, timeout=60)
+            # cache.set(cache_key, message_list, timeout=60)
 
         return Response("Message Read", status=status.HTTP_200_OK)
