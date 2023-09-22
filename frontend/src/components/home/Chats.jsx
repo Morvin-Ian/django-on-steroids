@@ -23,7 +23,6 @@ const Chats = ({chats}) => {
   }
 
   const truncateText = (text) => {
-    console.log(chats)
       return text.length > 20 ? text.substring(0, 19) + "..." : text;
   }
 
@@ -37,8 +36,10 @@ const Chats = ({chats}) => {
                     <span>{chat.chat}</span> <br />
                     <div style={{display:'flex'}}>
                       <small style={{color:"gray"}}>{chat.last_message ? truncateText(chat.last_message): ""}</small>
-                      <small style={notification}>{chat.unread_count !== 0 && chat.unread_count }</small>                  
-                    </div>
+                      <small style={notification}>
+                          {chat.last_message_sender !== userId && chat.unread_count !== 0 && chat.unread_count}
+                        </small>                      
+                  </div>
 
                     {/* {action !== '' ?
                     

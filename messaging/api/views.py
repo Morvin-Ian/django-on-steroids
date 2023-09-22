@@ -47,11 +47,14 @@ class DialogView(GenericAPIView):
             if messages:
                 for message in messages:
                     if message.read == False:
+                        print(message.text)
                         unread_messages += 1
                 last_message =  messages.first().text
+                last_message_sender = messages.first().sender.uuid
                 date = messages.first().created_at  
             else:
                 last_message = None
+                last_message_sender = None
                 date = None
 
             data = {
@@ -61,6 +64,7 @@ class DialogView(GenericAPIView):
                 "uuid": relationship.id,
                 "user": request.user.uuid,
                 "last_message":last_message,
+                "last_message_sender":last_message_sender,
                 "unread_count":unread_messages,
                 "date":date
             }
@@ -148,18 +152,17 @@ class UpdateReadMessages(GenericAPIView):
     def put(self, request):
         dialog_id = request.data.get("dialog")
 
-        # cache_key = f"messages_{dialog_id}"
-        # message_list = cache.get(cache_key)
-        message_list = Message.objects.filter(dialog=dialog_id)
+        cache_key = f"messages_{dialog_id}"
+        message_list = cache.get(cache_key)
 
 
-        if message_list:
+        if not message_list:
+            message_list = Message.objects.filter(dialog=dialog_id)
             for message in message_list:
                 if message.read == False:
                     if message.recepient == request.user:
                         message.read = True
                         message.save()
-                        print("Read")
-            # cache.set(cache_key, message_list, timeout=60)
+            cache.set(cache_key, message_list, timeout=60)
 
         return Response("Message Read", status=status.HTTP_200_OK)
