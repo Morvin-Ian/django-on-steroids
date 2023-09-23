@@ -20,3 +20,12 @@ Some of the key features of Django Channels include:
     1. WebSockets support
     2. Custom protocol support
     3. Django integration
+    
+## Installation
+    1. git clone 'this repo's link'
+    2. pip install -r requirements.txt
+    3. cd frontend && npm i --legacy-peer-deps
+    
+## Run
+    1. python3 manage.py runserver
+    2. On another terminal - cd frontend && npm start 
