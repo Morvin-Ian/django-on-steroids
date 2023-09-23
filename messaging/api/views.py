@@ -26,7 +26,6 @@ class DialogView(GenericAPIView):
             Q(sender=request.user) | Q(recepient=request.user))
         response = []
 
-
         for relationship in relationships:
             if relationship.sender == request.user:
                 chat = relationship.recepient
@@ -151,9 +150,6 @@ class UpdateReadMessages(GenericAPIView):
 
     def put(self, request):
         dialog_id = request.data.get("dialog")
-
-        # cache_key = f"messages_{dialog_id}"
-        # message_list = cache.get(cache_key)
         message_list = Message.objects.filter(dialog=dialog_id)
 
 
@@ -163,6 +159,5 @@ class UpdateReadMessages(GenericAPIView):
                     if message.recepient == request.user:
                         message.read = True
                         message.save()
-            # cache.set(cache_key, message_list, timeout=60)
 
         return Response("Message Read", status=status.HTTP_200_OK)
