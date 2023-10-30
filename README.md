@@ -29,3 +29,8 @@ Some of the key features of Django Channels include:
 ## Run
     1. python3 manage.py runserver
     2. On another terminal - cd frontend && npm start 
+![Screenshot from 2023-10-26 13-46-35](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/3552722b-ca01-4e5a-a30b-826b87491167)
+![Screenshot from 2023-10-26 13-46-15](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/f2e32f15-5f30-4197-baec-096109556c0c)
+
+
+
