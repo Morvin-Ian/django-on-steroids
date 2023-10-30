@@ -38,7 +38,7 @@ const Chats = ({chats}) => {
                       <small style={{color:"gray"}}>{chat.last_message ? truncateText(chat.last_message): ""}</small>
                       <small style={notification}>
                           {chat.last_message_sender !== userId && chat.unread_count !== 0 && chat.unread_count}
-                        </small>                      
+                        </small>               
                   </div>
 
                     {/* {action !== '' ?

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import ImageIcon from "@mui/icons-material/Image";
 import { chatContext } from "../../context/ChatContext";
@@ -7,8 +7,9 @@ const MessageInput = ({ socket }) => {
   const senderId = localStorage.getItem("uuid");
   const textRef = useRef(null);
   const formRef = useRef(null);
-
-  const {state} = useContext(chatContext)
+  const { state } = useContext(chatContext);
+  const [preview, setPreview] = useState(null);
+  const [image, setImage] = useState(null);
 
   const handleTyping = (e) => {
     e.preventDefault();
@@ -23,8 +24,7 @@ const MessageInput = ({ socket }) => {
     };
 
     socket.send(JSON.stringify(data));
-
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,17 +35,39 @@ const MessageInput = ({ socket }) => {
       receiver: state.user.chat_uuid,
       room: state.user.uuid,
       message: textRef.current.value,
+      file:preview
+
     };
 
     socket.send(JSON.stringify(data));
     textRef.current.value = "";
+    setPreview(null);
+  };
 
-  }
-
-
+  const handleImageFile = (e) => {
+    const file = e.target.files[0];
+    setPreview(URL.createObjectURL(file));
+    setImage(file)
+  };
 
   return (
     <form ref={formRef} className="input" onSubmit={(e) => handleSubmit(e)}>
+      {preview && (
+        <img
+          className="preview"
+          style={{
+            position: "absolute",
+            top: "25%",
+            objectFit: "cover",
+            border: "5px solid #22b8cfea",
+            borderRadius: "10px",
+          }}
+          src={preview}
+          width="950px"
+          height="400px"
+        />
+      )}
+
       <input
         type="text"
         placeholder="Type Something ..."
@@ -59,22 +81,11 @@ const MessageInput = ({ socket }) => {
           style={{ display: "none" }}
           type="file"
           id="media"
-          accept="image/*, video/*"
+          accept="image/*"
+          onChange={(e) => handleImageFile(e)}
         />
         <label htmlFor="media">
           <ImageIcon />
-        </label>
-
-        <input
-          style={{ display: "none" }}
-          type="file"
-          accept="application/msword,
-                application/vnd.ms-excel, application/vnd.ms-powerpoint,
-                text/plain, application/pdf"
-          id="doc"
-        />
-        <label htmlFor="doc">
-          <AttachFileIcon />
         </label>
 
         <button onClick={handleSubmit}>Send</button>

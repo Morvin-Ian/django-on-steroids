@@ -3,7 +3,8 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from messaging.models import Dialog, Message  
 from accounts.models import User
-from django.db.models import Q              
+from django.db.models import Q      
+from django.core.files import File        
 
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
@@ -29,6 +30,10 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         receiver_uuid = received_data.get("receiver")
         status = received_data.get("status")
         room_id = received_data.get("room")
+        file = received_data.get("file")
+
+        temp_image = File(open('temp_image.png', 'wb'))
+        temp_image.write(file)
     
         #Getting the User instance of message sender
         sender = await self.get_user(sender_uuid)
@@ -48,7 +53,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             "sender_id":sender_uuid,   
             "receiver_id":receiver_uuid,   
             "status":status,
-            "message":message         
+            "message":message  
+
         }  
 
         await self.channel_layer.group_send(
@@ -69,6 +75,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         receiver_uuid = received_data.get("receiver_id")
         status = received_data.get("status")
         room_id = received_data.get("room_id")
+        file = received_data.get("file")
+
 
         response = {
             'message': message,
@@ -76,7 +84,8 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             "room_id":room_id,
             "sender_id":sender_uuid,
             "status":status,
-            "receiver_id":receiver_uuid
+            "receiver_id":receiver_uuid,
+            "file":file        
             
             } 
         
