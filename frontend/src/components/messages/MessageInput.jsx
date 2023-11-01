@@ -28,15 +28,12 @@ const MessageInput = ({ socket }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = {
       typing: null,
       sender: senderId,
       receiver: state.user.chat_uuid,
       room: state.user.uuid,
       message: textRef.current.value,
-      file:preview
-
     };
 
     socket.send(JSON.stringify(data));
@@ -47,7 +44,11 @@ const MessageInput = ({ socket }) => {
   const handleImageFile = (e) => {
     const file = e.target.files[0];
     setPreview(URL.createObjectURL(file));
-    setImage(file)
+    const reader = new FileReader();
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+      setImage(reader.result)
+    }
   };
 
   return (

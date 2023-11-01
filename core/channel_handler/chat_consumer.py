@@ -1,11 +1,12 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
-from messaging.models import Dialog, Message  
+from messaging.models import Dialog, Message, UploadedFile  
 from accounts.models import User
 from django.db.models import Q      
-from django.core.files import File        
-
+from django.core.files.base import ContentFile
+import base64
+from datetime import datetime
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
         self.group_name = f"Chat_Room"
@@ -30,17 +31,24 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         receiver_uuid = received_data.get("receiver")
         status = received_data.get("status")
         room_id = received_data.get("room")
-        file = received_data.get("file")
+        # file = received_data.get("file")
 
-        temp_image = File(open('temp_image.png', 'wb'))
-        temp_image.write(file)
-    
+        # if file != None:
+        #     image_binary_data = base64.b64decode(file)
+        #     file = ContentFile(image_binary_data, name=f"{datetime.now()}_{sender_uuid}.jpeg")
+            
+        # else:
+        #     file = None
+
         #Getting the User instance of message sender
         sender = await self.get_user(sender_uuid)
 
         #Getting the User instance of message Receiver
         if receiver_uuid != None:
             recepient = await self.get_user(receiver_uuid)
+
+            # if file:
+            #     upload_file = await self.save_file(sender, file)
 
             # retrieve the Dialog Model
             if message:                
@@ -65,7 +73,7 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
 
             })
         
-        print("receive", event)
+        # print("receive", event)
 
     async def chat_message(self, event):
         received_data = json.loads(event["text"])
@@ -75,7 +83,6 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         receiver_uuid = received_data.get("receiver_id")
         status = received_data.get("status")
         room_id = received_data.get("room_id")
-        file = received_data.get("file")
 
 
         response = {
@@ -85,7 +92,6 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
             "sender_id":sender_uuid,
             "status":status,
             "receiver_id":receiver_uuid,
-            "file":file        
             
             } 
         
@@ -106,6 +112,16 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
        
     @database_sync_to_async
     def save_message(self, message, sender, recepient, room_id):
-            message = Message.objects.create(sender=sender, recepient=recepient, text=message, dialog=Dialog.objects.get(id=room_id))
+            message = Message.objects.create(
+                 sender=sender, 
+                 recepient=recepient, 
+                 text=message, 
+                 dialog=Dialog.objects.get(id=room_id)
+            )
+    
+    @database_sync_to_async
+    def save_file(self,sender, file):
+        file = UploadedFile.objects.create(uploaded_by=sender, file=file)
+        return file
 
 

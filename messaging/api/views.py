@@ -46,7 +46,6 @@ class DialogView(GenericAPIView):
             if messages:
                 for message in messages:
                     if message.read == False:
-                        print(message.text)
                         unread_messages += 1
                 last_message =  messages.first().text
                 last_message_sender = messages.first().sender.uuid
