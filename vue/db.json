@@ -1,0 +1,76 @@
+{
+    "chats": [
+      {
+        "id": 1,
+        "username": "Morvin",
+        "profile": null,
+        "last_message":"Good Morning Champ",
+        "last_message_time":"12:00 PM"
+      },
+      {
+        "id": 2,
+        "username": "Evans Nderitu",
+        "profile": true,
+        "last_message":"Just come to the market already",
+        "last_message_time":"15:00 PM"
+      },
+      {
+        "id": 3,
+        "username": "Bryson Peter",
+        "profile": null,
+        "last_message":"I didn't see her bro",
+        "last_message_time":"10:18 AM"
+  
+      },
+      {
+        "id": 4,
+        "username": "Wetende",
+        "profile": true,
+        "last_message":"Theat wasn't her response",
+        "last_message_time":"09:00 AM"
+      },
+      {
+        "id": 5,
+        "username": "Alice Wahome",
+        "profile": null,
+        "last_message":"You seriously stood me up",
+        "last_message_time":"07:45 AM"
+  
+      },
+      {
+        "id": 6,
+        "username": "Fat Nigga",
+        "profile": null,
+        "last_message":"Gym is hard bro",
+        "last_message_time":"06:30 AM"
+  
+      },
+      {
+        "id": 7,
+        "username": "Crush",
+        "profile": null,
+        "last_message":"Nowadays you are ugly.",
+        "last_message_time":"10:30 AM"
+  
+      }
+    ],
+  
+    "messages": [
+      {
+        "senderId": 2,
+        "receiverId": 1,
+        "message": "Just come to the market already",
+        "file":true,
+        "time":"10:30 AM"
+  
+      },
+      {
+        "senderId": 1,
+        "receiverId": 3,
+        "message": "Good Morning Champ",
+        "file":null,
+        "time":"9:30 AM"
+  
+      }
+    ]
+  }
