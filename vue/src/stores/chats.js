@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
-import { v4 as uuid } from "uuid";
+import { baseUrl } from "./auth";
 
-export const BASE_URL = "http://localhost:5000";
+
+const addChatUrl = `${baseUrl}/api/messages/add_dialog/`;
 
 export const useChatStore = defineStore("chats", {
     state: () => {
@@ -23,12 +24,31 @@ export const useChatStore = defineStore("chats", {
                 console.error("Error fetching chats:", error);
             }
         },
-        addChat(chat) {
-            this.chats.unshift({
-                id: uuid(),
-                ...chat,
-            });
+        async addChat(access_token, uuids) {
+
+                const response = await fetch(addChatUrl, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                        'Content-Type': 'application/json'
+            
+                    },
+                    body: JSON.stringify(uuids)
+                })
+            
+                const data = await response.json();
+            
+                if (!response.ok) {
+                    console.log(data)
+                    return data
+                }
+                else {
+                    console.log(data)
+                    return data  
+                }
+            
         },
+
         deleteChat(id) {
             this.chats = this.chats.filter((chat) => chat.id !== id);
         },
