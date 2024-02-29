@@ -1,6 +1,5 @@
-venv
-*.env
-/htmlcov
+
+.env
 
 # Exclude Django migrations and pychache folders
 */migrations/*
