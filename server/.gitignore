@@ -1,6 +1,6 @@
 
 .env
-
+/env
 # Exclude Django migrations and pychache folders
 */migrations/*
 */__pycache__/*
