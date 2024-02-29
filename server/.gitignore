@@ -1,0 +1,9 @@
+
+.env
+
+# Exclude Django migrations and pychache folders
+*/migrations/*
+*/__pycache__/*
+media
+
+
