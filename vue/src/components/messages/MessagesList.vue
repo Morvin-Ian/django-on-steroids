@@ -1,6 +1,6 @@
 <template>
     <div class="messages-container">
-        <div class="message" v-for="message in messageStore.messages">
+        <div class="message" v-for="message in messageStore.messages" :key="message.id">
             <Message :message="message"/>
         </div>
     </div>

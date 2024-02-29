@@ -1,17 +1,19 @@
 <template>
-    <Navbar  
-        @view-profile="setProfile" 
-        @view-chat-drop="setChatDrop" 
-        :viewChatDrop="viewChatDrop"
-    />
-    <Search/>
-    <ChatList 
-        @change-view="changeView"
-    />
-    <Profile 
-        :viewProfile="viewProfile" 
-        @view-profile="setProfile" 
-    />
+   <div class="container">
+        <Navbar  
+            @view-profile="setProfile" 
+            @view-chat-drop="setChatDrop" 
+            :viewChatDrop="viewChatDrop"
+        />
+        <Search/>
+        <ChatList 
+            @change-view="changeView"
+        />
+        <Profile 
+            :viewProfile="viewProfile" 
+            @view-profile="setProfile" 
+        />
+   </div>
 </template>
 
 <script setup>

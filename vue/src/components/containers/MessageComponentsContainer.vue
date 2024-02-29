@@ -1,4 +1,5 @@
 <template>
+   <div class="container">
     <MessageNav 
         @view-chat-profile="setChatProfile"
         @view-message-drop ="setMessageDrop"
@@ -14,6 +15,7 @@
         :viewChatProfile="viewChatProfile"  
         @view-chat-profile="setChatProfile" 
     />
+   </div>
 </template>
 
 <script setup>
