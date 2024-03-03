@@ -6,11 +6,18 @@
         <li>Clear chats</li>
         <li>Select chat</li>
         <li>Settings</li>
-        <li>Log out</li>
+        <li @click="logout">Log out</li>
     </ul>
 </template>
 
-<script>
+<script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter()
+
+const logout = () =>{
+    localStorage.removeItem('user');
+    router.push('/sign-in');
+}
 
 </script>
 

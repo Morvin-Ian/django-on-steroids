@@ -1,21 +1,17 @@
 // store/auth.js
 import { defineStore } from "pinia";
-export const baseUrl = "http://127.0.0.1:5000";
+export const baseUrl = "http://127.0.0.1:8000/api/messages";
+export const authUrl = "http://127.0.0.1:8000/api/auth";
 
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
-    access_token: null,
-    uuid: null,
-    profile: null,
-    email: null,
-    username: null,
-    error: null,
+    uuid: null
   }),
   actions: {
     async authenticate(credentials) {
       try {
-        const response = await fetch(loginUrl, {
+        const response = await fetch(`${authUrl}/login/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -26,21 +22,19 @@ export const useAuthStore = defineStore({
         const data = await response.json();
 
         if (!response.ok) {
-          this.error = data;
+          return data;
         } else {
-          this.access_token = data.token;
-          this.uuid = data.uuid;
-          this.profile = data.profile;
-          this.email = data.email;
-          this.username = data.username;
+          localStorage.setItem("user",JSON.stringify(data))
+          return data;
+
         }
       } catch (error) {
-        this.error = error.message;
+        return error;
       }
     },
     async registration(credentials) {
       try {
-        const response = await fetch(registrationUrl, {
+        const response = await fetch(`${authUrl}/register/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -48,12 +42,15 @@ export const useAuthStore = defineStore({
           body: JSON.stringify(credentials),
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-          const data = await response.json();
-          this.error = "Username or Email Already Exists";
+          return data
+        }else{
+          return data
         }
       } catch (error) {
-        this.error = error.message;
+        return error
       }
     },
   },

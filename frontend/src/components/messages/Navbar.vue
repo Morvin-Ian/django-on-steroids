@@ -3,7 +3,7 @@
         <div class="user-profile">
             <img @click="setChatProfile" :src="profilePicture" alt="profile">
             <div class="name">
-                <span >{{ activeChatStore.activeChat.username }}</span> <br>
+                <span >{{ activeChatStore.activeChat.chat }}</span> <br>
                 <small class="action">typing ...</small>
             </div>
         </div>
@@ -33,7 +33,7 @@
         </div>
 
     </div>
-</template>viewMessageDrop
+</template>
 
 <script setup>
     import profilePicture from "@/assets/octo.jpg"

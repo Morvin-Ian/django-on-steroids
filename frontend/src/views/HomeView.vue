@@ -21,13 +21,17 @@
   
   
   <script setup>
-        import {ref} from 'vue'
+        import {onMounted, ref} from 'vue'
         import ChatsContainer from "@/components/containers/ChatComponentsContainer.vue"
         import MessagesContainer from "@/components/containers/MessageComponentsContainer.vue"
         import DefaultContainer from "@/components/containers/Default.vue"
+        import { useRouter } from 'vue-router'
 
+
+        const router = useRouter()
         const viewChatProfile = ref(false)
         const isDefault = ref(true)
+        const user = JSON.parse(localStorage.getItem("user"))
   
 
         const changeView = () =>{
@@ -37,6 +41,12 @@
         const changeDefault = (val) => {
           isDefault.value = val
         }
+
+        onMounted(()=>{
+            if(!user || !user.token){
+              router.push('/sign-in')
+            }
+        })
 
   </script>
   

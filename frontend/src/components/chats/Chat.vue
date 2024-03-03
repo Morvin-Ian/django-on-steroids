@@ -9,7 +9,7 @@
 
         <div class="chat-details">
             <div>
-                <span class="name">{{ chat.username }}</span> <br>
+                <span class="name">{{ chat.chat }}</span> <br>
                 <div class="low">
                     <small class="last-msg">{{ truncateText(chat.last_message) }}</small>
                     <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" />
@@ -26,7 +26,7 @@
 <script setup>
     import profilePicture from "@/assets/octo.jpg"
     import defaultProfile from "@/assets/default.jpg"
-    import {defineProps} from "vue"
+    import {defineProps, onMounted} from "vue"
 
 
     const props =  defineProps({
@@ -37,8 +37,13 @@
     }) 
 
     const truncateText = (text) => {
-      return text.length > 20 ? text.substring(0, 20) + " ..." : text;
+        if(!text){
+            return "Start conversation"    
+        }else{
+            return text.length > 20 ? text.substring(0, 20) + " ..." : text;
+        }
     }
+
 
 </script>
 

@@ -12,9 +12,10 @@
     import {useMessagesStore} from "@/stores/messages.js"
 
     const messageStore = useMessagesStore()
+    const user = JSON.parse(localStorage.getItem("user"))
 
     // fetch Messages
-    messageStore.getMessages()
+    messageStore.fetchMessages(user.token)
     
 </script>
 

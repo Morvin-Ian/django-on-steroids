@@ -6,7 +6,7 @@ export const useMessagesStore = defineStore({
   actions: {
     async fetchMessages(access_token) {
       try {
-        const messagesUrl = `${baseUrl}/api/messages/list/`;
+        const messagesUrl = `${baseUrl}/list/`;
         const response = await fetch(messagesUrl, {
           headers: { Authorization: `Bearer ${access_token}` },
         });
@@ -25,7 +25,7 @@ export const useMessagesStore = defineStore({
 
     async updateMessageRead(access_token, dialog) {
       try {
-        const messagesReadUrl = `${baseUrl}/api/messages/read/`;
+        const messagesReadUrl = `${baseUrl}/read/`;
         const response = await fetch(messagesReadUrl, {
           method: 'PUT',
           headers: {

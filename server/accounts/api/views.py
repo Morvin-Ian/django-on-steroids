@@ -41,13 +41,18 @@ class LoginView(GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, format=None):
-        user = auth.authenticate(email=request.data['email'], password=request.data['password'])      
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        if password and email:
+            user = auth.authenticate(email=request.data['email'], password=request.data['password'])   
+        else:
+            return Response({"error":"Bad Request"}, status=status.HTTP_400_BAD_REQUEST)   
         if user is not None:
             serializer = self.serializer_class(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         else:
-            return Response("Invalid Credentials", status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error":"Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
         
         
 
@@ -111,7 +116,6 @@ class EditProfile(GenericAPIView):
         profile = request.data.get('profile')
         user = request.user
 
-        print(request.data)
 
     
         if email:

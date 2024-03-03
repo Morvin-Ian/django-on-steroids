@@ -2,8 +2,6 @@ import { defineStore } from "pinia";
 import { baseUrl } from "./auth";
 
 
-const addChatUrl = `${baseUrl}/api/messages/add_dialog/`;
-
 export const useChatStore = defineStore("chats", {
     state: () => {
         return{
@@ -12,10 +10,15 @@ export const useChatStore = defineStore("chats", {
     },
 
     actions: {
-        async getChats(){
+        async getChats(access_token){
             try {
                           
-                const response = await fetch(`${baseUrl}/chats`);
+                const response = await fetch(`${baseUrl}/chats/`,{
+                    headers:{
+                        'Authorization': `Bearer ${access_token}`,
+                        'Content-Type': 'application/json'   
+                    }
+                });
                 const data = await response.json();
                 
                 this.chats = data;
@@ -26,7 +29,7 @@ export const useChatStore = defineStore("chats", {
         },
         async addChat(access_token, uuids) {
 
-                const response = await fetch(addChatUrl, {
+                const response = await fetch(`${baseUrl}/api/messages/add_dialog/`, {
                     method: "POST",
                     headers: {
                         'Authorization': `Bearer ${access_token}`,
@@ -56,14 +59,14 @@ export const useChatStore = defineStore("chats", {
     },
 
     getters: {
-        sortedChats() {
-            return this.chats?.sort(
-                (a, b) => new Date(b.date) - new Date(a.date)
-            );
-        },
-        getUser(){
-            return this.chats.filter((chat) => chat.id === 1);
+        // sortedChats() {
+        //     return this.chats?.sort(
+        //         (a, b) => new Date(b.date) - new Date(a.date)
+        //     );
+        // },
+        // getUser(){
+        //     return this.chats.filter((chat) => chat.id === 1);
 
-        }
+        // }
     },
 });

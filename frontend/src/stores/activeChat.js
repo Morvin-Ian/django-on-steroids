@@ -9,16 +9,12 @@ export const useActiveChatStore = defineStore("activeChat", {
     },
 
     actions: {
-        async setChat(id){
+        async setChat(chat){
             try {
-                          
-                const response = await fetch(`${baseUrl}/chats/${id}`);
-                const data = await response.json();
-
-                this.activeChat = data;
+                this.activeChat = chat;
                 
             }catch (error) {
-                console.error("Error fetching chat", error);
+                console.error("Error setting chat", error);
             }
         },   
     }
