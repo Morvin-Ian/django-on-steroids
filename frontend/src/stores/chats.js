@@ -15,7 +15,7 @@ export const useChatStore = defineStore("chats", {
         async getChats(){
             try {
                           
-                const response = await fetch(`${BASE_URL}/chats`);
+                const response = await fetch(`${baseUrl}/chats`);
                 const data = await response.json();
                 
                 this.chats = data;

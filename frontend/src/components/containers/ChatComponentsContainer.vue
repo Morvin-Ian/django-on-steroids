@@ -1,5 +1,4 @@
 <template>
-   <div class="container">
         <Navbar  
             @view-profile="setProfile" 
             @view-chat-drop="setChatDrop" 
@@ -13,7 +12,6 @@
             :viewProfile="viewProfile" 
             @view-profile="setProfile" 
         />
-   </div>
 </template>
 
 <script setup>

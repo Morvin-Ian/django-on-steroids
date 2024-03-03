@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { BASE_URL } from "./chats";
+import { baseUrl } from "./auth";
 
 export const useActiveChatStore = defineStore("activeChat", {
     state: () => {
@@ -12,7 +12,7 @@ export const useActiveChatStore = defineStore("activeChat", {
         async setChat(id){
             try {
                           
-                const response = await fetch(`${BASE_URL}/chats/${id}`);
+                const response = await fetch(`${baseUrl}/chats/${id}`);
                 const data = await response.json();
 
                 this.activeChat = data;
