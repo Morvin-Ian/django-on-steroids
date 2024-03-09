@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'corsheaders',
     'rest_framework',    
 
@@ -100,7 +101,6 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [("127.0.0.1", 6379)],
         },
-
     },
 }
 
@@ -169,13 +169,12 @@ AUTH_USER_MODEL = "accounts.User"
 STATIC_URL = 'static/'
 
 
-# CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     
-#     'http://localhost:3000',
-#     'https://brace-converse.vercel.app'
-# ]
+    'http://localhost:5173',
+    'https://brace-converse.vercel.app'
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

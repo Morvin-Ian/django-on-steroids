@@ -57,5 +57,10 @@ export const useChatStore = defineStore("chats", {
         },
         
     },
+    getters:{
+        sortedChats(){
+            return this.chats.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+    }
 
 });
