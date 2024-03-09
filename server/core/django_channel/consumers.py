@@ -1,5 +1,5 @@
 import json
-from .db_operations import get_user, get_dialog
+from .db_operations import get_user, save_message
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
@@ -25,20 +25,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         dialog = text_data_json["dialog"]
         message = text_data_json["message"]
 
-        response = {
-            "message":message,
-            "sender" :sender,
-            "receiver":receiver,
-            "dialog":dialog
-        }
+        if sender and receiver:
+            sender = await get_user(sender)
+            receiver = await get_user(receiver)
+
+            if message:
+                await save_message(message, sender, receiver, dialog)
 
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat.message", "response": response}
+            self.room_group_name, {"type": "chat.message", "response": "success"}
         )
 
     # Receive message from room group
     async def chat_message(self, event):
-   
         # Send message to WebSocket
         await self.send(text_data=json.dumps(event))
