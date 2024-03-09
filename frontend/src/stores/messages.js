@@ -3,6 +3,9 @@ import { baseUrl } from './auth';
 
 export const useMessagesStore = defineStore({
   id: 'messages',
+  state: () => ({
+    messages: []
+  }),
   actions: {
     async fetchMessages(access_token) {
       try {
@@ -16,7 +19,9 @@ export const useMessagesStore = defineStore({
           throw new Error('Failed to fetch messages');
         }
 
-        return await response.json();
+        const data = await response.json();
+        this.messages = data
+        
       } catch (error) {
         console.error('Fetch messages error:', error);
         return error.message;
