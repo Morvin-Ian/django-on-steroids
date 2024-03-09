@@ -3,6 +3,7 @@ from accounts.models import User
 from messaging.models import Dialog, Message
 
 
+
 @database_sync_to_async
 def get_dialog(uuid):
     return Dialog.objects.get(id=uuid)

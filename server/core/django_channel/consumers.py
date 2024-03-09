@@ -25,9 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         dialog = text_data_json["dialog"]
         message = text_data_json["message"]
 
-        print(await get_user(receiver), get_dialog(dialog))
-
-
         response = {
             "message":message,
             "sender" :sender,
