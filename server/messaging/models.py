@@ -13,7 +13,7 @@ class Dialog(models.Model):
     """
     id          = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sender      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="sender")
-    recepient  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="recepient")    
+    recepient   = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  related_name="recepient")    
 
     @staticmethod
     def dialog_exists(first_user: User, second_user: User):

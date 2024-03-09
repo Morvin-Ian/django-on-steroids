@@ -15,7 +15,7 @@
         </div>
         
         <div class="text-message">
-            <input type="text" class="text"/>
+            <input type="text" v-model="message" class="text"/>
         </div>
 
         <div class="voice-note">
@@ -26,9 +26,14 @@
 
 <script setup>
     import FileDropDown from "@/components/dropdowns/FileMessageDropDown.vue"
-    import {defineEmits, defineProps} from "vue"
+    import {defineEmits, defineProps, ref} from "vue"
+    import { useSocketStore } from "@/stores/socket";
+    import { useActiveChatStore } from "@/stores/activeChat";
 
     const emits = defineEmits(['view-file-message'])
+    const socketStore = useSocketStore()
+    const activeChatStore = useActiveChatStore()
+    const message = ref('')
 
     const props = defineProps({
         viewFileMessage:{
@@ -38,12 +43,21 @@
 
     })
 
+
     const setFileMessage = () => {
         emits('view-file-message', !props.viewFileMessage)
     }
 
     const handleSubmit = () => {
-
+        if (message.value){
+            socketStore.socket.send(JSON.stringify({
+                sender:JSON.parse(localStorage.getItem("user")).uuid,
+                receiver:activeChatStore.activeChat.chat_uuid,
+                message: message.value,
+                dialog:activeChatStore.activeChat.dialog
+            }))
+        }
+        message.value = ""
     }
 </script>
 

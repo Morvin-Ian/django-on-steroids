@@ -27,6 +27,7 @@
     const viewChatProfile = ref(false);
     const viewMessageDrop = ref(false);
     const viewFileMessage = ref(false);
+    
 
     const emits = defineEmits(['view-chat-profile'])
 
