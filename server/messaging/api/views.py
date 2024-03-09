@@ -7,8 +7,6 @@ from messaging.models import Message, Dialog, UploadedFile
 from accounts.models import User
 
 from django.db.models import Q
-from django.utils import timezone
-import pytz
 from django.core.cache import cache
 
 
@@ -59,7 +57,7 @@ class DialogView(GenericAPIView):
                 "chat": chat.username,
                 "chat_uuid": chat.uuid,
                 "profile": profile,
-                "uuid": relationship.id,
+                "dialog": relationship.id,
                 "user": request.user.uuid,
                 "last_message":last_message,
                 "last_message_sender":last_message_sender,
@@ -89,12 +87,6 @@ class MessageListView(GenericAPIView):
                 file = UploadedFile.objects.get(file=message.file).file.url
             else:
                 file = None
-            
-                date = timezone.datetime.strptime(str(message.created_at),  "%Y-%m-%d %H:%M:%S.%f%z")
-                target_timezone = pytz.timezone('Africa/Nairobi')
-                converted_timestamp = date.astimezone(target_timezone)
-                
-                formatted_timestamp = converted_timestamp.strftime("%M-%d-%Y %I:%M %p")
 
             data = {
                 "id": message.id,
@@ -104,7 +96,7 @@ class MessageListView(GenericAPIView):
                 "file":file,
                 "read":message.read,
                 "dialog": message.dialog.id,
-                "date":formatted_timestamp
+                "date":message.created_at
 
             }
 
@@ -133,13 +125,12 @@ class CreateDialogView(GenericAPIView):
                 sender=sender_instance, recepient=receiver_instance)
 
             response = {
-                "uuid": dialog.id
+                "dialog": dialog.id
             }
-            print(request.data)
 
             return Response(response, status=status.HTTP_200_OK)
         else:
-            return Response("Invalid uuids provided", status=status.HTTP_200_OK)
+            return Response("Invalid users provided", status=status.HTTP_200_OK)
 
 
 class UpdateReadMessages(GenericAPIView):
