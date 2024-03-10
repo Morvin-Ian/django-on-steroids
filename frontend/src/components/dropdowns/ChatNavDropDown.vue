@@ -25,7 +25,7 @@ const logout = () =>{
     .drop-list{
         position: absolute;
         top:8%;
-        left:5%;
+        left:10%;
         background: #202C33;
         width: 15%;
         padding: 5px 20px;

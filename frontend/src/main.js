@@ -17,7 +17,7 @@ import {
     faSquarePollVertical,faCircleXmark,
     faBell, faStar, faArrowRotateRight,
     faLock,faTrash,faBan,
-    faThumbsDown
+    faThumbsDown, faCheckDouble, faCheck
 
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -31,7 +31,7 @@ library.add(
     faFaceSmile, faArrowLeft,faTrash,
     faFile, faImages, faCamera,faBan,
     faSquarePollVertical, faCircleXmark, faBell,
-    faStar, faArrowRotateRight, faLock
+    faStar, faArrowRotateRight, faLock, faCheckDouble, faCheck
 )
 
 const app = createApp(App)

@@ -55,7 +55,7 @@ onMounted(() => {
 }
 
 .container .chats {
-  flex-basis: 25%;
+  flex-basis: 30%;
   border-right: 1px solid rgb(78, 78, 78);
 
 }

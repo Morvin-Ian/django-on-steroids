@@ -9,12 +9,16 @@
                 </div>
 
                 <div class="text">
-                    <span>{{ message.text_message }}</span>
-                    <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" />
-                    <br>
-                    <small class="time">{{ formatDateTime(message.date).time }}</small>
+                    <span>{{ message.text_message }}</span> <br>
+                    <small class="time">
+                        {{ formatDateTime(message.date).time }}
+                        <font-awesome-icon v-if="userId === message.message_sender_uuid"
+                            :style="{ color: message.read ? 'aqua' : 'inherit' }"
+                            class="tick-icon"
+                            :icon="message.read ? ['fas', 'check-double'] : ['fas', 'check']"
+                        />
+                    </small>
                 </div>
-
             </div>
         </div>
     </div>
@@ -23,6 +27,7 @@
 <script setup>
 import file from "@/assets/octo.jpg"
 import { defineProps, computed } from "vue"
+import { formatDateTime } from "@/utils/helpers";
 import { useActiveChatStore } from "@/stores/activeChat";
 
 const activeChatStore = useActiveChatStore()
@@ -37,27 +42,6 @@ const props = defineProps({
 const userId = computed(() => {
     return JSON.parse(localStorage.getItem("user")).uuid
 });
-
-function formatDateTime(date) {
-    const currentDate = new Date(date);
-    let hours = currentDate.getHours();
-    let minutes = currentDate.getMinutes();
-    let meridiem = hours >= 12 ? 'PM' : 'AM';
-
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-
-    const formattedTime = hours + ':' + minutes + ' ' + meridiem;
-
-    const formattedDate = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
-
-    return {
-        date: formattedDate,
-        time: formattedTime
-    };
-}
-
 
 
 </script>

@@ -26,6 +26,8 @@
 import profilePicture from "@/assets/octo.jpg"
 import defaultProfile from "@/assets/default.jpg"
 import { defineProps } from "vue"
+import { formatDateTime } from "@/utils/helpers";
+
 
 
 const props = defineProps({
@@ -43,25 +45,6 @@ const truncateText = (text) => {
     }
 }
 
-function formatDateTime(date) {
-    const currentDate = new Date(date);
-    let hours = currentDate.getHours();
-    let minutes = currentDate.getMinutes();
-    let meridiem = hours >= 12 ? 'PM' : 'AM';
-
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-
-    const formattedTime = hours + ':' + minutes  + ' ' + meridiem;
-
-    const formattedDate = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
-
-    return {
-        date: formattedDate,
-        time: formattedTime
-    };
-}
 
 
 </script>
@@ -117,7 +100,8 @@ function formatDateTime(date) {
     } */
 
 .low .icon {
-    margin-left: 55px;
+    left: 25%;
+    position: absolute;
     visibility: hidden;
     font-size: small;
     float: right;

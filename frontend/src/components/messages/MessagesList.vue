@@ -32,7 +32,7 @@ watch(() => socketStore.socket, (newSocket, oldSocket) => {
     }
 });
 
-onMounted(()=>{
+onMounted(() => {
     socketStore.socket.onmessage = () => {
         chatStore.getChats(user.token)
         messageStore.fetchMessages(user.token)
