@@ -19,9 +19,13 @@ export const useChatStore = defineStore("chats", {
                         'Content-Type': 'application/json'   
                     }
                 });
-                const data = await response.json();
                 
+                const data = await response.json();
                 this.chats = data;
+
+            if(!response.ok){
+                return response
+            }
                 
             }catch (error) {
                 console.error("Error fetching chats:", error);
@@ -42,24 +46,22 @@ export const useChatStore = defineStore("chats", {
                 const data = await response.json();
             
                 if (!response.ok) {
-                    console.log(data)
                     return data
                 }
                 else {
-                    console.log(data)
                     return data  
                 }
             
         },
 
         deleteChat(id) {
-            this.chats = this.chats.filter((chat) => chat.id !== id);
+            this.chats = this.chats?.filter((chat) => chat.id !== id);
         },
         
     },
     getters:{
         sortedChats(){
-            return this.chats.sort((a, b) => new Date(b.date) - new Date(a.date));
+            return this.chats?.sort((a, b) => new Date(b.date) - new Date(a.date));
         }
     }
 

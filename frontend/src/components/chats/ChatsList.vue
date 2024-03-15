@@ -28,7 +28,11 @@ const setActiveChat = (chat) => {
 }
 
 onMounted(async () => {
-    await chatStore.getChats(user.token)
+    const response  = await chatStore.getChats(user.token)
+    if (response.status === 403) {
+        localStorage.clear()
+        window.location.assign("/sign-in")
+    }
 })
 
 
