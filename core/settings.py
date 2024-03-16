@@ -105,6 +105,18 @@ CHANNEL_LAYERS = {
 }
 
 
+USE_DOCKER = True
+
+if USE_DOCKER:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("redis", 6379)],
+            },
+        },
+    }
+
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
         'accounts.api.json_web_tokens.JWTAuthentication'
@@ -169,12 +181,13 @@ AUTH_USER_MODEL = "accounts.User"
 STATIC_URL = 'static/'
 
 
-CORS_ALLOWED_ORIGINS = [
+# CORS_ALLOWED_ORIGINS = [
     
-    'http://localhost:5173',
-    'https://brace-converse.vercel.app'
-]
+#     'http://localhost:5173',
+#     'http://localhost:8080'
+# ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

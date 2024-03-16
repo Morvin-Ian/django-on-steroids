@@ -3,12 +3,15 @@
     <div class="login-container">
       <h2 style="text-align: center; color: white;">Sign In</h2>
       <p class="error">{{ error }}</p>
-      <input type="email" placeholder="Email" v-model="email">
-      <input type="password" placeholder="Password" v-model="password">
-      <button @click="login">Login</button>
+      <form @submit.prevent="login">
+        <input type="email" placeholder="Email" v-model="email" required>
+        <input type="password" placeholder="Password" v-model="password" required>
+        <button type="submit">Login</button>
+      </form>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { onMounted, ref } from 'vue';
