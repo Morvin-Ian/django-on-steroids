@@ -30,8 +30,7 @@ Some of the key features of Django Channels include:
         USE_DOCKER = False
     ```
     3. pip install -r requirements.txt
-    4. python manage.py runserver
-    5. cd frontend && npm i
+    4. cd frontend && npm i
 
 ### Option 2 - Using Docker
 
