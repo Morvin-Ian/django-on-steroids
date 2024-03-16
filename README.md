@@ -32,6 +32,10 @@ Some of the key features of Django Channels include:
     3. pip install -r requirements.txt
     4. cd frontend && npm i
 
+### Run
+    1. python3 manage.py runserver
+    2. On another terminal - cd frontend && npm run dev 
+
 ### Option 2 - Using Docker
 
 1. git clone `url`
@@ -42,9 +46,7 @@ Some of the key features of Django Channels include:
 
 4. docker-compose up
     
-## Run
-    1. python3 manage.py runserver
-    2. On another terminal - cd frontend && npm run dev 
+
 ![Screenshot from 2024-03-15 16-57-22](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/8946480a-da9b-455b-9003-08681086b6a7)
 ![Screenshot from 2024-03-15 16-56-45](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/3583faf0-d96f-43a3-9781-70412c134ef3)
 
