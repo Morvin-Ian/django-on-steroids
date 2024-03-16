@@ -21,10 +21,27 @@ Some of the key features of Django Channels include:
 2. Custom protocol support
 3. Django integration
     
-## Installation
+## Setup
+### Option 1
     1. git clone 'this repo's link'
-    2. pip install -r requirements.txt
-    3. cd frontend && npm i
+    2. Navigate to the settings.py file in the project folder and set USE_REDIS attribute to False
+    ```
+        # settings.py
+        USE_DOCKER = False
+    ```
+    3. pip install -r requirements.txt
+    4. python manage.py runserver
+    5. cd frontend && npm i
+
+### Option 2 - Using Docker
+
+1. git clone `url`
+
+2. python manage.py migrate
+
+3. docker-compose build
+
+4. docker-compose up
     
 ## Run
     1. python3 manage.py runserver
