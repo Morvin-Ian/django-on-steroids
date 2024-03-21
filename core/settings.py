@@ -105,7 +105,7 @@ CHANNEL_LAYERS = {
 }
 
 
-USE_DOCKER = True
+USE_DOCKER = False
 
 if USE_DOCKER:
     CHANNEL_LAYERS = {
