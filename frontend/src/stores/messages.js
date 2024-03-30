@@ -4,7 +4,8 @@ import { baseUrl } from './auth';
 export const useMessagesStore = defineStore({
   id: 'messages',
   state: () => ({
-    messages: []
+    messages: [],
+    file:{}
   }),
   actions: {
     async fetchMessages(access_token) {
@@ -50,5 +51,8 @@ export const useMessagesStore = defineStore({
         return error.message;
       }
     },
+    async setFile(file){
+      this.file = file
+    }
   },
 });

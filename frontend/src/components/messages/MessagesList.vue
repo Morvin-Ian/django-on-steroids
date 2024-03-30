@@ -4,7 +4,6 @@
             <Message :message="message" />
         </div>
     </div>
-
 </template>
 
 <script setup>
@@ -18,6 +17,7 @@ const messageStore = useMessagesStore()
 const socketStore = useSocketStore()
 const chatStore = useChatStore()
 const user = JSON.parse(localStorage.getItem("user"))
+const emits = defineEmits(["typing"])
 
 // fetch Messages
 messageStore.fetchMessages(user.token)
@@ -33,9 +33,17 @@ watch(() => socketStore.socket, (newSocket, oldSocket) => {
 });
 
 onMounted(() => {
-    socketStore.socket.onmessage = () => {
-        chatStore.getChats(user.token)
-        messageStore.fetchMessages(user.token)
+    socketStore.socket.onmessage = (response) => {
+        const data = JSON.parse(response.data)
+        if (!data.response.typing) {
+            chatStore.getChats(user.token)
+            messageStore.fetchMessages(user.token)
+            emits("typing", data.response)
+
+        } else {
+            emits("typing", data.response)
+        }
+
     }
 })
 </script>

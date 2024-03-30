@@ -142,7 +142,7 @@ class UpdateReadMessages(GenericAPIView):
         dialog_id = request.data.get("dialog")
         message_list = Message.objects.filter(dialog=dialog_id)
 
-
+        print(request.user, dialog_id)
         if message_list:
             for message in message_list:
                 if message.read == False:

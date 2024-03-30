@@ -13,10 +13,8 @@
                     <small class="time">
                         {{ formatDateTime(message.date).time }}
                         <font-awesome-icon v-if="userId === message.message_sender_uuid"
-                            :style="{ color: message.read ? 'aqua' : 'inherit' }"
-                            class="tick-icon"
-                            :icon="message.read ? ['fas', 'check-double'] : ['fas', 'check']"
-                        />
+                            :style="{ color: message.read ? 'aqua' : 'inherit' }" class="tick-icon"
+                            :icon="message.read ? ['fas', 'check-double'] : ['fas', 'check']" />
                     </small>
                 </div>
             </div>

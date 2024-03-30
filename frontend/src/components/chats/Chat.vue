@@ -8,7 +8,14 @@
             <div>
                 <span class="name">{{ chat.chat }}</span> <br>
                 <div class="low">
-                    <small class="last-msg">{{ truncateText(chat.last_message) }}</small>
+                    <small v-if="typing && sender != user.uuid && sender == chat.chat_uuid && receiver == user.uuid"
+                        class="last-msg">
+                        <span style="color: rgb(37, 211, 102);">typing...</span>
+                    </small>
+
+                    <small v-else class="last-msg">{{ truncateText(chat.last_message) }} </small>
+                    <!-- <small v-if="chat.unread_count != 0" class="unread">{{ chat.unread_count }}</small> -->
+
                     <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" />
                 </div>
             </div>
@@ -29,13 +36,26 @@ import { defineProps } from "vue"
 import { formatDateTime } from "@/utils/helpers";
 
 
-
 const props = defineProps({
     chat: {
         type: Object,
         required: true,
+    },
+    typing: {
+        type: Boolean,
+        required: true
+    },
+    sender: {
+        type: String,
+        required: false
+    },
+    receiver: {
+        type: String,
+        required: false
     }
 })
+
+const user = JSON.parse(localStorage.getItem("user"))
 
 const truncateText = (text) => {
     if (!text) {
@@ -46,7 +66,6 @@ const truncateText = (text) => {
 }
 
 
-
 </script>
 
 <style scoped>
@@ -55,7 +74,6 @@ const truncateText = (text) => {
     justify-content: space-around;
     padding: 5px;
     background-color: #141c20;
-    ;
     border-bottom: 1px solid rgb(78, 78, 78);
 }
 
@@ -68,6 +86,17 @@ const truncateText = (text) => {
     color: #b6b6b6;
     /* color: #25D366; */
 
+}
+
+.unread {
+    position: absolute;
+    left: 23%;
+    background: rgb(37, 211, 102);
+    color: #141c20;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: x-small;
+    font-weight: bolder;
 }
 
 .chat-profile {

@@ -23,9 +23,7 @@ export const useChatStore = defineStore("chats", {
                 const data = await response.json();
                 this.chats = data;
 
-            if(!response.ok){
                 return response
-            }
                 
             }catch (error) {
                 console.error("Error fetching chats:", error);

@@ -1,7 +1,7 @@
 <template>
     <div class="chat-list">
         <div class="chat" v-for="chat in chatStore.sortedChats" :key="chat.id">
-            <Chat @click="setActiveChat(chat)" :chat="chat" />
+            <Chat :typing="typing" :sender="sender" :receiver="receiver" @click="setActiveChat(chat)" :chat="chat" />
         </div>
     </div>
 </template>
@@ -13,6 +13,20 @@ import { useChatStore } from "@/stores/chats.js"
 import { useActiveChatStore } from "@/stores/activeChat.js"
 import { useSocketStore } from "@/stores/socket";
 
+const props = defineProps({
+    typing: {
+        type: Boolean,
+        required: true
+    },
+    sender: {
+        type: String,
+        required: false
+    },
+    receiver: {
+        type: String,
+        required: false
+    }
+})
 
 const chatStore = useChatStore();
 const activeChatStore = useActiveChatStore();
@@ -23,12 +37,11 @@ const user = JSON.parse(localStorage.getItem("user"))
 
 const setActiveChat = (chat) => {
     activeChatStore.setChat(chat)
-    socketStore.setSocket(activeChatStore.activeChat.dialog)
     emits('change-view', false)
 }
 
 onMounted(async () => {
-    const response  = await chatStore.getChats(user.token)
+    const response = await chatStore.getChats(user.token)
     if (response.status === 403) {
         localStorage.clear()
         window.location.assign("/sign-in")

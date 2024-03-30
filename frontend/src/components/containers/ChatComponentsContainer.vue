@@ -6,6 +6,9 @@
         />
         <Search/>
         <ChatList 
+            :typing="typing"
+            :sender="sender"
+            :receiver="receiver"
             @change-view="changeView"
         />
         <Profile 
@@ -21,6 +24,20 @@
     import ChatList from "@/components/chats/ChatsList.vue"
     import Profile from "@/components/profiles/UserProfile.vue"
 
+    const props = defineProps({
+        typing:{
+            type:Boolean,
+            required:true
+        },
+        sender:{
+            type:String,
+            required:false
+        },
+        receiver:{
+            type:String,
+            required:false
+        }
+    })
 
     const viewProfile = ref(false);
     const viewChatDrop = ref(false);
