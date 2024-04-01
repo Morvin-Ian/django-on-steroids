@@ -16,13 +16,13 @@
                     <small v-else class="last-msg">{{ truncateText(chat.last_message) }} </small>
                     <!-- <small v-if="chat.unread_count != 0" class="unread">{{ chat.unread_count }}</small> -->
 
-                    <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" />
+                    <!-- <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" /> -->
                 </div>
             </div>
         </div>
 
         <div class="last-seen">
-            <small v-if="chat.date">{{ formatDateTime(chat.date).time }}</small>
+            <small v-if="chat.date">{{ formatDateTime(chat.date).date }}</small>
             <small v-else>New Chat</small>
 
         </div>

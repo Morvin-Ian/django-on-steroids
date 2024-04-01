@@ -5,7 +5,7 @@ export const useMessagesStore = defineStore({
   id: 'messages',
   state: () => ({
     messages: [],
-    file:{}
+    file:null
   }),
   actions: {
     async fetchMessages(access_token) {

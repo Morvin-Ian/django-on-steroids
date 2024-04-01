@@ -1,4 +1,5 @@
 <template>
+   <div>
     <MessageNav 
         @view-chat-profile="setChatProfile"
         @view-message-drop ="setMessageDrop"
@@ -10,14 +11,19 @@
 
     />
     <MessageList @typing="handleTyping"/>
+    <div class="preview">
+        <ImagePreview @hide-preview="hidePreview" v-if="file" :file="file"/>
+    </div>
     <MessageInput
         :viewFileMessage="viewFileMessage"
         @view-file-message="setFileMessage"
+        @file="setFile"
      />
     <ChatProfile 
         :viewChatProfile="viewChatProfile"  
         @view-chat-profile="setChatProfile" 
     />
+   </div>
 </template>
 
 <script setup>
@@ -26,6 +32,7 @@
     import MessageList from "@/components/messages/MessagesList.vue"
     import MessageInput from "@/components/messages/MessageInput.vue"
     import ChatProfile from "@/components/profiles/ChatProfile.vue"
+    import ImagePreview from "@/components/popups/ImagePreview.vue"
     import { useMessagesStore } from "@/stores/messages"
     import { useActiveChatStore } from "@/stores/activeChat"
     import { useChatStore } from "@/stores/chats"
@@ -34,6 +41,7 @@
     const viewChatProfile = ref(false);
     const viewMessageDrop = ref(false);
     const viewFileMessage = ref(false);
+    const file = ref(null)
     const typing = ref(false);
     const actionSender = ref(null);
     const actionReceiver = ref(null);
@@ -48,6 +56,14 @@
     const setChatProfile = (chatProfileState) => {
         viewChatProfile.value = chatProfileState
         emits('view-chat-profile', viewChatProfile)
+    }
+
+    const setFile = (data) => {
+        file.value = data
+    }
+
+    const hidePreview = () =>{
+        file.value = null
     }
 
 
@@ -74,3 +90,12 @@
     })
 
 </script>
+
+<style scoped>
+    .preview{
+        position: absolute;
+        bottom: 85%;
+        padding: 10px;
+    }
+
+</style>

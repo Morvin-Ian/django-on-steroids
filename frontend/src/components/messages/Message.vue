@@ -11,7 +11,9 @@
                 <div class="text">
                     <span>{{ message.text_message }}</span> <br>
                     <small class="time">
+                        {{ formatDateTime(message.date).date }}
                         {{ formatDateTime(message.date).time }}
+
                         <font-awesome-icon v-if="userId === message.message_sender_uuid"
                             :style="{ color: message.read ? 'aqua' : 'inherit' }" class="tick-icon"
                             :icon="message.read ? ['fas', 'check-double'] : ['fas', 'check']" />
@@ -23,10 +25,11 @@
 </template>
 
 <script setup>
-import file from "@/assets/octo.jpg"
 import { defineProps, computed } from "vue"
 import { formatDateTime } from "@/utils/helpers";
 import { useActiveChatStore } from "@/stores/activeChat";
+import { base as baseUrl } from "@/stores/auth";
+
 
 const activeChatStore = useActiveChatStore()
 
@@ -36,6 +39,8 @@ const props = defineProps({
         required: true,
     }
 })
+
+const file = `${baseUrl}${props.message.file}` 
 
 const userId = computed(() => {
     return JSON.parse(localStorage.getItem("user")).uuid

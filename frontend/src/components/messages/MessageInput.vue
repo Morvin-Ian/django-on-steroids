@@ -4,7 +4,7 @@
             <font-awesome-icon :icon="['fas', 'face-smile']" />
         </div>
         <div class="files">
-            <FileDropDown :class="viewFileMessage ? 'drop' : 'none'" />
+            <FileDropDown @hide-file-drop="setFileMessage" :class="viewFileMessage ? 'drop' : 'none'" />
             <font-awesome-icon @click="setFileMessage" :class="!viewFileMessage ? 'icon' : 'icon-ratate'" icon="plus" />
         </div>
 
@@ -25,7 +25,7 @@ import { useSocketStore } from "@/stores/socket";
 import { useActiveChatStore } from "@/stores/activeChat";
 import { useMessagesStore } from "@/stores/messages";
 
-const emits = defineEmits(['view-file-message'])
+const emits = defineEmits(['view-file-message', 'file'])
 const socketStore = useSocketStore()
 const activeChatStore = useActiveChatStore()
 const messagesStore = useMessagesStore()
@@ -41,8 +41,12 @@ const props = defineProps({
 })
 
 
-const setFileMessage = () => {
+const setFileMessage = (data) => {
     emits('view-file-message', !props.viewFileMessage)
+    if (data instanceof File) {
+        emits("file", data);
+
+    }
 }
 
 const handleKeyDown = () => {
@@ -71,13 +75,12 @@ const handleKeyUp = () => {
 
 const handleSubmit = () => {
     if (message.value) {
-        console.log(messagesStore.file.value)
-        // socketStore.socket.send(JSON.stringify({
-        //     sender: user.uuid,
-        //     receiver: activeChatStore.activeChat.chat_uuid,
-        //     message: message.value,
-        //     dialog: activeChatStore.activeChat.dialog
-        // }))
+        socketStore.socket.send(JSON.stringify({
+            sender: user.uuid,
+            receiver: activeChatStore.activeChat.chat_uuid,
+            message: message.value,
+            dialog: activeChatStore.activeChat.dialog
+        }))
     }
     message.value = ""
 }
