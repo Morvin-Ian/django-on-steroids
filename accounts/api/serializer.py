@@ -1,6 +1,5 @@
 from messaging.models import Message
 from accounts.models import User
-
 from rest_framework import serializers
 
 

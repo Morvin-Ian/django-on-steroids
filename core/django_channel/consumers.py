@@ -1,6 +1,8 @@
 import json
-from .db_operations import get_user, save_message
+from .db_operations import get_user, save_message, save_file
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.core.files.base import ContentFile
+import base64
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -23,13 +25,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         receiver = text_data_json["receiver"]
         dialog = text_data_json["dialog"]
         message = text_data_json["message"]
+        file = text_data_json.get("file")
 
         if sender and receiver:
             sender = await get_user(sender)
             receiver = await get_user(receiver)
 
-            if message:
-                await save_message(message, sender, receiver, dialog)
+            if file:
+                print(file)
+                # data = base64.b64decode(file[0])
+                # image = ContentFile(data, name=file[1])
+                # file = await save_file(sender, image)
+                # await save_message(message, sender, receiver, dialog, file)
+
+        #     if message:
+        #         await save_message(message, sender, receiver, dialog)
 
         # Send message to room group
         await self.channel_layer.group_send(

@@ -35,7 +35,7 @@ export const useMessagesStore = defineStore({
         const response = await fetch(messagesReadUrl, {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${access_token}`,
+            'Authorization': `Bearer ${access_token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ dialog }),
@@ -53,6 +53,32 @@ export const useMessagesStore = defineStore({
     },
     async setFile(file){
       this.file = file
+    },
+
+    async sendFile(access_token, file, sender) {
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      formData.append('uploaded_by', sender);
+
+      try {
+        const response = await fetch(`${baseUrl}/upload_file/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error uploading file: ${response.statusText}`);
+        }
+        return await response.json()
+
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
     }
-  },
+  }
 });

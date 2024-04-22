@@ -6,9 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
-
 import uuid
-
 import jwt
 from datetime import datetime, timedelta
 

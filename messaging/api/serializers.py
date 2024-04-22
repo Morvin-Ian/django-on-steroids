@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from messaging.models import Message
+from messaging.models import Message, UploadedFile
 
 class MessageSerializer(serializers.ModelSerializer):
     """
@@ -16,4 +16,9 @@ class MessageSerializer(serializers.ModelSerializer):
         )
         
 
+class FileSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(allow_null=True) 
+    class Meta:
+        model = UploadedFile 
+        fields = ('uploaded_by', 'file') 
 

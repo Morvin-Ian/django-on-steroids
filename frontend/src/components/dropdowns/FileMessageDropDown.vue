@@ -4,7 +4,7 @@
       <font-awesome-icon :style="{ color: item.color }" :icon="item.icon" />
       <label style="margin-left: 5px;" for="file">{{ item.text }}</label>
       <input type="file" id="file" ref="fileInput" style="display: none" @change="handleFileChange"
-        :accept="item.accept" />
+        accept="image/png, image/jpeg" />
     </li>
   </ul>
 </template>
@@ -18,7 +18,7 @@ const emits = defineEmits(["hide-file-drop"])
 const messageStore = useMessagesStore()
 
 const items = ref([
-  { icon: "file", text: "Documents", color: "blue", accept:".doc,.docx,.pdf,application/msword,application/pdf" },
+  // { icon: "file", text: "Documents", color: "blue", accept:".doc,.docx,.pdf,application/msword,application/pdf" },
   { icon: "images", text: "Photos & Videos", color: "red", accept:"image/*,video/*"},
 ]);
 

@@ -9,6 +9,9 @@ from accounts.models import User
 from django.db.models import Q
 from django.core.cache import cache
 
+from rest_framework import serializers
+from rest_framework.parsers import MultiPartParser, FormParser
+from .serializers import FileSerializer
 
 
 class DialogView(GenericAPIView):
@@ -142,7 +145,6 @@ class UpdateReadMessages(GenericAPIView):
         dialog_id = request.data.get("dialog")
         message_list = Message.objects.filter(dialog=dialog_id)
 
-        print(request.user, dialog_id)
         if message_list:
             for message in message_list:
                 if message.read == False:
@@ -151,3 +153,20 @@ class UpdateReadMessages(GenericAPIView):
                         message.save()
 
         return Response("Message Read", status=status.HTTP_200_OK)
+
+
+
+class FileUploadView(GenericAPIView):
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = FileSerializer
+
+    def post(self, request):
+        # serializer = self.serializer_class(data=request.data)
+        # if serializer.is_valid():
+            # serializer.save(
+        print(request.data)
+
+        # import
+        print(request.data)
+        return Response(request.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

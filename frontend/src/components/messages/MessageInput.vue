@@ -24,7 +24,10 @@ import { defineEmits, defineProps, ref } from "vue"
 import { useSocketStore } from "@/stores/socket";
 import { useActiveChatStore } from "@/stores/activeChat";
 import { useMessagesStore } from "@/stores/messages";
+import { useToast } from "vue-toastification";
 
+
+const toast = useToast();
 const emits = defineEmits(['view-file-message', 'file'])
 const socketStore = useSocketStore()
 const activeChatStore = useActiveChatStore()
@@ -39,7 +42,6 @@ const props = defineProps({
     }
 
 })
-
 
 const setFileMessage = (data) => {
     emits('view-file-message', !props.viewFileMessage)
@@ -56,7 +58,7 @@ const handleKeyDown = () => {
             receiver: activeChatStore.activeChat.chat_uuid,
             message: null,
             dialog: activeChatStore.activeChat.dialog,
-            typing:true
+            typing: true
         }))
     }
 }
@@ -68,20 +70,35 @@ const handleKeyUp = () => {
             receiver: activeChatStore.activeChat.chat_uuid,
             message: null,
             dialog: activeChatStore.activeChat.dialog,
-            typing:false
+            typing: false
         }))
     }
 }
 
-const handleSubmit = () => {
-    if (message.value) {
-        socketStore.socket.send(JSON.stringify({
-            sender: user.uuid,
-            receiver: activeChatStore.activeChat.chat_uuid,
-            message: message.value,
-            dialog: activeChatStore.activeChat.dialog
-        }))
+const handleSubmit = async () => {
+
+    if (messagesStore.file) {
+      
+        const response = await messagesStore.sendFile(
+            user.token, messagesStore.file, user.uuid
+        )
+        console.log(user.token, messagesStore.file, user.uuid)
+
+
+    } else {
+        if (message.value) {
+            socketStore.socket.send(JSON.stringify({
+                sender: user.uuid,
+                receiver: activeChatStore.activeChat.chat_uuid,
+                message: message.value,
+                dialog: activeChatStore.activeChat.dialog,
+                file: None
+            }))
+        }else{
+            toast.info("Can't send an empty message")
+        }
     }
+
     message.value = ""
 }
 </script>

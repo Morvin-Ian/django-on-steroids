@@ -23,8 +23,10 @@ import MessagesContainer from "@/components/containers/MessageComponentsContaine
 import DefaultContainer from "@/components/containers/Default.vue"
 import { useRouter } from 'vue-router'
 import { useSocketStore } from '@/stores/socket'
+import { useToast } from "vue-toastification";
 
 
+const toast = useToast();
 const router = useRouter()
 const socketStore = useSocketStore()
 const viewChatProfile = ref(false)
@@ -56,6 +58,15 @@ onMounted(() => {
   }
 
   socketStore.setSocket()
+
+socketStore.socket.onopen = () => {
+  toast.success("Connection established!");
+};
+
+
+socketStore.socket.onclose = () => {
+  toast.error("Connection Closed!");
+};
 
 })
 
