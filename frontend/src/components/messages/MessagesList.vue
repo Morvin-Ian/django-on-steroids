@@ -36,8 +36,8 @@ onMounted(() => {
     socketStore.socket.onmessage = (response) => {
         const data = JSON.parse(response.data)
         if (!data.response.typing) {
-            // chatStore.getChats(user.token)
-            // messageStore.fetchMessages(user.token)
+            chatStore.getChats(user.token)
+            messageStore.fetchMessages(user.token)
             emits("typing", data.response)
 
         } else {
