@@ -6,7 +6,7 @@
 
     <div :class="viewChatProfile ? 'messages-profile' : 'messages'">
       <div v-if="!isDefault">
-        <MessagesContainer @typing="handleTyping"  @view-chat-profile="changeView" />
+        <MessagesContainer @typing="handleTyping"  @view-chat-profile="changeView" @close-chat="changeDefault" />
       </div>
       <div v-else>
         <DefaultContainer />

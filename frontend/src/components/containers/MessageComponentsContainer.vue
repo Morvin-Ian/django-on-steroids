@@ -3,6 +3,7 @@
     <MessageNav 
         @view-chat-profile="setChatProfile"
         @view-message-drop ="setMessageDrop"
+        @close-chat="closeChat"
         :viewChatProfile="viewChatProfile"  
         :viewMessageDrop="viewMessageDrop"
         :typing="typing"
@@ -80,6 +81,10 @@
         actionSender.value = data.sender
         actionReceiver.value = data.receiver
         emits("typing", data)
+    }
+
+    const closeChat = (data) =>{
+        emits('close-chat', data)
     }
 
     onMounted(()=>{

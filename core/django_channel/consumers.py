@@ -31,15 +31,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             sender = await get_user(sender)
             receiver = await get_user(receiver)
 
-            if file:
-                print(file)
+            # if file:
+            #     print(file)
                 # data = base64.b64decode(file[0])
                 # image = ContentFile(data, name=file[1])
                 # file = await save_file(sender, image)
                 # await save_message(message, sender, receiver, dialog, file)
 
-        #     if message:
-        #         await save_message(message, sender, receiver, dialog)
+            if message:
+                await save_message(message, sender, receiver, dialog)
 
         # Send message to room group
         await self.channel_layer.group_send(

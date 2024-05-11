@@ -32,7 +32,7 @@
         </div>
 
         <div>
-            <DropDown :class="viewMessageDrop ? 'drop' : 'none'" />
+            <DropDown :class="viewMessageDrop ? 'drop' : 'none'" @close-chat="closeChat" />
         </div>
 
     </div>
@@ -45,7 +45,7 @@ import { useActiveChatStore } from "@/stores/activeChat.js"
 
 const activeChatStore = useActiveChatStore();
 const user = JSON.parse(localStorage.getItem("user"))
-const emits = defineEmits(['view-chat-profile', 'view-message-drop'])
+const emits = defineEmits(['view-chat-profile', 'view-message-drop', 'close-chat'])
 
 const props = defineProps({
     viewChatProfile: {
@@ -78,6 +78,10 @@ const setChatProfile = () => {
 
 const setDropDown = () => {
     emits('view-message-drop', !props.viewMessageDrop)
+}
+
+const closeChat = (data) => {
+    emits('close-chat', data)
 }
 
 </script>

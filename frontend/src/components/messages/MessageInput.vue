@@ -92,7 +92,7 @@ const handleSubmit = async () => {
                 receiver: activeChatStore.activeChat.chat_uuid,
                 message: message.value,
                 dialog: activeChatStore.activeChat.dialog,
-                file: None
+                file: null
             }))
         }else{
             toast.info("Can't send an empty message")

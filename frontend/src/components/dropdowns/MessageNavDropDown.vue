@@ -2,7 +2,7 @@
     <ul class="drop-list">
         <li>Contact Info</li>
         <li>Select messages</li>
-        <li>Close chat</li>
+        <li @click="closeChat" >Close chat</li>
         <li>Mute notification</li>
         <li>Dissapearing messages</li>
         <li>Clear chat</li>
@@ -12,7 +12,12 @@
     </ul>
 </template>
 
-<script>
+<script setup>
+const emits = defineEmits(['close-chat'])
+
+const closeChat= () => {
+    emits('close-chat', true)
+}
 </script>
 
 <style scoped>
