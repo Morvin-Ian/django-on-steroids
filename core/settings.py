@@ -179,6 +179,7 @@ AUTH_USER_MODEL = "accounts.User"
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = '/static/'
 
 
 # CORS_ALLOWED_ORIGINS = [
